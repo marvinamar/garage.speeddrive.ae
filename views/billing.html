@@ -1,0 +1,541 @@
+@include('includes/head')
+
+<body class="nk-body bg-lighter npc-default has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <!-- sidebar @s -->
+            @include('includes/sidebar')
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <!-- main header @s -->
+                @include('includes/header')
+                <!-- main header @e -->
+  
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                <div class="nk-block-head nk-block-head-sm">
+                                    <div class="nk-block-between">
+                                        <div class="nk-block-head-content">
+                                            <h3 class="nk-block-title page-title">{{ $user->parent->subscription_plan }}</h3>
+                                            <div class="nk-block-des">
+                                                <p>
+                                                    @if($user->parent->subscription_plan == "Free Trial")
+                                                    Your free trial ends on {{ date("M d, Y", strtotime($user->parent->subscription_end)) }} 
+                                                    @elseif($user->parent->subscription_status != "Active")
+                                                    Your subscription is already <strong class="fw-bold">{{ $user->parent->subscription_status }}</strong>
+                                                    @else
+                                                    Your subscription renews on {{ date("M d, Y", strtotime($user->parent->subscription_end)) }}
+                                                    @endif
+
+                                                    @if($user->parent->subscription_status == "Active")
+                                                    <span class="text-soft">( {{ timeLeft(strtotime($user->parent->subscription_end)) }} remaining )</span> 
+                                                    <span class="text-primary"><em class="icon ni ni-info"></em></span>
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="nk-block-head-content">
+                                            <ul class="nk-block-tools justify-content-md-end g-4 flex-wrap">
+                                                <li class="order-md-last">
+                                                    @if($user->parent->subscription_plan == "Free Trial" || $user->parent->subscription_status != "Active")
+                                                    <a href="" class="btn btn-auto btn-dim btn-primary" data-toggle="modal" data-target="#subscription-change"><em class="icon ni ni-award"></em><span>Choose a Plan</span></a>
+                                                    @elseif($user->parent->subscription_status == "Active" && $user->role == "Owner")
+                                                    <a href="" class="btn btn-auto btn-dim btn-light" data-toggle="modal" data-target="#subscription-cancel"><em class="icon ni ni-cross"></em><span>Cancel Subscription</span></a>
+                                                    @endif
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- .nk-block-head -->
+                                    @if(isset($_GET["payment"]) && $_GET["payment"] == "error")
+                                    <div class="alert alert-danger alert-icon">
+                                        <em class="icon ni ni-check-circle"></em> 
+                                        <strong>Hmmm!</strong> There was an error processing your payment, please contact support if issue persists. 
+                                    </div>
+                                    @elseif(isset($_GET["payment"]) && $_GET["payment"] == "success")
+                                    <div class="alert alert-success alert-icon">
+                                        <em class="icon ni ni-check-circle"></em> 
+                                        <strong>Subscription successful!</strong> Your {{ $user->parent->subscription_plan }} subscription is now active. 
+                                    </div>
+                                    @endif
+                                    @if($user->parent->subscription_status != "Active")
+                                    <div class="mb-3">
+                                        <a href="" data-toggle="modal" data-target="#subscription-change">
+                                            <div class="alert alert-warning alert-icon">
+                                                <em class="icon ni ni-alert-circle"></em> 
+                                                <strong>Choose a plan!</strong> Please choose a plan to continue using Asilify
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @endif
+                                <div class="nk-block">
+                                    <div class="row">
+                                        <div class="col-xl-8">
+                                            <div class="card card-stretch">
+                                                <div class="card-inner-group">
+                                                    <div class="card-inner">
+                                                        <div class="sp-plan-head">
+                                                            <h6 class="title">Plan Details</h6>
+                                                        </div>
+                                                        <div class="sp-plan-desc sp-plan-desc-mb">
+                                                            <ul class="row gx-1">
+                                                                <li class="col-sm-4">
+                                                                    <p><span class="text-soft">Started On</span> {{ date("M d, Y", strtotime($user->parent->subscription_start)) }}</p>
+                                                                </li>
+                                                                <li class="col-sm-4">
+                                                                    @if($user->parent->subscription_plan == "Free Trial")
+                                                                    <p><span class="text-soft">Price</span> KSh0.00  for 14 Days</p>
+                                                                    @elseif($user->parent->subscription_plan == "Premium Monthly")
+                                                                    <p><span class="text-soft">Price</span> KSh{{ number_format(env('PRICE_MONTHLY')) }} Monthly</p>
+                                                                    @elseif($user->parent->subscription_plan == "Premium Biannually")
+                                                                    <p><span class="text-soft">Price</span> KSh{{ number_format(env('PRICE_BIANNUALLY')) }} Biannually</p>
+                                                                    @elseif($user->parent->subscription_plan == "Premium Annually")
+                                                                    <p><span class="text-soft">Price</span> KSh{{ number_format(env('PRICE_ANNUALLY')) }} Annually</p>
+                                                                    @endif
+
+                                                                </li>
+                                                                <li class="col-sm-4">
+                                                                    <p>
+                                                                        <span class="text-soft">Status</span> 
+                                                                        @if($user->parent->subscription_status == "Active")
+                                                                        <span class="badge badge-sm badge-dot has-bg badge-success d-none d-mb-inline-flex">Active</span>
+                                                                        @elseif($user->parent->subscription_status == "Cancelled")
+                                                                        <span class="badge badge-sm badge-dot has-bg badge-warning d-none d-mb-inline-flex">Cancelled</span>
+                                                                        @elseif($user->parent->subscription_status == "Expired")
+                                                                        <span class="badge badge-sm badge-dot has-bg badge-danger d-none d-mb-inline-flex">Expired</span>
+                                                                        @endif
+
+                                                                    </p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div><!-- .card-inner -->
+                                                    <div class="card-inner">
+                                                        <div class="sp-plan-head">
+                                                            <h6 class="title">Account Details</h6>
+                                                        </div>
+                                                        <div class="sp-plan-desc sp-plan-desc-mb">
+                                                            <ul class="row gx-1">
+                                                                <li class="col-sm-4">
+                                                                    <p><span class="text-soft">Company</span> {{ $user->parent->name }}</p>
+                                                                </li>
+                                                                <li class="col-sm-4">
+                                                                    <p><span class="text-soft">SMS Credits</span> {{ $user->parent->sms_balance }} <span class="text-primary d-inline" data-toggle="tooltip" title="You can top up your credits on marketing page."><em class="icon ni ni-info"></em></span></p>
+                                                                </li>
+                                                                <li class="col-sm-4">
+                                                                    <p><span class="text-soft">Access</span> Unlimited</p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div><!-- .card-inner -->
+                                                    <div class="card-inner">
+                                                        <div class="sp-plan-link">
+                                                            <a href="" class="link" data-toggle="modal" data-target="#subscription-change">
+                                                                @if($user->parent->subscription_plan == "Free Trial" || $user->parent->subscription_status != "Active")
+                                                                <span><em class="icon ni ni-cc-alt"></em> Choose a Subscription Plan</span>
+                                                                @else
+                                                                <span><em class="icon ni ni-cc-alt"></em> Change Billing Cycle</span>
+                                                                @endif
+                                                                <em class="icon ni ni-arrow-right"></em>
+                                                            </a>
+                                                        </div>
+                                                    </div><!-- .card-inner -->
+                                                </div><!-- .card-inner-group -->
+                                            </div><!-- .card -->
+                                        </div><!-- .col -->
+                                        <div class="col-xl-4">
+                                            <div class="card card-stretch card-full d-none d-xl-block">
+                                                <div class="nk-help-plain card-inner text-center">
+                                                    <div class="nk-help-img">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 118">
+                                                            <path d="M8.916,94.745C-.318,79.153-2.164,58.569,2.382,40.578,7.155,21.69,19.045,9.451,35.162,4.32,46.609.676,58.716.331,70.456,1.845,84.683,3.68,99.57,8.694,108.892,21.408c10.03,13.679,12.071,34.71,10.747,52.054-1.173,15.359-7.441,27.489-19.231,34.494-10.689,6.351-22.92,8.733-34.715,10.331-16.181,2.192-34.195-.336-47.6-12.281A47.243,47.243,0,0,1,8.916,94.745Z" transform="translate(0 -1)" fill="#f6faff" />
+                                                            <rect x="18" y="32" width="84" height="50" rx="4" ry="4" fill="#fff" />
+                                                            <rect x="26" y="44" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                            <rect x="50" y="44" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                            <rect x="74" y="44" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                            <rect x="38" y="60" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                            <rect x="62" y="60" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                            <path d="M98,32H22a5.006,5.006,0,0,0-5,5V79a5.006,5.006,0,0,0,5,5H52v8H45a2,2,0,0,0-2,2v4a2,2,0,0,0,2,2H73a2,2,0,0,0,2-2V94a2,2,0,0,0-2-2H66V84H98a5.006,5.006,0,0,0,5-5V37A5.006,5.006,0,0,0,98,32ZM73,94v4H45V94Zm-9-2H54V84H64Zm37-13a3,3,0,0,1-3,3H22a3,3,0,0,1-3-3V37a3,3,0,0,1,3-3H98a3,3,0,0,1,3,3Z" transform="translate(0 -1)" fill="#798bff" />
+                                                            <path d="M61.444,41H40.111L33,48.143V19.7A3.632,3.632,0,0,1,36.556,16H61.444A3.632,3.632,0,0,1,65,19.7V37.3A3.632,3.632,0,0,1,61.444,41Z" transform="translate(0 -1)" fill="#6576ff" />
+                                                            <path d="M61.444,41H40.111L33,48.143V19.7A3.632,3.632,0,0,1,36.556,16H61.444A3.632,3.632,0,0,1,65,19.7V37.3A3.632,3.632,0,0,1,61.444,41Z" transform="translate(0 -1)" fill="none" stroke="#6576ff" stroke-miterlimit="10" stroke-width="2" />
+                                                            <line x1="40" y1="22" x2="57" y2="22" fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                                            <line x1="40" y1="27" x2="57" y2="27" fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                                            <line x1="40" y1="32" x2="50" y2="32" fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                                            <line x1="30.5" y1="87.5" x2="30.5" y2="91.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <line x1="28.5" y1="89.5" x2="32.5" y2="89.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <line x1="79.5" y1="22.5" x2="79.5" y2="26.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <line x1="77.5" y1="24.5" x2="81.5" y2="24.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="90.5" cy="97.5" r="3" fill="none" stroke="#9cabff" stroke-miterlimit="10" />
+                                                            <circle cx="24" cy="23" r="2.5" fill="none" stroke="#9cabff" stroke-miterlimit="10" /></svg>
+                                                    </div>
+                                                    <div class="nk-help-text">
+                                                        <h5>Need Help?</h5>
+                                                        <p class="text-soft">Our team is here to ensure that you are satisfied using our platform.</p>
+                                                    </div>
+                                                    <div class="nk-help-action">
+                                                        <a href="https://app.chaport.com/widget/show.html?appid=5f6a32386b4b643725aa0300" class="btn btn-lg btn-primary" target="_blank">Get Support Now</a>
+                                                    </div>
+                                                </div>
+                                            </div><!-- .card -->
+                                            <div class="card card-bordered d-xl-none">
+                                                <div class="card-inner">
+                                                    <div class="nk-help">
+                                                        <div class="nk-help-img">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 118">
+                                                                <path d="M8.916,94.745C-.318,79.153-2.164,58.569,2.382,40.578,7.155,21.69,19.045,9.451,35.162,4.32,46.609.676,58.716.331,70.456,1.845,84.683,3.68,99.57,8.694,108.892,21.408c10.03,13.679,12.071,34.71,10.747,52.054-1.173,15.359-7.441,27.489-19.231,34.494-10.689,6.351-22.92,8.733-34.715,10.331-16.181,2.192-34.195-.336-47.6-12.281A47.243,47.243,0,0,1,8.916,94.745Z" transform="translate(0 -1)" fill="#f6faff" />
+                                                                <rect x="18" y="32" width="84" height="50" rx="4" ry="4" fill="#fff" />
+                                                                <rect x="26" y="44" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                                <rect x="50" y="44" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                                <rect x="74" y="44" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                                <rect x="38" y="60" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                                <rect x="62" y="60" width="20" height="12" rx="1" ry="1" fill="#e5effe" />
+                                                                <path d="M98,32H22a5.006,5.006,0,0,0-5,5V79a5.006,5.006,0,0,0,5,5H52v8H45a2,2,0,0,0-2,2v4a2,2,0,0,0,2,2H73a2,2,0,0,0,2-2V94a2,2,0,0,0-2-2H66V84H98a5.006,5.006,0,0,0,5-5V37A5.006,5.006,0,0,0,98,32ZM73,94v4H45V94Zm-9-2H54V84H64Zm37-13a3,3,0,0,1-3,3H22a3,3,0,0,1-3-3V37a3,3,0,0,1,3-3H98a3,3,0,0,1,3,3Z" transform="translate(0 -1)" fill="#798bff" />
+                                                                <path d="M61.444,41H40.111L33,48.143V19.7A3.632,3.632,0,0,1,36.556,16H61.444A3.632,3.632,0,0,1,65,19.7V37.3A3.632,3.632,0,0,1,61.444,41Z" transform="translate(0 -1)" fill="#6576ff" />
+                                                                <path d="M61.444,41H40.111L33,48.143V19.7A3.632,3.632,0,0,1,36.556,16H61.444A3.632,3.632,0,0,1,65,19.7V37.3A3.632,3.632,0,0,1,61.444,41Z" transform="translate(0 -1)" fill="none" stroke="#6576ff" stroke-miterlimit="10" stroke-width="2" />
+                                                                <line x1="40" y1="22" x2="57" y2="22" fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                                                <line x1="40" y1="27" x2="57" y2="27" fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                                                <line x1="40" y1="32" x2="50" y2="32" fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                                                <line x1="30.5" y1="87.5" x2="30.5" y2="91.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                                <line x1="28.5" y1="89.5" x2="32.5" y2="89.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                                <line x1="79.5" y1="22.5" x2="79.5" y2="26.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                                <line x1="77.5" y1="24.5" x2="81.5" y2="24.5" fill="none" stroke="#9cabff" stroke-linecap="round" stroke-linejoin="round" />
+                                                                <circle cx="90.5" cy="97.5" r="3" fill="none" stroke="#9cabff" stroke-miterlimit="10" />
+                                                                <circle cx="24" cy="23" r="2.5" fill="none" stroke="#9cabff" stroke-miterlimit="10" /></svg>
+                                                        </div>
+                                                        <div class="nk-help-text">
+                                                            <h5>Need Help?</h5>
+                                                            <p class="text-soft">Our team is here to ensure that you are satisfied using our platform.</p>
+                                                        </div>
+                                                        <div class="nk-help-action">
+                                                            <a href="https://app.chaport.com/widget/show.html?appid=5f6a32386b4b643725aa0300" class="btn btn-lg btn-primary" target="_blank">Get Support Now</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- .card -->
+                                        </div><!-- .col -->
+                                    </div>
+                                </div><!-- .nk-block -->
+                                <div class="nk-block">
+                                    <div class="card card-stretch">
+                                        <div class="card-inner card-inner-md">
+                                            <div class="card-title-group">
+                                                <h6 class="card-title">Payment History</h6>
+                                                <div class="card-action">
+                                                    <a href="{{ url('Billing@payments') }}" class="link link-sm">Full Payment History</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <table class="table table-tranx">
+                                            <thead>
+                                                <tr class="tb-tnx-head">
+                                                    <th class="tb-tnx-id"><span class="">#</span></th>
+                                                    <th class="tb-tnx-info">
+                                                        <span class="tb-tnx-desc d-none d-sm-inline-block">
+                                                            <span>Bill For</span>
+                                                        </span>
+                                                        <span class="tb-tnx-date d-md-inline-block d-none">
+                                                            <span class="d-md-none">Date / Method</span>
+                                                            <span class="d-none d-md-block">
+                                                                <span>Date</span>
+                                                                <span>Method</span>
+                                                            </span>
+                                                        </span>
+                                                    </th>
+                                                    <th class="tb-tnx-amount">
+                                                        <span class="tb-tnx-total">Total</span>
+                                                        <span class="tb-tnx-status d-none d-md-inline-block">Status</span>
+                                                    </th>
+                                                </tr><!-- .tb-tnx-item -->
+                                            </thead>
+                                            <tbody>
+                                                @if(!empty($payments))
+                                                @foreach($payments as $index => $payment)
+                                                <tr class="tb-tnx-item">
+                                                    <td class="tb-tnx-id">
+                                                        <span class="text-primary">{{ $payment->txid }}</span>
+                                                    </td>
+                                                    <td class="tb-tnx-info">
+                                                        <div class="tb-tnx-desc">
+                                                            @if($payment->type == "topup")
+                                                            <span class="title">SMS Credits Top up</span>
+                                                            @else
+                                                            <span class="title">{{ $payment->bill_for }}</span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="tb-tnx-date">
+                                                            <span class="date">{{ date("M j, Y H:i", strtotime($payment->created_at)) }}</span>
+                                                            <span class="date text-capitalize">{{ $payment->paymenttype }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="tb-tnx-amount">
+                                                        <div class="tb-tnx-total">
+                                                            <span class="amount">{{ money($payment->amount, "KES") }}</span>
+                                                        </div>
+                                                        <div class="tb-tnx-status">
+                                                            @if($payment->status == "New")
+                                                            <span class="badge badge-sm badge-dot has-bg badge-primary d-mb-inline-flex">New</span>
+                                                            @else
+                                                            <span class="badge badge-sm badge-dot has-bg badge-success d-mb-inline-flex">Paid</span>
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                </tr><!-- .tb-tnx-item -->
+                                                @endforeach
+                                                @else
+                                                <tr>
+                                                    <td class="text-center" colspan="3">It's empty here!</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                        <div class="card-inner border-top">
+                                            <div class="sp-plan-link">
+                                                <a href="{{ url('Billing@payments') }}" class="link">
+                                                    <span><em class="icon ni ni-cc-alt"></em> Full Payment History</span>
+                                                    <em class="icon ni ni-arrow-right"></em>
+                                                </a>
+                                            </div>
+                                        </div><!-- .card-inner -->
+                                    </div><!-- .card -->
+                                </div><!-- .nk-block -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                @include('includes/footer')
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+
+
+        <!-- @@Modal - Subscription Change @s -->
+        <div class="modal fade" tabindex="-1" id="subscription-change">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                    <div class="modal-body modal-body-md">
+                        <div class="sp-package text-center">
+                            <div class="sp-package-head mb-3">
+                                @if($user->parent->subscription_plan == "Free Trial")
+                                <h4 class="title">Choose a Plan</h4>
+                                <p class="text-soft">Your plan will be effective immediately on your account.</p>
+                                @else
+                                <h4 class="title">Change Subscription</h4>
+                                <p class="text-soft">This change will become effective immediately on your account.</p>
+                                @endif
+                            </div>
+                            <ul class="sp-package-list">
+                                <li class="sp-package-item">
+                                    @if($user->parent->subscription_plan == "Premium Monthly" || $user->parent->subscription_plan == "Free Trial")
+                                    <input class="sp-package-choose" type="radio" name="subscription_plan" value="monthly" initial="m" id="monthly" data-price="{{ env('PRICE_MONTHLY') }}" data-company="{{ $user->parent->id }}" checked="">
+                                    @else
+                                    <input class="sp-package-choose" type="radio" name="subscription_plan" value="monthly" initial="m" id="monthly" data-price="{{ env('PRICE_MONTHLY') }}" data-company="{{ $user->parent->id }}">
+                                    @endif
+                                    <label class="sp-package-desc" for="monthly">
+                                        <span class="sp-package-info">
+                                            <span class="sp-package-title title">Premium Monthly 
+                                                @if($user->parent->subscription_plan == "Premium Monthly" && $user->parent->subscription_status == "Active")
+                                                <span class="badge badge-primary badge-pill">Current</span>
+                                                @endif
+                                            </span>
+                                            <span class="sp-package-detail">Unlimited Access / KSh{{ number_format(env('PRICE_MONTHLY')) }} / Monthly</span>
+                                        </span>
+                                        <span class="sp-package-price">
+                                            <span class="sp-package-amount yearly">
+                                                <span class="amount">KSh{{ number_format(env('PRICE_MONTHLY')) }}</span>
+                                                <span class="text-soft">Monthly</span>
+                                            </span>
+                                            <span class="sp-package-amount monthly d-none">
+                                                <span class="amount">KSh{{ number_format(env('PRICE_MONTHLY')) }}</span>
+                                                <span class="text-soft">Monthly</span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="sp-package-item">
+                                    @if($user->parent->subscription_plan == "Premium Biannually")
+                                    <input class="sp-package-choose" type="radio" name="subscription_plan" value="biannually" initial="b" id="biannually" data-price="{{ env('PRICE_BIANNUALLY') }}" data-company="{{ $user->parent->id }}" checked="">
+                                    @else
+                                    <input class="sp-package-choose" type="radio" name="subscription_plan" value="biannually" initial="b" id="biannually" data-price="{{ env('PRICE_BIANNUALLY') }}" data-company="{{ $user->parent->id }}">
+                                    @endif
+                                    <label class="sp-package-desc" for="biannually">
+                                        <span class="sp-package-info">
+                                            <span class="sp-package-title title">Premium Biannually
+                                                @if($user->parent->subscription_plan == "Premium Biannually" && $user->parent->subscription_status == "Active")
+                                                <span class="badge badge-primary badge-pill">Current</span>
+                                                @endif
+                                            </span>
+                                            <span class="sp-package-detail">Unlimited Access / KSh{{ number_format(env('PRICE_BIANNUALLY')) }} / Biannually</span>
+                                        </span>
+                                        <span class="sp-package-price">
+                                            <span class="sp-package-amount yearly">
+                                                <span class="amount">KSh{{ number_format(env('PRICE_BIANNUALLY')) }}</span>
+                                                <span class="text-soft">Biannually</span>
+                                            </span>
+                                            <span class="sp-package-amount monthly d-none">
+                                                <span class="amount">KSh{{ number_format(env('PRICE_BIANNUALLY')) }}</span>
+                                                <span class="text-soft">Biannually</span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="sp-package-item">
+                                    @if($user->parent->subscription_plan == "Premium Annually")
+                                    <input class="sp-package-choose" type="radio" name="subscription_plan" value="annually" initial="a" id="annually" data-price="{{ env('PRICE_ANNUALLY') }}" data-company="{{ $user->parent->id }}" checked="">
+                                    @else
+                                    <input class="sp-package-choose" type="radio" name="subscription_plan" value="annually" initial="a" id="annually" data-price="{{ env('PRICE_ANNUALLY') }}" data-company="{{ $user->parent->id }}">
+                                    @endif
+                                    <label class="sp-package-desc" for="annually">
+                                        <span class="sp-package-info">
+                                            <span class="sp-package-title title">Premium Annually
+                                                @if($user->parent->subscription_plan == "Premium Annually" && $user->parent->subscription_status == "Active")
+                                                <span class="badge badge-primary badge-pill">Current</span>
+                                                @endif
+                                            </span>
+                                            <span class="sp-package-detail">Unlimited Access / KSh{{ number_format(env('PRICE_ANNUALLY')) }} / Annually</span>
+                                        </span>
+                                        <span class="sp-package-price">
+                                            <span class="sp-package-amount yearly">
+                                                <span class="amount">KSh{{ number_format(env('PRICE_ANNUALLY')) }}</span>
+                                                <span class="text-soft">Annually</span>
+                                            </span>
+                                            <span class="sp-package-amount monthly d-none">
+                                                <span class="amount">KSh{{ number_format(env('PRICE_ANNUALLY')) }}</span>
+                                                <span class="text-soft">Annually</span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                            <div class="nk-divider divider md"></div>
+                            
+                            <div class="row">
+                                <div class="col-md-12 text-left">
+                                    <p>How would you like to pay?</p>
+                                    <ul class="custom-control-group g-3 align-center flex-wrap">
+                                        <li>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" value="express" checked name="paymentmethod" id="mpesa-express">
+                                                <label class="custom-control-label" for="mpesa-express">M-Pesa Express</label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" value="standard" name="paymentmethod" id="mpesa-standard">
+                                                <label class="custom-control-label" for="mpesa-standard">M-Pesa Standard</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <p></p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="nk-divider divider md"></div>
+                                </div>
+                                <div class="col-sm-12 text-left standard-option" style="display:none;">
+                                        <ol class="list list-checked">
+                                            <li>Select “Pay Bill” from the M-Pesa menu.</li>
+                                            <li>Enter the Dotted Craft Limted business number <b>4047421</b></li>
+                                            
+                                            @if($user->parent->subscription_plan == "Premium Monthly" || $user->parent->subscription_plan == "Free Trial")
+                                            <li>Enter your account number e.g. <b class="payment-reference">s.{{ $user->parent->id }}.m</b></li>
+                                            <li>Enter the amount: <b class="subscription-price">KSh{{ env('PRICE_MONTHLY') }}</b></li>
+                                            @elseif($user->parent->subscription_plan == "Premium Biannually")
+                                            <li>Enter your account number e.g. <b class="payment-reference">s.{{ $user->parent->id }}.b</b></li>
+                                            <li>Enter the amount: <b class="subscription-price">KSh{{ env('PRICE_BIANNUALLY') }}</b></li>
+                                            @elseif($user->parent->subscription_plan == "Premium Annually")
+                                            <li>Enter your account number e.g. <b class="payment-reference">s.{{ $user->parent->id }}.a</b></li>
+                                            <li>Enter the amount: <b class="subscription-price">KSh{{ env('PRICE_ANNUALLY') }}</b></li>
+                                            @endif
+                                            
+                                            <li>Enter your M-Pesa PIN</li>
+                                            <li>Complete payment and then click the confirm the payment button below</li>
+                                        </ol>
+                                    <div class="nk-divider divider md"></div>
+                                    <button type="button" class="btn btn-dim btn-outline-primary mt-1 send-to-server-click"  data="type:subscription" url="{{ url('Mpesa@verify') }}"><em class="icon ni ni-check-circle-fill"></em><span>Confirm Payment</span></button>
+                                </div>
+                                <div class="col-sm-12 express-option text-left">
+                                    <form class="simcy-form text-left" action="{{ url('Mpesa@stkpush') }}" data-parsley-validate="" loader="true" method="POST">
+                                        <div class="form-group">
+                                            <label class="form-label">Phone Number</label>
+                                            <div class="form-control-wrap">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Phone Number" name="PhoneNumber" value="{{ $user->phonenumber }}" required="">
+                                                @if($user->parent->subscription_plan == "Premium Monthly" || $user->parent->subscription_plan == "Free Trial")
+                                                <input type="hidden" value="s.{{ $user->parent->id }}.m" name="AccountReference">
+                                                <input type="hidden" class="subscription-amount" value="{{ env('PRICE_MONTHLY') }}" name="amount">
+                                                @elseif($user->parent->subscription_plan == "Premium Biannually")
+                                                <input type="hidden" value="s.{{ $user->parent->id }}.b" name="AccountReference">
+                                                <input type="hidden" class="subscription-amount" value="{{ env('PRICE_BIANNUALLY') }}" name="amount">
+                                                @elseif($user->parent->subscription_plan == "Premium Annually")
+                                                <input type="hidden" value="s.{{ $user->parent->id }}.a" name="AccountReference">
+                                                <input type="hidden" class="subscription-amount" value="{{ env('PRICE_ANNUALLY') }}" name="amount">
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="nk-divider divider md"></div>
+                                        <button type="submit" class="btn btn-dim btn-outline-danger mt-1"><em class="icon ni ni-setting"></em><span>Initialize Payment</span></button>
+                                        <button type="button" class="btn btn-dim btn-outline-primary mt-1 send-to-server-click"  data="type:subscription" url="{{ url('Mpesa@verify') }}"><em class="icon ni ni-check-circle-fill"></em><span>Confirm Payment</span></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- .modal-content -->
+            </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
+
+        @if($user->role == "Owner")
+        <!-- @@Modal - Subscription Cancle @s -->
+        <div class="modal fade" tabindex="-1" id="subscription-cancel">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                    <form class="simcy-form" action="{{ url('Billing@cancel') }}" data-parsley-validate="" method="POST" loader="true">
+                        <div class="modal-body modal-body-md">
+                            <h4 class="nk-modal-title title">Cancel Your Subscription</h4>
+                            <p><strong>Are you sure you want to cancel your subscription?</strong></p>
+                            <p>If you cancel, you'll lose your access. But you can re-subscribe to your favourite plan any time.</p>
+                            <div class="form">
+                                <div class="form-group">
+                                    <label class="form-label">Enter your password to confirm cancellation</label>
+                                    <div class="form-control-wrap">
+                                        <input type="password" class="form-control" name="password" placeholder="*********" required="">
+                                    </div>
+                                    <div class="form-note">
+                                        <span>We're sorry to see you go.</span>
+                                    </div>
+                                </div>
+                                <ul class="align-center flex-wrap g-3">
+                                    <li>
+                                        <button class="btn btn-primary" type="submit">Cancel Subscription</button>
+                                    </li>
+                                    <li>
+                                        <a href="" class="btn btn-light" data-dismiss="modal">Never mind, don't cancel</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- .modal-content -->
+            </div><!-- .modla-dialog -->
+        </div><!-- .modal -->
+        <!-- @@Modal - Subscription Cancle Confirmed @s -->
+        @endif
+    </div>
+    <!-- app-root @e -->
+
+    <!-- JavaScript -->
+    @include('includes/scripts')
+</body>
+
+</html>

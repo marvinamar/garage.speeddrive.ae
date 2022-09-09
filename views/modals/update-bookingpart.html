@@ -1,0 +1,48 @@
+                <form class="simcy-form" action="{{ url('Bookingparts@update') }}" data-parsley-validate="" method="POST" loader="true">
+                    <div class="modal-body">
+                        <p>Add a part to check on vehicle check in and check out</p>
+                        <div class="row gy-4">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label">Part Name</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control form-control-lg" placeholder="Part Name" value="{{ $part->name }}" name="name" required="">
+                                        <input type="hidden" name="partid" value="{{ $part->id }}" required="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                     <div class="custom-control custom-switch">
+                                        @if($part->has_input == "Yes")
+                                        <input type="checkbox" name="has_input" id="has-input-update" class="custom-control-input has-input" value="Yes" checked="">
+                                        @else
+                                        <input type="checkbox" name="has_input" id="has-input-update" class="custom-control-input has-input" value="Yes">
+                                        @endif
+                                        <label class="custom-control-label" for="has-input-update">Show input field when checked</label>
+                                    </div>
+                                </div>
+                            </div>
+                            @if($part->has_input == "Yes")
+                            <div class="col-sm-12 input-name">
+                            @else
+                            <div class="col-sm-12 input-name" style="display:none;">
+                            @endif
+                                <div class="form-group">
+                                    <label class="form-label">Input Name</label>
+                                    <div class="form-control-wrap">
+                                        @if($part->has_input == "Yes")
+                                        <input type="text" class="form-control form-control-lg" placeholder="Input Name" value="{{ $part->input_name }}" name="input_name" required="">
+                                        @else
+                                        <input type="text" class="form-control form-control-lg" placeholder="Input Name" value="{{ $part->input_name }}" name="input_name">
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button class="btn btn-white btn-dim btn-outline-light" type="button" data-dismiss="modal"><em class="icon ni ni-cross-circle"></em><span>Cancel</span></button>
+                        <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Save Changes</span></button>
+                    </div>
+                </form>

@@ -1,0 +1,405 @@
+/*!
+ * Project: Asilify
+ * Author: Dotted Limited
+ * Version   :  1.8.0
+ * Updated   :  07.23.2020
+**/
+
+
+/*Parsley*/
+.parsley-errors-list {
+  margin: 0;
+  padding: 0; }
+  .parsley-errors-list > li {
+    list-style: none;
+    color: #ff5c75;
+    margin-top: 10px;
+    padding: 4px 7px 4px 28px;
+    position: relative;
+    display: inline-block;
+    background-color: rgba(255, 92, 117, 0.2);
+    border-radius: 7px; }
+    .parsley-errors-list > li:before {
+      content: "ⓘ";
+      font-family: "Nioicon";
+      position: absolute;
+      left: 8px;
+      top: 4px; }
+    .parsley-errors-list > li:after {
+      content: "";
+      border: 8px solid transparent;
+      border-bottom-color: rgba(255, 92, 117, 0.2);
+      position: absolute;
+      left: 14px;
+      top: -16px; }
+
+.parsley-error {
+  border-color: #ff5c75; }
+
+.parsley-success {
+  border-color: #43d39e; }
+
+  /*input*/
+.hide-arrows input::-webkit-outer-spin-button, .hide-arrows input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/*mods*/
+.wider .profile-ud-value, .wider .profile-ud-label {
+    width: 50%;
+}
+.dent-scratch-color {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin: 0 0 0 0 !important;
+    padding: 0;
+    border: 3px solid #8492a0;
+}
+.dent-scratch-color.red {
+    border: 3px solid #ff0000;
+    background: #ff0000;
+}
+.dent-scratch-color.blue {
+    border: 3px solid #1418FF;
+    background: #1418FF;
+}
+.dent-scratch-color.active {
+    border: 3px solid #8492a0;
+}
+canvas#car-diagram {
+    border-radius: 5px;
+    background-color: transparent !important;
+    cursor: pointer;
+}
+.car-diagram-holder {
+    width: 100%;
+    max-width: 600px;
+    border: 2px solid #e6eaee;
+    border-radius: 5px;
+    background-color: #F7F7F7 !important;
+    margin: 0 auto;
+}
+
+
+
+.hide-arrows input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/*Toastr*/
+.sweet-alert button.cancel {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: #777;
+}
+
+.sweet-alert button.cancel:hover {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.alert.alert-dismissable i {
+    margin-right: 5px;
+}
+
+#toast-container>div {
+    -moz-box-shadow: 0 10px 48px rgba(30, 107, 174, 0.1), 0 1px 1px rgba(255, 248, 254, 0.61);
+    -webkit-box-shadow: 0 10px 48px rgba(30, 107, 174, 0.1), 0 1px 1px rgba(255, 248, 254, 0.61);
+    box-shadow: 0 10px 48px rgba(30, 107, 174, 0.1), 0 1px 1px rgba(255, 248, 254, 0.61);
+}
+
+.toast-success {
+    background-color: #00C853;
+}
+
+.toast-error {
+    background-color: #ff1a1a;
+}
+
+#toast-container>div:hover {
+    -moz-box-shadow: 0 10px 48px rgba(30, 107, 174, 0.1), 0 1px 1px rgba(255, 248, 254, 0.61);
+    -webkit-box-shadow: 0 10px 48px rgba(30, 107, 174, 0.1), 0 1px 1px rgba(255, 248, 254, 0.61);
+    box-shadow: 0 10px 48px rgba(30, 107, 174, 0.1), 0 1px 1px rgba(255, 248, 254, 0.61);
+}
+button.toast-close-button {
+    margin-top: 6px;
+}
+
+/*empty*/
+.empty {
+    padding: 40px 0;
+}
+.empty em {
+    font-size: 45px;
+}
+.empty p {
+    margin-top: 10px;
+}
+
+/*helper classes*/
+.pull-right {
+  float: right !important;
+}
+.unset-mh {
+  min-height: unset !important;
+}
+
+/*parts*/
+.part-order-item {
+    border: 1px solid #e2e7f1;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #fff;
+}
+.part-drag {
+    display: inline-block;
+    border-right: 1px solid #e2e7f1;
+    margin-right: 6px;
+    cursor: move;
+}
+
+
+/*fuel Level*/
+.fuel-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #e4efff;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  -webkit-transform: rotateY(180deg);
+   -moz-transform: rotateY(180deg);
+   -ms-transform: rotateY(180deg);
+   -o-transform: rotateY(180deg);
+   transform: rotateY(180deg);
+}
+
+.fuel-slider:hover {
+  opacity: 1;
+}
+
+.fuel-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0971fe;
+  cursor: pointer;
+}
+
+.fuel-slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0971fe;
+  cursor: pointer;
+}
+
+.form-control-wrap.stacked {
+    margin-bottom: 10px;
+}
+.form-control-wrap.stacked a {
+    right: 10px;
+    position: absolute;
+    top: 7px;
+}
+ol.styled-list, ul.styled-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: unset;
+    padding: revert;
+}
+
+/*select 2*/
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #dbdfea;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: solid #0971fe 1px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #e4efff;
+  border: 1px solid #9dc6ff;
+  color: #0971fe;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #0971fe;
+}
+.select2-container .select2-selection--multiple {
+    min-height: 42px;
+}
+
+
+/*bulk imports*/
+.custom-control.custom-switch.aligned {
+    margin-top: 30px !important;
+}
+textarea.form-control.unset-min-height {
+    min-height: unset !important;
+}
+
+
+
+/*viewer*/
+
+.document {
+    min-height: 500px;
+}
+
+.document-map {
+    width: 100%;
+    display: none;
+}
+.signer-document div {
+    overflow-x: auto;
+}
+
+.document-pagination {
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.document-pagination .launch-viewer {
+    margin-left: 30px;
+    text-align: center;
+}
+.btn-zoom i {
+    margin-left: -3px;
+}
+
+.document-load {
+    font-size: 24px;
+    text-align: center;
+    padding: 200px 0;
+    width: 100%;
+}
+.document-load div {
+    overflow: hidden !important;
+}
+.document-error {
+    font-size: 16px;
+    text-align: center;
+    margin-top: 140px;
+    width: 100%;
+    display: none;
+}
+.document-error i {
+    font-size: 46px;
+}
+.document-pagination button {
+        border: none;
+    height: 30px;
+    width: 29px;
+    padding: 6px 12px !important;
+}
+
+#document-viewer {
+    width: auto;
+    border: 1px solid #fff;
+}
+.datatable-wrap {
+    overflow-x: auto;
+    min-height: 400px;
+}
+.note-editor ol, .note-editor ul, .bq-note-text ol, .bq-note-text ul {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+}
+
+.record-booking-mobile {
+    display:none;
+}
+.card-content {
+    max-width: 100%;
+}
+.grand-total, .tax-total, .sub-total {
+    display: inline-block;
+    width: 190px;
+}
+
+@media (max-width: 470px) {
+    .record-booking-desktop {
+        display:none;
+    }
+    .record-booking-mobile {
+        display: inline-flex;
+    }
+}
+
+
+/*signature*/
+.draw-signature-holder {
+    width: 330px;
+    border: 2px solid #e6eaee;
+    border-radius: 5px;
+    background-color: #fff !important;
+    margin: 0 auto;
+}
+canvas#draw-signature {
+    border-radius: 5px;
+    background-color: transparent !important;
+    cursor: pointer;
+}
+.signature-tool-item {
+    width: 40px;
+    height: 30px;
+    padding-top: 6px;
+    overflow: hidden;
+}
+.signer-tool, .signature-tool-item {
+    text-align: center;
+    font-size: 12px;
+    display: inline-block;
+    cursor: pointer;
+    min-width: 50px;
+    margin: 0 6px;
+}
+button.jscolor {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin: 0 0 0 0 !important;
+    padding: 0;
+    border: 0 !important;
+}
+
+.signature-tool-item .tool-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+.signature-tool-item .tool-icon.tool-stroke {
+    background-color: #7f8fa4;
+    -webkit-mask: url(../images/stroke.svg) no-repeat center;
+    mask: url(../images/stroke.svg) no-repeat center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+}
+.signature-tool-item .tool-icon.tool-undo {
+    background-color: #7f8fa4;
+    -webkit-mask: url(../images/undo.svg) no-repeat center;
+    mask: url(../images/undo.svg) no-repeat center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+}
+.signature-tool-item .tool-icon.tool-erase {
+    background-color: #7f8fa4;
+    -webkit-mask: url(../images/erase.svg) no-repeat center;
+    mask: url(../images/erase.svg) no-repeat center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+}
+
+@media (max-width: 500px) {
+
+    .draw-signature-holder {
+        width: 260px;
+    }
+}

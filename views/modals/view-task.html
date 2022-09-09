@@ -1,0 +1,67 @@
+                    <div class="modal-body">
+                        <p>Task Details</p>
+                        <div class="row gy-4">
+                            <div class="col-sm-12">
+                                <h5>{{ $task->title }}</h5>
+
+                                @if($task->status == "Completed")
+                                <span class="badge badge-sm badge-dot has-bg badge-success d-none d-mb-inline-flex">Completed</span>
+                                @elseif($task->status == "Cancelled")
+                                <span class="badge badge-sm badge-dot has-bg badge-secondary d-none d-mb-inline-flex">Cancelled</span>
+                                @else
+                                <span class="badge badge-sm badge-dot has-bg badge-warning d-none d-mb-inline-flex">In Progress</span>
+                                @endif
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-muted w-50">Cost:</td>
+                                                <td class="fw-bold">{{ money($task->cost, $user->parent->currency) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted w-50">Due Date:</td>
+                                                <td class="fw-bold">
+                                                    {{ date("M j, Y", strtotime($task->due_date)) }}
+                                                    @if(!empty($task->due_time))
+                                                    • {{ date("h:ia", strtotime($task->due_time)) }}
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <span class="text-muted">Task Description</span>
+                                <div>{{ nl2br($task->description) }}</div>
+                            </div>
+                            <div class="col-sm-12">
+                                <span class="text-muted">Required Parts</span>
+                                <div>
+                                    <ol>
+                                        @if(!empty($taskparts))
+                                        @foreach($taskparts as $key => $taskpart)
+                                        <li>{{ $key + 1 }}.) {{ $taskpart->part->expense }} • 
+                                        @if($taskpart->part->status == "Delivered")
+                                        <span class="text-success">Delivered</span>
+                                        @elseif($taskpart->part->status == "Ordered")
+                                        <span class="text-secondary">Ordered</span>
+                                        @else
+                                        <span class="text-warning">Awaiting Delivery</span>
+                                        @endif
+                                        </li>
+                                        @endforeach
+                                        @else
+                                        <li class="text-muted text-xs"><small><i>No parts required for this task.</i></small></li>
+                                        @endif
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button class="btn btn-white btn-dim btn-outline-light" type="button" data-dismiss="modal"><em class="icon ni ni-cross-circle"></em><span>Cancel</span></button>
+                    </div>
+                </form>

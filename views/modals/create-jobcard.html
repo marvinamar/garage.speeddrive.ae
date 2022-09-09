@@ -1,0 +1,125 @@
+<form class="simcy-form select-input" action="{{ url('Jobcards@create') }}" data-parsley-validate="" method="POST" loader="true">
+    <div class="modal-body">
+        <p>Create a job card.</p>
+        <div class="row gy-4">
+            <div class="col-12">
+                <div class="form-group mb-2">
+                    <label class="form-label">Select Project</label>
+                    <div class="form-control-wrap">
+                        <select class="form-control form-control-lg select2-dynamic" name="project" required="">
+                            <option value="">Select Project</option>
+                            @if(!empty($projects))
+                            @foreach($projects as $project)
+                            <option value="{{ $project->id }}">{{ carmake($project->make) }} {{ carmodel($project->model) }} - {{ $project->registration_number }}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row gy-4">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-label">Body Report</label>
+                    <input type="hidden" name="jobcardid">
+                    <div class="asilify-stack">
+                        <div class="stacked-inputs">
+                            <div class="form-control-wrap stacked">
+                                <input type="text" class="form-control form-control-lg" placeholder="Body Report" name="body_report[]">
+                            </div>
+                            <div class="form-control-wrap stacked">
+                                <a href="" class="btn btn-round btn-sm btn-icon btn-dim btn-danger remove-stack"><em class="icon ni ni-trash"></em></a>
+                                <input type="text" class="form-control form-control-lg" placeholder="Body Report" name="body_report[]">
+                            </div>
+                            <div class="form-control-wrap stacked">
+                                <a href="" class="btn btn-round btn-sm btn-icon btn-dim btn-danger remove-stack"><em class="icon ni ni-trash"></em></a>
+                                <input type="text" class="form-control form-control-lg" placeholder="Body Report" name="body_report[]">
+                            </div>
+                        </div>
+                        <div class="">
+                            <a href="" class="btn btn-dim btn-primary add-stack" data-name="body_report[]" data-placeholder="Body Report"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row gy-4">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-label">Mechanical Report</label>
+                    <div class="asilify-stack">
+                        <div class="stacked-inputs">
+                            <div class="form-control-wrap stacked">
+                                <input type="text" class="form-control form-control-lg" placeholder="Mechanical Report" name="mechanical_report[]">
+                            </div>
+                            <div class="form-control-wrap stacked">
+                                <a href="" class="btn btn-round btn-sm btn-icon btn-dim btn-danger remove-stack"><em class="icon ni ni-trash"></em></a>
+                                <input type="text" class="form-control form-control-lg" placeholder="Mechanical Report" name="mechanical_report[]">
+                            </div>
+                            <div class="form-control-wrap stacked">
+                                <a href="" class="btn btn-round btn-sm btn-icon btn-dim btn-danger remove-stack"><em class="icon ni ni-trash"></em></a>
+                                <input type="text" class="form-control form-control-lg" placeholder="Mechanical Report" name="mechanical_report[]">
+                            </div>
+                        </div>
+                        <div class="">
+                            <a href="" class="btn btn-dim btn-primary add-stack" data-name="mechanical_report[]" data-placeholder="Mechanical Report"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row gy-4">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-label">Electrical Report</label>
+                    <div class="asilify-stack">
+                        <div class="stacked-inputs">
+                            <div class="form-control-wrap stacked">
+                                <input type="text" class="form-control form-control-lg" placeholder="Electrical Report" name="electrical_report[]">
+                            </div>
+                            <div class="form-control-wrap stacked">
+                                <a href="" class="btn btn-round btn-sm btn-icon btn-dim btn-danger remove-stack"><em class="icon ni ni-trash"></em></a>
+                                <input type="text" class="form-control form-control-lg" placeholder="Electrical Report" name="electrical_report[]">
+                            </div>
+                            <div class="form-control-wrap stacked">
+                                <a href="" class="btn btn-round btn-sm btn-icon btn-dim btn-danger remove-stack"><em class="icon ni ni-trash"></em></a>
+                                <input type="text" class="form-control form-control-lg" placeholder="Electrical Report" name="electrical_report[]">
+                            </div>
+                        </div>
+                        <div class="">
+                            <a href="" class="btn btn-dim btn-primary add-stack" data-name="electrical_report[]" data-placeholder="Electrical Report"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row gy-4">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-label">Is this job card approved by the client?</label>
+                    <div class="form-control-wrap ">
+                        <div class="form-control-select">
+                            <select class="form-control form-control-lg" name="approved">
+                                <option value="No">Not yet</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer bg-light">
+        <button class="btn btn-white btn-dim btn-outline-light" type="button" data-dismiss="modal"><em class="icon ni ni-cross-circle"></em><span>Cancel</span></button>
+        <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Create Job Card</span></button>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".select2-dynamic").select2();
+    });
+</script>

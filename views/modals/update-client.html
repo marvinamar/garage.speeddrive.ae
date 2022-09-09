@@ -1,0 +1,48 @@
+                <form class="simcy-form" action="{{ url('Clients@update') }}" data-parsley-validate="" method="POST" loader="true">
+                    <div class="modal-body">
+                        <p>Update client account.</p>
+                        <div class="row gy-4">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control form-control-lg" placeholder="Full Name" name="fullname" value="{{ $client->fullname }}" required="">
+                                        <input type="hidden" name="clientid" value="{{ $client->id }}" required="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control form-control-lg phone-input" placeholder="Phone Number" required="" value="{{ $client->phonenumber }}">
+                                        <input class="hidden-phone" type="hidden" name="phonenumber" value="{{ $client->phonenumber }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <div class="form-control-wrap">
+                                        <input type="email" class="form-control form-control-lg" placeholder="Email Address" name="email" value="{{ $client->email }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control form-control-lg" placeholder="Address" name="address" value="{{ $client->address }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button class="btn btn-white btn-dim btn-outline-light" type="button" data-dismiss="modal"><em class="icon ni ni-cross-circle"></em><span>Cancel</span></button>
+                        <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Save Changes</span></button>
+                    </div>
+                </form>
+                <script type="text/javascript">
+                    NioApp.initPhoneInput();
+                </script>

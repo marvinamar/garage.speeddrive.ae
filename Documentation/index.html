@@ -1,0 +1,454 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head lang="en">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Asilify Documentation.</title>
+	<!-- Framework CSS -->
+	<link rel="stylesheet" href="assets/blueprint-css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="assets/blueprint-css/print.css" type="text/css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+	<link rel="stylesheet" href="assets/blueprint-css/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+	<style type="text/css" media="screen">
+		p, table, hr, .box { margin-bottom:25px; }
+		.box p { margin-bottom:10px; }
+		code {
+		    line-height: 1.5;
+		    background: #f8f8f8;
+		    border: 1px dashed #ddd;
+		    padding: 15px;
+		    width: 100%;
+		    margin-bottom: 15px;
+		    display: block;
+		}
+		th, td, caption {
+		    padding: 4px 10px 4px 5px;
+		    border: 1px solid #ddd;
+		}
+		thead th {
+    background: #f8f8f8;
+}
+	</style>
+</head>
+
+
+<body>
+	<div class="container">
+	
+		<h3 class="center alt">&ldquo;Asilify Auto Garage Management System&rdquo; Documentation by &ldquo;Dotted Craft&rdquo; v1.0</h3>
+		
+		<hr>
+		
+		<h1 class="center">&ldquo;Asilify • Auto Garage Management System&rdquo;</h1>
+		
+		<div class="borderTop">
+			<div class="span-6 colborder info prepend-1">
+				<p class="prepend-top">
+					<strong>
+					Created: 20/10/2021<br>
+					By: Dotted Craft<br>
+					Email: <a href="mailto:hello@dottedcraft.com">hello@dottedcraft.com</a>
+					</strong>
+				</p>
+			</div><!-- end div .span-6 -->		
+	
+			<div class="span-12 last">
+				<p class="prepend-top append-0">Thank you for purchasing our app. If you have any questions that are beyond the scope of this help file, please feel free to reach to us at <a href="mailto:hello@dottedcraft.com">hello@dottedcraft.com</a>. Thanks so much!</p>
+			</div>
+		</div><!-- end div .borderTop -->
+		
+		<hr>
+		
+		<h2 id="toc" class="alt">Table of Contents</h2>
+		<ol class="alpha">
+			<li><a href="#Asilify">What is Asilify</a></li>
+			<li><a href="#installation">Installation ( With Video )</a></li>
+			<li><a href="#copying">Copying files</a></li>
+			<li><a href="#database">Importing Database</a></li>
+			<li><a href="#env">.env file</a></li>
+			<li><a href="#htaccess">.htaccess file</a></li>
+			<li><a href="#smtp">Email SMTP & Cron Job settings</a></li>
+			<li><a href="#features">Features of Asilify</a></li>
+			<li><a href="#credits">Sources and Credits</a></li>
+			<li><a href="#html">HTML Structure</a></li>
+			<li><a href="#csscode">HTML Structure</a></li>
+			<li><a href="#phpcode">PHP Code Explanation</a></li>
+			<li><a href="#jscode">Js Code Explanation</a></li>
+		</ol>
+		
+		<hr>
+		
+		<h3 id="Asilify"><strong>A) What is Asilify?</strong> - <a href="#toc">top</a></h3>
+		<p>Asilify is an auto garage management software carefully crafted with the help of auto garages manage their daily activities. Packed with features, Asilify will help your garage increase efficiency and get more work done.</p>
+		<p>Asilify has an intuitive interface with great visualization to help you understand your your garage in summary and in depth. Below are the features in detail:-</p>
+		
+		<hr>
+		
+		<h3 id="installation"><strong>B) Installation ( With Video ) </strong> - <a href="#toc">top</a></h3>
+		<p>We have created video tutorial and written instruction. The video below will help you do the installtion from upto step number (G) after that you will refer to the written instructions for the remainder of the steps.</p>
+		<p style="color: red;">If you are installing Asilify inside a folder for i.e https://example.com/asilify or http://localhost/asilify. Finish the installation video below and then Go <a href="#folder">to step C.1</a> to make a change on the routing. </p>
+		<iframe src="https://spark.adobe.com/video/xyPIhFwVOhoSC/embed"  width="790" height="445" frameborder="0" allowfullscreen></iframe>
+		
+		<hr>
+		
+		<h3 id="copying"><strong>C) Copy Files</strong> - <a href="#toc">top</a></h3>
+		<p>Unzip the file you downloaded from CodeCanyon, copy the contents in the folder called Asilify and paste them in your desired directory where you want to install the system.</p>
+		<h3 id="folder" style="color: red;"><strong>C.1) Folder installation routing</strong> - <a href="#toc">top</a></h3>
+		<p style="color: red;">If you are installing Asilify inside a folder for i.e https://example.com/asilify or http://localhost/asilify, finish the installation steps given on step C or written steps and then open the routes files in <em><strong>/src/routes.php</strong></em> and check the procedure on the video below or follow the steps after the video</p>
+		<iframe src="https://spark.adobe.com/video/iuYWdmR9eWFxI/embed" width="790" height="445" frameborder="0" allowfullscreen></iframe>
+		<h3>C.2)</h3>
+
+
+
+<p>Open <strong><em>routes.php</em></strong> files located inside the <em><strong>src</strong></em> folder and you will see a commented out line of code that looks like the one below</p>
+
+
+
+<pre class="wp-block-code"><code>// 'prefix' => '/' . env('URL_PREFIX'),</code></pre>
+
+
+
+<h3>C.3)</h3>
+
+
+
+<p>Uncomment the line above by removing the two forward slash before it. <strong><em>//</em></strong></p>
+
+
+
+<h3>C.4)</h3>
+
+
+
+<p>Open your .env file and enter your folder name under URL_PREFIX section. For example <strong><em>myappfoldername</em></strong>, and you will have something like.</p>
+
+
+
+<pre class="wp-block-code"><code> URL_PREFIX=myappfoldername</code></pre>
+		
+		<hr>
+		
+		<h3 id="database"><strong>D) Import Database</strong> - <a href="#toc">top</a></h3>
+		<p>When you unzipped the file in step 1, there is a folder called database you will find. In there you will find an SQL file, that is the system database. Import it to your PhPMyAdmin or whatever system you use. <a href="https://www.youtube.com/watch?v=rt3Ru9-LHnY" target="_blank" rel="noopener"><strong>Watch this video</strong></a> if you are new to importing SQL databases.</p>
+		
+		<hr>
+		
+		<h3 id="htaccess"><strong>E) .htaccess file</strong> - <a href="#toc">top</a></h3>
+		<p>This is a very important file that you will find in the Asilify main folder, this file creates the SEO friendly URLs. if you can't see it, change your directory setting to show (. files) and if you still can see it you can copy again from your unzipped downloads folder.</p>
+		
+		<hr>
+		
+		<h3 id="env"><strong>F) Edit .env file</strong> - <a href="#toc">top</a></h3>
+		<p>On the folder you pasted on your installation folder, you will find a file called .env . This is a very important file that stores system variables. Open the file in a text editor and edit the following lines. The other lines can be edited via the system settings page so don’t worry about them.</p>
+		<pre><code><span style="color: #000000"><span style="color: #0000BB">APP_URL</span><span style="color: #007700">=</span><span style="color: #DD0000">https://example.com</span><span style="color: #007700"><br></span><span style="color: #0000BB">DB_HOST</span><span style="color: #007700">=</span><span style="color: #DD0000">localhost</span><span style="color: #007700"><br></span><span style="color: #0000BB">DB_USERNAME</span><span style="color: #007700">=</span><span style="color: #DD0000">username</span><span style="color: #007700"><br></span><span style="color: #0000BB">DB_PASSWORD</span><span style="color: #007700">=</span><span style="color: #DD0000">password</span><span style="color: #007700"><br></span><span style="color: #0000BB">DB_DATABASE</span><span style="color: #007700">=</span><span style="color: #DD0000">database_name</span><span style="color: #007700"><br></span></span></code></pre>
+		
+		<hr>
+		
+		<h3 id="smtp"><strong>D) Email SMTP & Cron Job settings</strong> - <a href="#toc">top</a></h3>
+		<p>SMTP settings on the settings page are your email settings, this system depends on them to send important system emails, without them your emails wont work. So please don’t forget to update them. Now you are all set! Have fun 🙂</p>
+		<p>For your cron job. You need to set a cron job that will be running once per minute to send bulk sms. This is necessary is you intend to use bulk SMS feature, if not, you can leave it. Below is a sample cron job code.</p>
+
+		<code>
+			0 0 * * * /usr/local/bin/php -q /home/YOURUSERNAME/public_html/cron.php;
+		</code>
+
+		<p>Here is a great <a href="https://youtu.be/WzIqEJkK_pM">YouTube Video</a> to help you with cron jobs if you are new.</p>
+		
+		<hr>
+		
+		<h3 id="complete"><strong>H) Access the System</strong> - <a href="#toc">top</a></h3>
+		<p>Now you are all set! Access the system by visiting your APP_URL which you had set on the env settings above and login using the credentials provide in the <strong>credentials.txt</strong> file.</p>
+		
+		<hr>
+		
+		<h3 id="features"><strong>I) Features of Asilify</strong> - <a href="#toc">top</a></h3>
+		<ul>
+			<li><strong>Job Cards:</strong>  With Asilify, you can create job cards for your clients in a fly. The job cards can be printed, sent via Email or whatsapp.</li>
+			<li><strong>Invoices & Estimates:</strong>  Create invoices and quotes for your customers directly from the system. You can be able to import invoice and quote items from work requested, job cards or vehicle expenses.</li>
+			<li><strong>Inventory:</strong>  As a garage, you might have some parts in your store. Track this parts easily with Asilify Inventory module.</li>
+			<li><strong>Booking In:</strong>  Booking vehicles in has never been easier. With Asilify, you can book vehicles using a tablet, mark dents, set fuel level, make notes on the car, note work requested; all in a smooth single interface. The client will then sign to approve the booking and then send a copy to the client.</li>
+			<li><strong>Expenses:</strong>  Track all expenses of parts and labour on a vehicle without going at a lose.</li>
+			<li><strong>Overview:</strong>  This is the summary of all your activities on the system. Know your garage on one glance.</li>
+			<li><strong>Insurance Cars:</strong>  Do you fix insurance cars? Great! we've got you covered too. Asilify comes with an insurance module that keeps track of vehicles covered by insurance companies. </li>
+			<li><strong>Task Manager:</strong>  Assign tasks to your employees quickly using our task manager. The task manager keeps track of all tasks assigned. You'll be able to check on any pending tasks, overdue etc. With the task manager, you'll be able to check the cost of tasks if any. </li>
+			<li><strong>Suppliers Manager:</strong>  All garages needs a parts store supplier. There will be many parts ordered and many suppliers to deal with. On our suppliers module, you will be able to see which parts are ordered, which parts are delivered, which parts need to be ordered, which supplier needs to be paid. etc </li>
+			<li><strong>Rich Reporting:</strong>  We do our best to record every activity on the system so that you get usefull insights about you business </li>
+			<li><strong>Payment History:</strong>  Every payment made to your company is recorded and tied to an invoice. You'll never wonder if a client paid or not</li>
+			<li><strong>Marketing & Bulk SMS:</strong> Send bulk SMS to your clients using our bulk SMS feature.</li>
+			<li><strong>Staff:</strong>  Add all your staff to the system for better collaboration. Asilfy has 5 roles; Owner has full access of the system. Manager have full access but has no delete permissions. Booking Manager books vehicles IN and OUT. Inventory Manager has access to inventory module. Staff have no access to the system.</li>
+			<li><strong>Settings:</strong>  This module allows you to manage your profile and system settings easily with no coding skills needed.</li>
+			<li><strong>Beautiful and responsive UI:</strong>  Asilify was made with love and passion that’s why it looks stunning.</li>
+			<li><strong>Fast processing speed:</strong>  Asilify is faster with clean code written on PHP with MVC model.</li>
+		</ul>
+		
+		<hr>
+		
+		<h3 id="html"><strong>J) HTML & Code Structure</strong> - <a href="#toc">top</a></h3>
+		<p>This system is a fixed layout with one column. All of the information within the main content area is nested within a div with a class of "container". The header is nested inside the "header" tag</p>
+
+		<p>The system is built on a simple PHP Framework all view files are under views folder and included files such as sidebar, header, footer & email templates files are under views/includes folder, controllers and function files are in the src folder. All uploads go to the uploads folder. </p>
+
+		<p>There are many design patterns when it comes to writing PHP applications. With this product, we chose the MVC pattern coupled with a singleton service container. The following is the application tree structure that is relevant to PHP:</p>
+		<ul>
+			<li>/config - this folder contains the application's configuration files by category.</li>
+			<li>/lang - This folder stores all human language folders in standardized format. For example, the en_US folder here would contain language files specific to the English language denoted by its two digit code en and the region USA denoted by its two digit country code US.</li>
+			<li>/src - Within this folder are:-
+				<ol>
+					<li>the main Simcify classes (like the /src/Application.php file)</li>
+					<li>/Controllers - this folder contains route controller classes
+						<ul>
+							<li>/Controller.php - this is the parent controller class which should be extended by all controllers.</li>
+						</ul>
+					</li>
+					<li>/Exceptions - this is where all custom exceptions that Simcify uses
+						<ul>
+							<li>/Handler.php - this file handles all exeptions thrown by Simcify after routing has been started.</li>
+						</ul>
+					</li>
+					<li>/helpers.php - helper function declarations that are available throughout the entire application</li>
+					<li>/Middleware - this contains routing middleware classes</li>
+					<li>/routes.php - these are route declarations for the application</li>
+				</ol>
+			</li>
+			<li>/views - contains the application views/layouts in HTML or plain text format
+				<ol>
+					<li>/compiled - contains all compiled views and is only used internally by Simcify</li>
+					<li>/emails - contains views specific to emails sent out by the application
+						<ul>
+							<li>/html - holds the html body versions of an email</li>
+						</ul>
+					</li>
+					<li>/errors - contains views that the application uses when an error has been encountered. They are named by their respective HTTP status codes. A slight note here, if a request is detected as an AJAX request, you are expected to give your own responses when errors occur. These views are only rendered on normal HTTP requests.</li>
+				</ol>
+			</li>
+		</ul>
+
+		<p>Any other folders can be added in here for customisation if your application design requires so. You are free to add more.</p>
+
+
+		<hr>
+
+		<h3 id="csscode"><strong>K) CSS Files and Structure</strong> - <a href="#toc">top</a></h3>
+
+		<p>Asilify uses two CSS files in this system. The first one is a bootstrap. Many browser interpret the default behavior of html elements differently. By using a bootstrap CSS file, we can work round this. This file also contains many styling of most elements and layouts, such as anchor tag colors, font-sizes, buttons, typography, etc. Keep in mind, that some of these values are overridden in the second file.</p> 
+
+		<p>The second file contains all of the specific stylings for Asilify System. The file is separated into sections.The first sections is for styling larger screens and the second section is for smaller devices for responsivenes</p>  
+
+		<hr>
+		
+		<h3 id="jscode"><strong>L) JavaScript</strong> - <a href="#toc">top</a></h3>
+		
+		<p>This theme imports four main Javascript files.</p>
+		
+		<ol>
+			<li>jQuery</li>
+			<li>app.js</li>
+			<li>asilify.js</li>
+		</ol>
+		  
+		<ol>
+			<li>jQuery is a Javascript library that greatly reduces the amount of code that you must write.</li>
+			<li>app.js is a javascript file that contains most of the Asilify system functionality. Some of the functions include navigation, opening and closing of the menu, lanching modals etc. This file is also global and when eddited it's changes will be seen throughout the system</li>
+			<li>asilify.js contains specific function used by the system. It's very critical to system functionality
+			</li>
+		</ol>
+
+		<h3>simcify.min.js</h3>
+		<p>This is a jQuery file we created that has most of the DOM manipulation, form validation & submission among other functions. below are some of the main function;</p>
+		<h4>Send to server(Ajax)</h4>
+		<p>Sending data to server is a must in every web applications and we have created a simple way to do that using Ajax. Here is sample usage;</p>
+		<pre>
+			<code>
+server({
+    url: "https://example.com/server",
+    data: {
+        name: "John Doe",
+        email: "john@example.com",
+        phone: "1223455"
+    },
+    loader: true
+});
+			</code>
+		</pre>
+		<strong>Parameters</strong>
+		<p>This function has only one object parameter that is required</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Required</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>url</td>
+					<td>Yes</td>
+					<td><em>string</em></td>
+					<td>The url to send data.</td>
+				</tr>
+				<tr>
+					<td>data</td>
+					<td>Yes</td>
+					<td><em>string</em></td>
+					<td>An object with your data.</td>
+				</tr>
+				<tr>
+					<td>loader</td>
+					<td>No</td>
+					<td><em>boolean</em></td>
+					<td>whether to show loader while sending data or not.</td>
+				</tr>
+			</tbody>
+		</table>
+		<strong>Response</strong>
+		<p>Responses should be JSON, please refer to the server response page for more information.</p>
+
+		<h3>Server Responses</h3>
+		<p>This product has a function that handles server responses. The function can still be called even if the response is not from the server as long as the correct JSON format is passed. Here is sample usage;</p>
+		<pre>
+			<code>
+serverResponse({
+    "status":"success",
+    "title":"Changes saved!",
+    "message":"Your changes have been saved successfully.",
+    "notify": true,
+    "notifyType":"swal",
+    "callback":"reload()",
+    "callbackTime":"onconfirm",
+    "showCancelButton": true,
+    "buttonText": "View Changes"
+});
+			</code>
+		</pre>
+
+		<p><strong>Parameters</strong></p>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Required</th>
+					<th>Type</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr>
+					<td>status</td>
+					<td>Yes</td>
+					<td><em>string</em></td>
+					<td>warning | success | info | error (info is default).</td>
+				</tr>
+				<tr>
+					<td>title</td>
+					<td>Yes|No</td>
+					<td><em>string</em></td>
+					<td>Response title. (required if notify is true and notifyType is toastr).</td>
+				</tr>
+				<tr>
+					<td>message</td>
+					<td>Yes|No</td>
+					<td><em>string</em></td>
+					<td>Response message. (required if notify is true and notifyType is toastr).</td>
+				</tr>
+				<tr>
+					<td>notify</td>
+					<td>No</td>
+					<td><em>boolean</em></td>
+					<td>whether to notify user on complete, default is true.</td>
+				</tr>
+				<tr>
+					<td>notifyType</td>
+					<td>No</td>
+					<td><em>string</em></td>
+					<td>use "swal" or "toastr", default is "swal".</td>
+				</tr>
+				<tr>
+					<td>callback</td>
+					<td>No</td>
+					<td><em>string</em></td>
+					<td>callback function.</td>
+				</tr>
+				<tr>
+					<td>callbackTime</td>
+					<td>No</td>
+					<td><em>string</em></td>
+					<td>"instant" or "onconfirm", if notifyType is toastr, callbackTime must be instant.</td>
+				</tr>
+				<tr>
+					<td>showCancelButton</td>
+					<td>No</td>
+					<td><em>boolean</em></td>
+					<td>only added when notifyType is swal.</td>
+				</tr>
+				<tr>
+					<td>buttonText</td>
+					<td>No</td>
+					<td><em>string</em></td>
+					<td>label of confirm button, only added when notifyType is swal.</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		
+		<h3 id="phpcode"><strong>M) PHP code  </strong> - <a href="#toc">top</a></h3>
+		
+		<p>Asilify uses PHP exclusively for server side coding, all view files are under views folder and included files such as sidebar, header, footer & email templates files are under views/includes folder, controllers and function files are in the src folder. There is one major file to take note of;</p>
+		
+			<ol>
+				<li>Routes - /src/routes.php</li>
+			</ol>
+		
+		<p>If you'd like to change the routes, open "/src/routes.php", make the necessary adjustments, and then save the file. This file holds all the paths of the system so be careful when editting it. Below are some example of paths created for each method type;</p> 
+
+		<code>
+			Router::get('/example1/', 'Example@example1');<br>
+			Router::post('/example2/', 'Example@example2');<br>
+			Router::delete('/example3/', 'Example@example3');<br>
+			Router::put('/example4/', 'Example@example4');
+		</code>
+
+		<p>Full documentation on this routing library can be found here <a href="https://github.com/skipperbent/simple-php-router" target="_blank">https://github.com/skipperbent/simple-php-router</a></p>
+
+
+		<h3>Environment Variables</h3>
+		<p>To retrieve environment variables from .env, we have provided a helper function env. Usage is described below:</p>
+		<code>mixed env( string $variable_name [, mixed $default_value = null ])</code>
+
+		<h3>Configuration Files</h3>
+
+		<p>At the root of this projects directory structure there is a directory named config. This folder stores config values categorised by file name e.g. All authentication configuration variables will be stored in auth.php.</p>
+		<p>Configurations stored in this files may also be extracted  from the environment variables and it is recommended that all environment variables have a corresponding config variable. This is because unlike environment variables which are declared only once and are not mutable, config variables are mutable and can be changed during the run-time of a request.</p>
+		<p>To retrieve config variables or set them during run-time, we have provided an helper function  config which acts as a getter/setter polymorphic function. Usage is described below:</p>
+
+		<code>mixed config( string$key [, mixed $value = null ])</code>
+		
+		
+		<hr>
+		
+		<h3 id="credits"><strong>N) Sources and Credits</strong> - <a href="#toc">top</a></h3>
+		
+		<p>We've used the following js/PHP libraries on the development of Asilify.
+		
+		<ul>
+			<li>PHPMAILER - https://github.com/PHPMailer/PHPMailer</li>
+			<li>PHP Simple Router - https://packagist.org/packages/pecee/simple-router</li>
+			<li>Select 2 - https://select2.org/</li>
+			<li>Sweetalert - https://github.com/CodeSeven/toastr</li>
+			<li>Toastr - https://sweetalert.js.org/</li>
+			<li>Parsley - http://parsleyjs.org/</li>
+			<li>Croppie Js - https://foliotek.github.io/Croppie/</li>
+		</ul>
+		
+		<hr>
+		
+		<p>Once again, thank you so much for purchasing this system. As said at the beginning, we'd be glad to help you if you have any questions relating to this system. No guarantees, but we'll do our best to assist. If you have a more general question relating to our other products on CodeCanyon, get in touch with our team via <a href="mailto:hello@dottedcraft.com">hello@dottedcraft.com</a></p> 
+		
+		<p class="append-bottom alt large"><strong>Dotted Craft</strong></p>
+		<p><a href="#toc">Go To Table of Contents</a></p>
+		
+		<hr class="space">
+	</div><!-- end div .container -->
+</body>
+</html>

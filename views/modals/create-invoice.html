@@ -1,0 +1,188 @@
+
+                <form class="simcy-form" action="{{ url('Invoice@create') }}" data-parsley-validate="" method="POST" loader="true">
+                    <div class="modal-body">
+                        <p>Create an invoice.</p>
+                        <div class="item-totals border-bottom">
+                            <div class="row gy-4">
+                                <div class="col-12">
+                                    <div class="form-group mb-2">
+                                        <label class="form-label">Select Project</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-control form-control-lg select2-dynamic" name="project" required="">
+                                                <option value="">Select Project</option>
+                                                @if(!empty($projects))
+                                                @foreach($projects as $project)
+                                                <option value="{{ $project->id }}">{{ carmake($project->make) }} {{ carmodel($project->model) }} - {{ $project->registration_number }}</option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-lines" data-type="invoice">
+                            <div class="row gy-4">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Item Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <label class="form-label">Qty</label>
+                                        <div class="form-control-wrap hide-arrows">
+                                            <input type="number" class="form-control form-control-lg line-quantity" value="1" min="1" placeholder="Quantity" name="quantity[]" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Unit Cost ( {{ currency($user->parent->currency) }} )</label>
+                                        <div class="form-control-wrap hide-arrows">
+                                            <input type="number" class="form-control form-control-lg line-cost" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="0.00" step="0.01" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Tax (%)</label>
+                                        <div class="form-control-wrap hide-arrows">
+                                            <input type="number" class="form-control form-control-lg line-tax"  placeholder="Tax (%)" min="0" name="tax[]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Total ( {{ currency($user->parent->currency) }} )</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control form-control-lg line-total" placeholder="Amount" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="total[]" value="0.00" step="0.01" required="" readonly="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                </div>
+                            </div>
+                            <div class="row gy-4">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Item Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <label class="form-label">Qty</label>
+                                        <div class="form-control-wrap hide-arrows">
+                                            <input type="number" class="form-control form-control-lg line-quantity" value="1" min="1" placeholder="Quantity" name="quantity[]" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Unit Cost ( {{ currency($user->parent->currency) }} )</label>
+                                        <div class="form-control-wrap hide-arrows">
+                                            <input type="number" class="form-control form-control-lg line-cost" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="0.00" step="0.01" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Tax (%)</label>
+                                        <div class="form-control-wrap hide-arrows">
+                                            <input type="number" class="form-control form-control-lg line-tax"  placeholder="Tax (%)" min="0" name="tax[]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Total ( {{ currency($user->parent->currency) }} )</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control form-control-lg line-total" placeholder="Total" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="total[]" value="0.00" step="0.01" required="" readonly="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <div class="form-group">
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="btn btn-icon btn-lg btn-round btn-dim btn-outline-danger mt-gs remove-line" data-toggle="tooltip" title="Remove Item"><em class="icon ni ni-cross-circle-fill"></em></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-totals border-top mt-2 pt-2">
+                            <div class="row gy-4 d-flex justify-content-end">
+                                <div class="col-sm-4">
+                                    <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">VAT Tax (%)</label>
+                                        <div class="form-control-wrap hide-arrows">
+                                            <input type="number" class="form-control form-control-lg total-vat"  placeholder="Tax (%)" value="{{ $user->parent->vat }}" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" step="0.01" min="0" name="vat">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <div class="fw-normal">Sub Total:<div class="fw-bold sub-total">{{ currency($user->parent->currency) }} 0.00</div></div>
+                                    <div class="fw-normal">VAT Tax:<div class="fw-bold tax-total">{{ currency($user->parent->currency) }} 0.00</div></div>
+                                    <div class="fw-bold fs-19px border-top">Total:<div class="fw-bold grand-total">{{ currency($user->parent->currency) }} 0.00</div></div>
+                                </div>
+                                <div class="col-sm-1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-totals mt-2">
+                            <div class="row gy-4 border-top mt-1">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Invoice Date</label>
+                                        <div class="form-control-wrap">
+                                            <input type="date" class="form-control form-control-lg" placeholder="Invoice Date" value="{{ date('Y-m-d') }}" name="invoice_date" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Payment Due</label>
+                                        <div class="form-control-wrap">
+                                            <input type="date" class="form-control form-control-lg" placeholder="Payment Due" value="{{ date('Y-m-d') }}" name="due_date" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Notes</label>
+                                        <div class="form-control-wrap">
+                                            <textarea class="form-control form-control-lg unset-mh" placeholder="Notes" rows="2" name="notes"></textarea>
+                                        </div>
+                                        <div class="form-note">Notes will be printed on the invoice.</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Payment Details</label>
+                                        <div class="form-control-wrap">
+                                            <textarea class="form-control form-control-lg unset-mh" placeholder="Payment Details" rows="2" name="payment_details">{{ $user->parent->payment_details }}</textarea>
+                                        </div>
+                                        <div class="form-note">Payment details will be printed on the invoice.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button class="btn btn-white btn-dim btn-outline-light" type="button" data-dismiss="modal"><em class="icon ni ni-cross-circle"></em><span>Cancel</span></button>
+                        <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Create Invoice</span></button>
+                    </div>
+                </form>
+                <script type="text/javascript">
+                    $(".select2-dynamic").select2();
+                </script>
