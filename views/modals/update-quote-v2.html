@@ -135,26 +135,7 @@
                         });
                     });
                 </script>
-                <script>
-                    function get_item_details(select){
-                        var selected = select.value;
-                        var selectedClass = select.classList[0];
-                        var count = selectedClass.replace('select_','');
-                        
-                        $.ajax({
-                            url: '{{ url("Quote@get_item_details") }}' + selected,
-                            data: [],
-                            dataType: 'json',
-                            success: function( data ) {
-                                    $('.cost_'+count).val(data[0].unit_cost);
-                                },
-                                error: function() {
-                                    alert('Error');
-                                }
-                        })
-                    }
-                </script>
-            
+                
             <script>
             $("body").on("click", ".add-item-quote", function(event){
                 event.preventDefault();

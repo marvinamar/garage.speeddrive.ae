@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $widgets, $projects, $tasks, $income; ?>
+<?php global $s_v_data, $user, $title, $quotes, $clients, $inventorys; ?>
             <div class="nk-sidebar nk-sidebar-fixed is-light " data-content="sidebarMenu">
                 <div class="nk-sidebar-element nk-sidebar-head">
                     <div class="nk-sidebar-brand">

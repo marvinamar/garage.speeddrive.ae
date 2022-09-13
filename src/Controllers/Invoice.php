@@ -4,7 +4,7 @@ namespace Simcify\Controllers;
 $tcpdfPath = str_replace("Controllers", "TCPDF/", dirname(__FILE__));
 
 require_once $tcpdfPath.'tcpdf.php';
-include("config/connect.php");
+//include("config/connect.php");
 
 use Datamatrix;
 use TCPDF;

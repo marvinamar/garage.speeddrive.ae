@@ -318,7 +318,8 @@ class Quote {
 
         Asilify::unsign($quote->id, "quote");
         
-        return response()->json(responder("success", "Alright!", "Quote successfully created.", "redirect('" . url('Quote@get') . "')"));
+        // return response()->json(responder("success", "Alright!", "Quote successfully updated.s", "redirect('" . url('Quote@get') . "')"));
+        return response()->json(responder("success", "Alright!", "Quote successfully updated.", "redirect('" . url('Quote@get') . "')"));
         
     }
 

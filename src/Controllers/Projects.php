@@ -288,7 +288,10 @@ class Projects {
             //     $invoice->balance = $invoice->total - $invoice->amount_paid;
             // }
 
+        }else{
+            $pay_expenses = null;
         }
+        
 
         if(!empty($project->insurance)){
             $project->covered_by = Database::table('insurance')->where('id', $project->insurance)->first();
