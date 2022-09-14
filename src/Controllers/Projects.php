@@ -34,8 +34,9 @@ class Projects {
 
         $staffmembers = Database::table('users')->where('company', $user->company)->where('role', "Staff")->orderBy("id", false)->get();
         $insurance = Database::table('insurance')->where('company', $user->company)->orderBy("id", false)->get();
+        $inventorys = Database::table('inventory')->where('company', $user->company)->get();
 
-        return view("projects", compact("user", "title", "projects","clients","staffmembers","insurance"));
+        return view("projects", compact("user", "title", "projects","clients","staffmembers","insurance","inventorys"));
 
     }
 
@@ -305,7 +306,8 @@ class Projects {
 
         // if()$open_quote = true;
         // $Isqt = false;
-        return view("project-details", compact("user", "title", "client","notes","project","staffmembers","tasks","expenses","quotes","invoices","payments","jobcards","suppliers","inventory","Isqt","s_payments","pay_expenses"));
+        $inventorys = Database::table('inventory')->where('company', $user->company)->get();
+        return view("project-details", compact("user", "title", "client","notes","project","staffmembers","tasks","expenses","quotes","invoices","payments","jobcards","suppliers","inventory","Isqt","s_payments","pay_expenses","inventorys"));
 
     }
 

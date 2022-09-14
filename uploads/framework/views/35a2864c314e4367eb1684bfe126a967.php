@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $projects, $clients, $staffmembers, $insurance; ?>
+<?php global $s_v_data, $user, $title, $projects, $clients, $staffmembers, $insurance, $inventorys; ?>
 <?= view( 'includes/head', $s_v_data ); ?>
 <link rel="stylesheet" href="<?=  asset('assets/libs/summernote/summernote-lite.min.css') ; ?>" />
 
@@ -194,12 +194,33 @@
                         <p>Create a quote for this project</p>
                         <div class="item-lines" data-type="quote">
                             <div class="row gy-4">
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="form-label">Item Description</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required="">
+                                            <select name="item[]" id="item[]" class="select_1 form-control" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0">Select Item</option>
+                                                <?php foreach ($inventorys as $inventory) { ?>
+                                                <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <!-- <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required=""> -->
                                             <input type="hidden" name="project" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Work</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-control" name="workType[]">
+                                                <option value="0">Select Work</option>
+                                                <option value="body_work">Body Work</option>
+                                                <option value="mechanical_work">Mechanical Work</option>
+                                                <option value="electrical_work">Electrical Work</option>
+                                                <option value="ac_work">AC Work</option>
+                                                <option value="other_work">Other Work</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -219,7 +240,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <div class="form-group">
                                         <label class="form-label">Tax (%)</label>
                                         <div class="form-control-wrap hide-arrows">
@@ -240,12 +261,33 @@
                             </div>
                             <div class="row gy-4">
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="form-label">Item Description</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required="">
+                                            <!-- <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required=""> -->
+                                            <select name="item[]" id="item[]" class="select_1 form-control" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0">Select Item</option>
+                                                <?php foreach ($inventorys as $inventory) { ?>
+                                                <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
+                                                <?php } ?>
+                                            </select>
                                             <input type="hidden" name="project" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Work</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-control" name="workType[]">
+                                                <option value="0">Select Work</option>
+                                                <option value="body_work">Body Work</option>
+                                                <option value="mechanical_work">Mechanical Work</option>
+                                                <option value="electrical_work">Electrical Work</option>
+                                                <option value="ac_work">AC Work</option>
+                                                <option value="other_work">Other Work</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -265,7 +307,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <div class="form-group">
                                         <label class="form-label">Tax (%)</label>
                                         <div class="form-control-wrap hide-arrows">
@@ -293,7 +335,7 @@
                         <div class="item-totals border-top mt-2 pt-2">
                             <div class="row gy-4 d-flex justify-content-end">
                                 <div class="col-sm-4">
-                                    <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
+                                    <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item-quote" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
@@ -647,6 +689,67 @@
             });
         });
     </script>
+    <script>
+        $("body").on("click", ".add-item-quote", function(event){
+            event.preventDefault();
+            var count = parseFloat($('#count').val()) + 1;
+            var holder = $(this).closest(".modal").find(".item-lines");
+            var line = ' <div class="row gy-4"> '
+                            +'<div class="col-sm-3">'
+                                +'<div class="form-group">'
+                                    +'<label class="form-label">Item Description</label> '
+                                        +'<div class="form-control-wrap"> '
+                                            +'<select name="item[]" id="item[]" class="select_'+count+' form-control" data-live-search="true" onchange="get_item_details(this)">'
+                                            +'<option value="0" >Select Item</option>'
+                                            +'<?php foreach ($inventorys as $inventory) { ?>'
+                                            +'<option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>'
+                                            +'<?php } ?>'
+                                            +'</select>'
+                                            +'<input type="hidden" name="project" value="<?=  $project->id ; ?>" required="">'
+                        +'</div></div></div>'
+                        +'<div class="col-sm-2">'
+                    +'    <div class="form-group">'
+                    +'        <label class="form-label">Work</label>'
+                    +'        <div class="form-control-wrap">'
+                    +'            <select class="form-control" name="workType[]">'
+                    +'                <option value="0">Select Work</option>'
+                    +'                <option value="body_work">Body Work</option>'
+                    +'                <option value="mechanical_work">Mechanical Work</option>'
+                    +'                <option value="electrical_work">Electrical Work</option>'
+                    +'                <option value="ac_work">AC Work</option>'
+                    +'                <option value="other_work">Other Work</option>'
+                    +'            </select>'
+                    +'        </div>'
+                    +'    </div>'
+                    +'</div>'
+                    +'<div class="col-sm-1"> <div class="form-group"> <label class="form-label">Qty</label> <div class="form-control-wrap hide-arrows"> <input type="number" class="form-control form-control-lg line-quantity" value="1" min="1" placeholder="Quantity" name="quantity[]" required=""> </div></div></div><div class="col-sm-2"> <div class="form-group"> <label class="form-label">Unit Cost ( '+currency+' )</label> <div class="form-control-wrap hide-arrows"> <input type="number" class="form-control form-control-lg line-cost cost_'+count+'" placeholder="Unit Cost" data-parsley-pattern="[0-9]*(\.?[0-9]{2}$)" name="cost[]" value="0.00" step="0.01" required=""> </div></div></div><div class="col-sm-1"> <div class="form-group"> <label class="form-label">Tax (%)</label> <div class="form-control-wrap hide-arrows"> <input type="number" class="form-control form-control-lg line-tax" placeholder="Tax (%)" min="0" name="tax[]"> </div></div></div><div class="col-sm-2"> <div class="form-group"> <label class="form-label">Total ( '+currency+' )</label> <div class="form-control-wrap"> <input type="number" class="form-control form-control-lg line-total" placeholder="Amount" data-parsley-pattern="[0-9]*(\.?[0-9]{2}$)" name="total[]" value="0.00" step="0.01" required="" readonly=""> </div></div></div><div class="col-sm-1"> <div class="form-group"> <div class="form-control-wrap"> <a href="#" class="btn btn-icon btn-lg btn-round btn-dim btn-outline-danger mt-gs remove-line" data-toggle="tooltip" title="Remove Item"><em class="icon ni ni-cross-circle-fill"></em></a> </div></div></div></div>';
+                        
+        
+            holder.append(line);
+            $('#count').val(count)
+            $('[data-toggle="tooltip"]').tooltip();
+            
+        });
+        
+        function get_item_details(select){
+            var selected = select.value;
+            var selectedClass = select.classList[0];
+            var count = selectedClass.replace('select_','');
+            
+            $.ajax({
+                url: '<?=  url("Quote@get_item_details") ; ?>' + selected,
+                data: [],
+                dataType: 'json',
+                success: function( data ) {
+                        $('.cost_'+count).val(data[0].unit_cost);
+					},
+					error: function() {
+						alert('Error');
+					}
+            })
+        }
+        
+        </script>
 </body>
 
 </html>

@@ -6,22 +6,21 @@
                             <?php if (!empty($quoteitems)) { ?>
                             <?php foreach ($quoteitems as $index => $quoteitem) { ?>
                             <div class="row gy-4">
-
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="form-label">Item Description</label>
                                         <div class="form-control-wrap">
-                                            <select name="item[]" id="item[]" class="select_1 form-control" data-live-search="true" onchange="get_item_details(this)">
+                                            <select name="item[]" class="select_<?= $index; ?> form-control" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0">Select Item</option>
                                                 <?php foreach ($inventorys as $inventory) { ?>
                                                     <?php if ($inventory->id == $quoteitem->item) { ?>
                                                         <option value="<?= $inventory->id; ?>" selected><?= $inventory->name; ?></option>
                                                     <?php } else { ?>
-                                                        <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
+                                                        <option value="<?= $inventory->id; ?>" selected><?= $inventory->name; ?></option>
                                                     <?php } ?>
                                                 <?php } ?>
                                             </select>
-                                            <!-- <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required=""> -->
-                                            <input type="hidden" name="project" value="<?=  $project->id ; ?>" required="">
+                                            <input type="hidden" name="itemid[]" value="<?=  $quoteitem->id ; ?>" required="">
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +51,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Unit Cost ( <?=  currency($user->parent->currency) ; ?> )</label>
                                         <div class="form-control-wrap hide-arrows">
-                                            <input type="number" class="form-control form-control-lg line-cost" placeholder="Unit Cost" data-parsley-pattern="[0-9]*(\.?[0-9]{2}$)" name="cost[]" value="<?=  $quoteitem->cost ; ?>" step="0.01" required="">
+                                            <input type="number" class="form-control form-control-lg line-cost cost_<?= $index; ?>" placeholder="Unit Cost" data-parsley-pattern="[0-9]*(\.?[0-9]{2}$)" name="cost[]" value="<?=  $quoteitem->cost ; ?>" step="0.01" required="">
                                         </div>
                                     </div>
                                 </div>
@@ -177,6 +176,25 @@
                 $('[data-toggle="tooltip"]').tooltip();
                 
             });
+            </script>
+            <script>
+                function get_item_details(select){
+                    var selected = select.value;
+                    var selectedClass = select.classList[0];
+                    var count = selectedClass.replace('select_','');
+                    
+                    $.ajax({
+                        url: '<?=  url("Quote@get_item_details") ; ?>' + selected,
+                        data: [],
+                        dataType: 'json',
+                        success: function( data ) {
+                                $('.cost_'+count).val(data[0].unit_cost);
+                            },
+                            error: function() {
+                                alert('Error');
+                            }
+                    })
+                }
             </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 <?php return;

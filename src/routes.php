@@ -176,6 +176,8 @@ Router::group(array(
         Router::post('/quotes/update_atproject', 'Quote@update_at_project');
         Router::post('/quotes/update/view-v2', 'Quote@updateviewv2');
         Router::post('/quotes/delete_atproject', 'Quote@delete_at_project');
+        // Router::get('/quotes/selects', 'Quote@selects');
+
         
         
         // Invoice

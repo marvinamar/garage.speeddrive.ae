@@ -5,29 +5,32 @@ $tcpdfPath = str_replace("Controllers", "TCPDF/", dirname(__FILE__));
 
 require_once $tcpdfPath.'tcpdf.php';
 
+
 use TCPDF;
 use Simcify\Database;
 use Simcify\Asilify;
 use Simcify\Auth;
 use Simcify\Mail;
 use Simcify\File;
+use PDO;
+use PDOException;
 
 class Quote {
-    
+
     /**
      * Render quotes page
-     * 
+     *
      * @return \Pecee\Http\Response
      */
     public function get() {
-        
+
         $title = 'Quotes';
         $user  = Auth::user();
-        
+
         if ($user->role == "Staff" || $user->role == "Inventory Manager" || $user->role == "Booking Manager") {
             return view('errors/404');
         }
-        
+
         $quotes = Database::table('quotes')->where('company', $user->company)->orderBy("id", false)->get();
         foreach ($quotes as $key => $quote) {
             $quote->items = Database::table('quoteitems')->where('quote', $quote->id)->count("id", "total")[0]->total;
@@ -45,18 +48,18 @@ class Quote {
         }
 
         $inventorys = Database::table('inventory')->where('company', $user->company)->get();
-        
+
         return view("quotes", compact("user", "title", "quotes","clients","inventorys"));
-        
+
     }
-    
+
     /**
      * Create a quote
-     * 
+     *
      * @return Json
      */
     public function create() {
-        
+
         $user = Auth::user();
         $total = $tax = 0;
 
@@ -113,13 +116,13 @@ class Quote {
         );
 
         Database::table('quotes')->where('id', $quoteid)->where('company', $user->company)->update($update);
-        
+
         return response()->json(responder("success", "Alright!", "Quote successfully created.", "redirect('" . url('Quote@get') . "')"));
 
         // return response()->json(responder("success", "Alright!", "Quote successfully created.", "redirect('" . url('Quote@view', array(
         //     'quoteid' => $quoteid
         // )) . "')"));
-        
+
     }
 
     public function create_at_project(){
@@ -187,11 +190,11 @@ class Quote {
             'Isqt' => 'false'
         )) . "?view=quotes')"));
     }
-    
-    
+
+
     /**
      * Calculate line total
-     * 
+     *
      * @param array
      * @return int
      */
@@ -211,15 +214,15 @@ class Quote {
         );
 
     }
-    
-    
+
+
     /**
      * Create quote form view
-     * 
+     *
      * @return \Pecee\Http\Response
      */
     public function createform() {
-        
+
         $user   = Auth::user();
         if (!empty(input("clientid"))) {
             $client = Database::table('clients')->where('company', $user->company)->where('id', input("clientid"))->first();
@@ -228,41 +231,42 @@ class Quote {
             $insurance = Database::table('insurance')->where('company', $user->company)->where('id', input("insuranceid"))->first();
             $projects = Database::table('projects')->where('company', $user->company)->where('insurance', $insurance->id)->orderBy("id", false)->get();
         }
-        
+
         return view('modals/create-quote', compact("projects","user"));
-        
+
     }
-    
-    
+
+
     /**
      * Quote update view
-     * 
+     *
      * @return \Pecee\Http\Response
      */
     public function updateview() {
-        
-        $user   = Auth::user();
-        $quote = Database::table('quotes')->where('company', $user->company)->where('id', input("quoteid"))->first();
-        $quoteitems = Database::table('quoteitems')->where('company', $user->company)->where('quote', $quote->id)->get();
-        
-        return view('modals/update-quote', compact("quote","quoteitems","user"));
-        
-    }
 
-    public function updateviewv2() {
-        
         $user   = Auth::user();
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', input("quoteid"))->first();
         $quoteitems = Database::table('quoteitems')->where('company', $user->company)->where('quote', $quote->id)->get();
         $inventorys = Database::table('inventory')->where('company', $user->company)->get();
-        
-        return view('modals/update-quote-v2', compact("quote","quoteitems","user","inventorys"));
-        
+
+        return view('modals/update-quote', compact("quote","quoteitems","user","inventorys"));
+
     }
-    
+
+    public function updateviewv2() {
+
+        $user   = Auth::user();
+        $quote = Database::table('quotes')->where('company', $user->company)->where('id', input("quoteid"))->first();
+        $quoteitems = Database::table('quoteitems')->where('company', $user->company)->where('quote', $quote->id)->get();
+        $inventorys = Database::table('inventory')->where('company', $user->company)->get();
+
+        return view('modals/update-quote-v2', compact("quote","quoteitems","user","inventorys"));
+
+    }
+
     /**
      * Update Quote
-     * 
+     *
      * @return Json
      */
     public function update() {
@@ -317,10 +321,10 @@ class Quote {
         }
 
         Asilify::unsign($quote->id, "quote");
-        
+
         // return response()->json(responder("success", "Alright!", "Quote successfully updated.s", "redirect('" . url('Quote@get') . "')"));
         return response()->json(responder("success", "Alright!", "Quote successfully updated.", "redirect('" . url('Quote@get') . "')"));
-        
+
     }
 
     public function update_at_project() {
@@ -375,17 +379,17 @@ class Quote {
         }
 
         Asilify::unsign($quote->id, "quote");
-        
-        return response()->json(responder("success", "Alright!", "Quote successfully deleted.", "redirect('" . url('Projects@details', array(
+
+        return response()->json(responder("success", "Alright!", "Quote successfully updated.", "redirect('" . url('Projects@details', array(
             'projectid' => $quote->project,
             'Isqt' => 'false'
         )) . "?view=quotes')"));
-        
+
     }
-    
+
     /**
      * Convert Quote
-     * 
+     *
      * @return Json
      */
     public function convert() {
@@ -437,32 +441,32 @@ class Quote {
             Database::table('invoiceitems')->insert($line);
 
         }
-        
+
         return response()->json(responder("success", "Alright!", "Quote successfully converted to invoice.", "redirect('" . url('invoice@view', array(
             'invoiceid' => $invoiceid
         )) . "')"));
-        
+
     }
-    
-    
+
+
     /**
      * Delete Quote
-     * 
+     *
      * @return Json
      */
     public function delete() {
-        
+
         $user = Auth::user();
 
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', input('quoteid'))->first();
         Database::table('quotes')->where('id', input('quoteid'))->where('company', $user->company)->delete();
 
-        return response()->json(responder("success", "Alright!", "Quote successfully created.", "redirect('" . url('Quote@get') . "')"));
-        
+        return response()->json(responder("success", "Alright!", "Quote successfully deleted.", "redirect('" . url('Quote@get') . "')"));
+
     }
 
     public function delete_at_project() {
-        
+
         $user = Auth::user();
 
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', input('quoteid'))->first();
@@ -472,12 +476,12 @@ class Quote {
             'projectid' => $quote->project,
             'Isqt' => 'false'
         )) . "?view=quotes')"));
-        
+
     }
 
     /**
      * View Quote
-     * 
+     *
      * @return \Pecee\Http\Response
      */
     public function view($quoteid) {
@@ -497,24 +501,53 @@ class Quote {
         }
 
         return view('view-quote', compact("title", "user","quote","owner"));
-        
+
     }
-    
+
+    // public function selects()
+    // {
+    //     include("config/connect.php");
+    //     $sql = "SELECT qi.id, qi.company, qi.project, qi.quote, IF(ISNULL(i.name),qi.item,i.name) as item, qi.quantity, qi.cost, qi.tax, qi.total, qi.workType
+    //     FROM `quoteitems` qi
+    //     LEFT JOIN `inventory` i ON i.id = qi.item
+    //     WHERE qi.company =1 and qi.project = 416;";
+    //     $result = mysqli_query($con, $sql);
+
+    //     $query = $ndb->prepare($sql);
+    //     $query->execute();
+    //     $projects[] = $query->fetchObject();
+       
+
+    //     $quoteitems = Database::table('quoteitems')->where('company', '1')->where('quote', '168')->get();
+    //     var_dump($quoteitems);
+    //     var_dump('----------------------------------------------------------------------');
+    //     var_dump($projects);
+    // }
+
     /**
      * Generate PDF
-     * 
+     *
      * @return \Pecee\Http\Response
      */
     public function render($quoteid) {
-        
+        include("config/connect.php");
         $user   = Auth::user();
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', $quoteid)->first();
-        $quoteitems = Database::table('quoteitems')->where('company', $user->company)->where('quote', $quoteid)->get();
-        
+
+        $sql = "SELECT qi.id, qi.company, qi.project, qi.quote, IF(ISNULL(i.name),qi.item,i.name) AS item, qi.quantity, qi.cost, qi.tax, qi.total, qi.workType
+        FROM `quoteitems` qi
+        LEFT JOIN `inventory` i ON i.id = qi.item
+        WHERE qi.company =".$user->company." AND qi.quote = ".$quoteid.";";
+        $result = mysqli_query($con, $sql);
+        $query = $ndb->prepare($sql);
+        $query->execute();
+        $quoteitems[]  = $query->fetchObject();
+
+
         if (empty($quote) || empty($quoteitems)) {
             return view('errors/404');
         }
-        
+
         $project = Database::table('projects')->where('company', $user->company)->where('id', $quote->project)->first();
         $client = Database::table('clients')->where('company', $user->company)->where('id', $project->client)->first();
         if(!empty($project->insurance)){
@@ -524,16 +557,16 @@ class Quote {
         $this->generate($user, $quote, $quoteitems, $project, $client);
 
         die();
-        
+
     }
-    
+
     /**
      * Sign quote ( Acceptance )
-     * 
+     *
      * @return \Pecee\Http\Response
      */
     public function sign() {
-        
+
         $user   = Auth::user();
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', input("quoteid"))->first();
 
@@ -541,7 +574,7 @@ class Quote {
             "source" => "base64",
             "extension" => "png"
         ));
-        
+
         if ($upload['status'] == "success") {
             $signature = array(
                 "signed" => "Yes",
@@ -554,7 +587,7 @@ class Quote {
         }
 
         return response()->json(responder("success", "Signed!", "Quote successfully signed.", "reload()"));
-        
+
     }
 
     public function get_item_details($item_id)
@@ -562,22 +595,22 @@ class Quote {
         $item = Database::table('inventory')->where('id',$item_id)->get();
         return json_encode($item);
     }
-    
+
     /**
      * Send via email
-     * 
+     *
      * @return Json
      */
     public function send() {
-        
+
         $user   = Auth::user();
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', input("itemid"))->first();
         $quoteitems = Database::table('quoteitems')->where('company', $user->company)->where('quote', input("itemid"))->get();
-        
+
         if (empty($quote) || empty($quoteitems)) {
             return response()->json(responder("error", "Hmmm!", "Something went wrong, please try again."));
         }
-        
+
         $project = Database::table('projects')->where('company', $user->company)->where('id', $quote->project)->first();
         $client = Database::table('clients')->where('company', $user->company)->where('id', $project->client)->first();
 
@@ -606,12 +639,12 @@ class Quote {
         }
 
         die();
-        
+
     }
 
     /**
      * Generate PDF Quote
-     * 
+     *
      * @return Json
      */
     public function generate($user, $quote, $quoteitems, $project, $client, $save = false) {
@@ -827,7 +860,7 @@ class Quote {
             $pdf->AddPage();
             $yPos = $pdf->GetY();
         }
-        
+
         $xPos = $pdf->GetX() + 350;
         $yPos = $pdf->GetY();
         $yPos -= 5;
@@ -958,7 +991,7 @@ class Quote {
     }
 
 
-    
+
 }
 
 
