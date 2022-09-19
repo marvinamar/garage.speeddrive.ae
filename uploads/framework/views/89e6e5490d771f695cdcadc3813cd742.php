@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $pay_expenses, $inventorys; ?>
+<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $pay_expenses, $inventorys, $date, $time; ?>
 <?= view( 'includes/head', $s_v_data ); ?>
 <link rel="stylesheet" href="<?=  asset('assets/libs/summernote/summernote-lite.min.css') ; ?>" />
 
@@ -866,7 +866,7 @@
                                                                                     <?php if ($invoice->status != "Paid") { ?>
                                                                                     <li><a href="" class="add-payment" data-id="<?=  $invoice->id ; ?>"><em class="icon ni ni-coin-alt"></em><span>Add Receipt</span></a></li>
                                                                                     <?php } ?>
-                                                                                    <li><a class="fetch-display-click" data="invoiceid:<?=  $invoice->id ; ?>" url="<?=  url('Invoice@updateview') ; ?>" holder=".update-holder-xl" modal="#update-xl" href=""><em class="icon ni ni-pen"></em><span>Edit Invoice</span></a></li>
+                                                                                    <li><a class="fetch-display-click" data="invoiceid:<?=  $invoice->id ; ?>" url="<?=  url('Invoice@updateview') ; ?>" holder=".update-holder-xl" modal="#update-xl" modal-style="overflow:auto;" href=""><em class="icon ni ni-pen"></em><span>Edit Invoice</span></a></li>
                                                                                     <?php if ($user->role == "Owner") { ?>
                                                                                     <li class="divider"></li>
                                                                                     <li><a class="send-to-server-click"  data="invoiceid:<?=  $invoice->id ; ?>" url="<?=  url('Invoice@delete') ; ?>" warning-title="Are you sure?" warning-message="This invoice will be deleted permanently." warning-button="Yes, delete!" href=""><em class="icon ni ni-trash"></em><span>Delete Invoice</span></a></li>
@@ -1396,7 +1396,7 @@
                                 <div class="form-group">
                                     <label class="form-label">Due Date</label>
                                     <div class="form-control-wrap">
-                                        <input type="date" class="form-control form-control-lg" placeholder="Due Date" name="due_date" required="">
+                                        <input type="date" class="form-control form-control-lg" placeholder="Due Date" name="due_date" required="" value="<?= date('Y-m-d'); ?>">
                                     </div>
                                 </div>
                             </div>
@@ -1404,7 +1404,7 @@
                                 <div class="form-group">
                                     <label class="form-label">Due Time</label>
                                     <div class="form-control-wrap">
-                                        <input type="time" class="form-control form-control-lg" placeholder="Due Time" name="due_time">
+                                        <input type="time" class="form-control form-control-lg" placeholder="Due Time" name="due_time" value="<?= date('H:s'); ?>">
                                     </div>
                                 </div>
                             </div>
@@ -2446,6 +2446,26 @@
 					}
             })
         }
+
+        $(document).find('#update-xl').on('hidden.bs.modal', function () {
+            $('body').addClass('modal-open');
+
+            // taxTotal = $('#Ottotal').val();
+            // subTotal = $('#Ostotal').val();
+            // grandTotal = $('#Ogtotal').val();
+            
+            // gsubtotal = $('#gsubtotal').val();
+            // gtaxtotal = $('#gtaxtotal').val();
+
+            // st = parseFloat(gsubtotal) + parseFloat(subTotal)
+            // tt = parseFloat(taxTotal) + parseFloat(gtaxtotal)
+
+            // $('.item-totals').closest('div').find(".sub-total")[0].innerText = st.toFixed(2);
+            // $('.item-totals').closest('div').find(".tax-total")[0].innerText = tt.toFixed(2);
+            // $('#Ostotal').val(st);
+            // $('#Ottotal').val(tt);
+            // calculatetotal(items);
+        });
     </script>
 </body>
 

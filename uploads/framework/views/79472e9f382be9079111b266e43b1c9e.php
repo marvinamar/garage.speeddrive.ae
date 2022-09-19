@@ -1,4 +1,4 @@
-<?php global $s_v_data, $expenses, $user, $instance; ?>
+<?php global $s_v_data, $expenses, $user, $instance, $company, $tax; ?>
 <?php if (!empty($expenses)) { ?>
 <?php foreach ($expenses as $index => $expense) { ?>
 <div class="row gy-4 ">
@@ -22,7 +22,7 @@
         <div class="form-group">
             <label class="form-label">Unit Cost ( <?=  currency($user->parent->currency) ; ?> )</label>
             <div class="form-control-wrap hide-arrows">
-                <input type="number" class="form-control form-control-lg line-cost" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="0" step="0.01" required="">
+                <input type="number" class="form-control form-control-lg line-cost" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="<?= $expense->amount; ?>" step="0.01" required="">
             </div>
         </div>
     </div>

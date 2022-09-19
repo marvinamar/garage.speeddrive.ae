@@ -581,19 +581,19 @@ class Invoice {
         $pdf->AddPage();
         $pdf->company = $user->parent;
 
-        $xPos = $pdf->GetX();
+        $xPos = 55;//$pdf->GetX();
         $yPos = 30;
 
 
         // Document Title
-        $pdf->Image("http://localhost:8080/assets/images/headerpattern.png", 0, $yPos + 1, 600);
+        $pdf->Image(env("APP_URL")."/assets/images/headerpattern.png", 0, $yPos + 1,  600);
 
         $pdf->SetFillColor(64, 68, 72);
-        // $pdf->Rect(0, 30, 20, 55, 'F');
+        $pdf->Rect(220,140, 170, 40, 'F');// $pdf->Rect(0, 30, 20, 55, 'F');
 
-        $yPos +=10;
-        $pdf->SetTextColor(64, 68, 72);
-        $pdf->SetFont('','',12);
+        $yPos +=120;
+        $pdf->SetTextColor(255,255,255);//(64, 68, 72);
+        $pdf->SetFont('','',20);
         $pdf->SetXY($xPos, $yPos);
         $pdf->MultiCell(500, 100, "INVOICE", null, "C");
         
@@ -603,8 +603,8 @@ class Invoice {
 
         // client info
         $xPos = $pdf->GetX();
-        $yPos = $pdf->GetY();
-        $pdf->SetXY($xPos, 170);
+        $yPos = 200;//$pdf->GetY();
+        $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','B',11);
         $pdf->SetTextColor(82, 100, 132);
         $pdf->MultiCell(150, 25, "Invoice To: ", null, "L");
@@ -639,7 +639,7 @@ class Invoice {
         $pdf->MultiCell(170, 35, $client->address, null, "L");
 
         $xPos += 190;
-        $yPos = 170;
+        $yPos = 200;
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','B',11);
         $pdf->SetTextColor(82, 100, 132);
@@ -724,20 +724,20 @@ class Invoice {
         $pdf->MultiCell(170, 40, money(($invoice->total - $invoice->amount_paid), $user->parent->currency), null, "L");
 
 
-        // logo
-        $yPos = 30;
-        $xPos = 367;
-        if (!empty($user->parent->logo)) {
-            $pdf->Image(env("APP_URL")."/uploads/logos/".$user->parent->logo, $xPos + 40, $yPos, 160);
-        }else{
-            $pdf->SetFont('','B',24);
-            $pdf->SetTextColor(54, 74, 99);
-            $pdf->SetXY($xPos + 20, $yPos);
-            $pdf->MultiCell(185,55, $user->parent->name, null, "R");
-        }
+        // // logo
+        // $yPos = 30;
+        // $xPos = 367;
+        // if (!empty($user->parent->logo)) {
+        //     $pdf->Image(env("APP_URL")."/uploads/logos/".$user->parent->logo, $xPos + 40, $yPos, 160);
+        // }else{
+        //     $pdf->SetFont('','B',24);
+        //     $pdf->SetTextColor(54, 74, 99);
+        //     $pdf->SetXY($xPos + 20, $yPos);
+        //     $pdf->MultiCell(185,55, $user->parent->name, null, "R");
+        // }
 
 
-        $yPos = 170;
+        $yPos = 200;
         $xPos = 415;
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('',"",10);
@@ -762,7 +762,7 @@ class Invoice {
         if (!empty($invoice->amount_paid) && $invoice->amount_paid > 0) {
             $yPos = 345; // 300
         }else{
-            $yPos = 335;//290
+            $yPos = 365;//290
         }
         $pdf->SetXY($xPos, $yPos);
         
@@ -982,11 +982,11 @@ class PDF extends TCPDF {
     // Page footer
     public function Footer() {
 
-        $this->SetY(-40);
+        $this->SetY(-50);
 
         $yPos = $this->getY() - 10;
 
-        $this->Image(env("APP_URL")."/assets/images/docpattern.png", 0, $yPos, 680);
+        $this->Image(env("APP_URL")."/assets/images/footer.png", 0, $yPos, 600);
 
     }
 }

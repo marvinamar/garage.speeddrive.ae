@@ -307,7 +307,9 @@ class Projects {
         // if()$open_quote = true;
         // $Isqt = false;
         $inventorys = Database::table('inventory')->where('company', $user->company)->get();
-        return view("project-details", compact("user", "title", "client","notes","project","staffmembers","tasks","expenses","quotes","invoices","payments","jobcards","suppliers","inventory","Isqt","s_payments","pay_expenses","inventorys"));
+        $date = date('Y-m-d');
+        $time = date('h:i A');
+        return view("project-details", compact("user", "title", "client","notes","project","staffmembers","tasks","expenses","quotes","invoices","payments","jobcards","suppliers","inventory","Isqt","s_payments","pay_expenses","inventorys","date","time"));
 
     }
 

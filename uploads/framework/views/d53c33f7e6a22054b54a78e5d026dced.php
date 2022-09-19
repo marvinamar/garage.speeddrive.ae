@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $quotes, $clients, $inventorys; ?>
+<?php global $s_v_data, $title, $user, $quote, $owner; ?>
 <!DOCTYPE html>
 <html lang="zxx" class="js">
 

@@ -176,6 +176,9 @@ Router::group(array(
         Router::post('/quotes/update_atproject', 'Quote@update_at_project');
         Router::post('/quotes/update/view-v2', 'Quote@updateviewv2');
         Router::post('/quotes/delete_atproject', 'Quote@delete_at_project');
+        Router::get('/quotes/{quoteid}/view', 'Quote@view', array(
+            'as' => 'quoteid'
+        ));
         // Router::get('/quotes/selects', 'Quote@selects');
 
         
@@ -222,14 +225,25 @@ Router::group(array(
         Router::post('/project/payments/update/view', 'Projectpayment@updateview');
         Router::post('/project/payments/delete', 'Projectpayment@delete');
 
+        //Receipt
+        Router::get('/receipt/{receiptid}/render', 'Projectpayment@render', array(
+            'as' => 'receiptid'
+        ));
+        Router::get('/receipt/{receiptid}/view', 'Projectpayment@view', array(
+            'as' => 'receiptid'
+        ));
+
         //s_payments
         Router::get('/project/supplierpayments', 'Supplierpayment@get');
         Router::post('/project/supplierpayments/create', 'Supplierpayment@create');
         Router::post('/project/supplierpayments/update', 'Supplierpayment@update');
         Router::post('/project/supplierpayments/delete', 'Supplierpayment@delete');
         Router::post('/project/supplierpayments/update/view', 'Supplierpayment@updateview');
-        Router::get('/project/{id}/view', 'Supplierpayment@view', array(
-            'as' => 'id'
+        Router::get('/payment/{paymentid}/render', 'Supplierpayment@render', array(
+            'as' => 'paymentid'
+        ));
+        Router::get('/payment/{paymentid}/view', 'Supplierpayment@view', array(
+            'as' => 'paymentid'
         ));
         
         

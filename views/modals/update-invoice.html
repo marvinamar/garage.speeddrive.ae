@@ -83,11 +83,12 @@
                                 
                                 
                                 <div class="col-sm-4 text-right">
-                                    <div class="fw-normal">Sub Total:<div class="fw-bold sub-total">{{ currency($user->parent->currency) }} {{ $invoice->subtotal }}</div></div>
-                                    <div class="fw-normal">VAT Tax:<div class="fw-bold tax-total">{{ currency($user->parent->currency) }} {{ $invoice->tax_amount }}</div></div>
-                                    <div class="fw-bold fs-19px border-top">Total:<div class="fw-bold grand-total">{{ currency($user->parent->currency) }} {{ $invoice->total }}</div></div>
-                                    <input type="hidden"  value="{{ $invoice->total }}" id="gtotal">
-                                    <input type="hidden"  value="0" id="gsubtotal">
+                                    <div class="fw-normal">Sub Total: {{ currency($user->parent->currency) }} <div class="fw-bold sub-total">{{ $invoice->subtotal }}</div></div>
+                                    <div class="fw-normal">VAT Tax: {{ currency($user->parent->currency) }} <div class="fw-bold tax-total">{{ $invoice->tax_amount }}</div></div>
+                                    <div class="fw-bold fs-19px border-top">Total: {{ currency($user->parent->currency) }} <div class="fw-bold grand-total">{{ $invoice->total }}</div></div>
+                                    <input type="show"  value="{{ $invoice->total }}" id="gtotal">
+                                    <input type="show"  value="{{ $invoice->subtotal }}" id="gsubtotal">
+                                    <input type="show"  value="{{ $invoice->tax_amount }}" id="gtaxtotal">
                                 </div>
                                 <div class="col-sm-1">
                                 </div>
@@ -139,6 +140,9 @@
                     </div>
                 </form>
                 
+                <input type="show"  value="{{ $invoice->total }}" id="Ogtotal">
+                <input type="show"  value="{{ $invoice->subtotal }}" id="Ostotal">
+                <input type="show"  value="{{ $invoice->tax_amount }}" id="Ottotal">
                 
                 
                  <!-- Modal add expense to invoice (edit) -->

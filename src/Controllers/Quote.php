@@ -541,7 +541,7 @@ class Quote {
         $result = mysqli_query($con, $sql);
         $query = $ndb->prepare($sql);
         $query->execute();
-        $quoteitems[]  = $query->fetchObject();
+        $quoteitems  = $query->fetchAll();
 
 
         if (empty($quote) || empty($quoteitems)) {
@@ -659,26 +659,26 @@ class Quote {
         $pdf->company = $user->parent;
 
 
-        $xPos = $pdf->GetX();
+        $xPos = 50;//$pdf->GetX();
         $yPos = 30;
 
 
         // Document Title
-        $pdf->Image(env("APP_URL")."/assets/images/headerpattern.png", 0, $yPos + 1, 320);
+        $pdf->Image(env("APP_URL")."/assets/images/headerpattern.png", 0, $yPos + 1,  600);
 
         $pdf->SetFillColor(64, 68, 72);
-        $pdf->Rect(0, 30, 200, 55, 'F');
+        $pdf->Rect(220,140, 170, 40, 'F');
 
-        $yPos +=6;
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFont('','',34);
+        $yPos +=120;
+        $pdf->SetTextColor(255,255,255);//(64, 68, 72);
+        $pdf->SetFont('','',20);
         $pdf->SetXY($xPos, $yPos);
-        $pdf->MultiCell(200, 70, "QUOTE", null, "L");
+        $pdf->MultiCell(500, 100, "QUOTE", null, "C");
 
 
         // client info
         $xPos = $pdf->GetX();
-        $yPos = $pdf->GetY();
+        $yPos = 200;//$pdf->GetY();
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','B',11);
         $pdf->SetTextColor(82, 100, 132);
@@ -716,7 +716,7 @@ class Quote {
 
         // Document details
         $xPos += 190;
-        $yPos = 106;
+        $yPos = 200;
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','B',11);
         $pdf->SetTextColor(82, 100, 132);
@@ -781,19 +781,19 @@ class Quote {
 
 
         // logo
-        $yPos = 30;
-        $xPos = 367;
-        if (!empty($user->parent->logo)) {
-            $pdf->Image(env("APP_URL")."/uploads/logos/".$user->parent->logo, $xPos + 40, $yPos, 160);
-        }else{
-            $pdf->SetFont('','B',24);
-            $pdf->SetTextColor(54, 74, 99);
-            $pdf->SetXY($xPos + 20, $yPos);
-            $pdf->MultiCell(185,55, $user->parent->name, null, "R");
-        }
+        // $yPos = 30;
+        // $xPos = 367;
+        // if (!empty($user->parent->logo)) {
+        //     $pdf->Image(env("APP_URL")."/uploads/logos/".$user->parent->logo, $xPos + 40, $yPos, 160);
+        // }else{
+        //     $pdf->SetFont('','B',24);
+        //     $pdf->SetTextColor(54, 74, 99);
+        //     $pdf->SetXY($xPos + 20, $yPos);
+        //     $pdf->MultiCell(185,55, $user->parent->name, null, "R");
+        // }
 
 
-        $yPos = 130;
+        $yPos = 200;
         $xPos = 415;
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('',"",10);
@@ -815,22 +815,32 @@ class Quote {
 
 
         $xPos = $pdf->GetX();
-        $yPos = 290;
+        $yPos = 350;
         $pdf->SetXY($xPos, $yPos);
 
 
-        $items = array();
-        foreach ($quoteitems as $key => $quoteitem) {
-            $items[] = '<tr>
-                <td style="width:5%;">'.($key + 1).'</td>
-                <td style="width:37%;">'.$quoteitem->item.'</td>
-                <td style="width:12%;">'.$quoteitem->quantity.'</td>
-                <td style="width:18%;">'.money($quoteitem->cost, $user->parent->currency).'</td>
-                <td style="width:10%;">'.$quoteitem->tax.'%</td>
-                <td style="width:18%;text-align:right;"><b>'.money($quoteitem->total, $user->parent->currency).'</b></td>
-            </tr>';
-        }
+        // $items = array();
+        // foreach ($quoteitems as $key => $quoteitem) {
+        //     $items[] = '<tr>
+        //         <td style="width:5%;">'.($key + 1).'</td>
+        //         <td style="width:37%;">'.$quoteitem->item.'</td>
+        //         <td style="width:12%;">'.$quoteitem->quantity.'</td>
+        //         <td style="width:18%;">'.money($quoteitem->cost, $user->parent->currency).'</td>
+        //         <td style="width:10%;">'.$quoteitem->tax.'%</td>
+        //         <td style="width:18%;text-align:right;"><b>'.money($quoteitem->total, $user->parent->currency).'</b></td>
+        //     </tr>';
+        // }
 
+        for ($key=0; $key < count($quoteitems); $key++) { 
+            $items[] = '<tr>
+            <td style="width:5%;">'.($key + 1).'</td>
+            <td style="width:37%;">'.$quoteitems[$key]['item'].'</td>
+            <td style="width:12%;">'.$quoteitems[$key]['quantity'].'</td>
+            <td style="width:18%;">'.money($quoteitems[$key]['cost'], $user->parent->currency).'</td>
+            <td style="width:10%;">'.$quoteitems[$key]['tax'].'%</td>
+            <td style="width:18%;text-align:right;"><b>'.money($quoteitems[$key]['total'], $user->parent->currency).'</b></td>
+        </tr>';
+        }
 
         $details = '
         <table cellpadding="5" cellspacing="5" style="width:100%;background-color: #404448;color:#ffffff;">
@@ -1001,11 +1011,11 @@ class PDF extends TCPDF {
     // Page footer
     public function Footer() {
 
-        $this->SetY(-40);
+        $this->SetY(-50);
 
         $yPos = $this->getY() - 10;
 
-        $this->Image(env("APP_URL")."/assets/images/docpattern.png", 0, $yPos, 680);
+        $this->Image(env("APP_URL")."/assets/images/footer.png", 0, $yPos, 600);
 
     }
 }

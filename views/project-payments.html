@@ -102,11 +102,11 @@
                                                                     <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                     <div class="dropdown-menu dropdown-menu-right">
                                                                         <ul class="link-list-opt no-bdr">
-                                                                        <li><a href="{{ url('Invoice@view', array('invoiceid' => $payment->invoice)) }}"><em class="icon ni ni-eye"></em><span>View Invoice</span></a></li>
-                                                                        <li><a class="fetch-display-click" data="paymentid:{{ $payment->id }}" url="{{ url('Projectpayment@updateview') }}" holder=".update-holder" modal="#update" href=""><em class="icon ni ni-pen"></em><span>Edit Payment</span></a></li>
+                                                                        <li><a href="{{ url('Projectpayment@view', array('receiptid' => $payment->id)) }}"><em class="icon ni ni-eye"></em><span>View Receipt</span></a></li>
+                                                                        <li><a class="fetch-display-click" data="paymentid:{{ $payment->id }}" url="{{ url('Projectpayment@updateview') }}" holder=".update-holder" modal="#update" href=""><em class="icon ni ni-pen"></em><span>Edit Receipt</span></a></li>
                                                                         @if($user->role == "Owner")
                                                                         <li class="divider"></li>
-                                                                        <li><a class="send-to-server-click"  data="paymentid:{{ $payment->id }}" url="{{ url('Projectpayment@delete') }}" warning-title="Are you sure?" warning-message="This payment will be deleted permanently." warning-button="Yes, delete!" href=""><em class="icon ni ni-trash"></em><span>Delete Payment</span></a></li>
+                                                                        <li><a class="send-to-server-click"  data="paymentid:{{ $payment->id }}" url="{{ url('Projectpayment@delete') }}" warning-title="Are you sure?" warning-message="This receipt will be deleted permanently." warning-button="Yes, delete!" href=""><em class="icon ni ni-trash"></em><span>Delete Receipt</span></a></li>
                                                                         @endif
                                                                         </ul>
                                                                     </div>
