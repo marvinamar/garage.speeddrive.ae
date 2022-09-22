@@ -1,4 +1,4 @@
-<?php global $s_v_data, $title, $user, $invoice, $owner; ?>
+<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $pay_expenses, $inventorys, $date, $time; ?>
 <div class="nk-footer">
     <div class="container-fluid">
         <div class="nk-footer-wrap">
