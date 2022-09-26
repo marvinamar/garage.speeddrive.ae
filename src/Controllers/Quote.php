@@ -89,13 +89,12 @@ class Quote {
                 "project" => escape(input('project')),
                 "quote" => $quoteid,
                 "item" => $_POST["item"][$key],
+                "item_description" => $_POST["item_description"][$key],
                 "workType" => $_POST["workType"][$key],
                 "quantity" => $_POST["quantity"][$key],
                 "cost" => $_POST["cost"][$key],
                 "tax" => Asilify::zero($_POST["tax"][$key])
             );
-
-
 
             $linetotal = $this->linetotal((object) $line);
 
@@ -155,6 +154,7 @@ class Quote {
                 "project" => escape(input('project')),
                 "quote" => $quoteid,
                 "item" => $_POST["item"][$key],
+                "item_description" => $_POST["item_description"][$key],
                 "workType" => $_POST["workType"][$key],
                 "quantity" => $_POST["quantity"][$key],
                 "cost" => $_POST["cost"][$key],
@@ -280,6 +280,7 @@ class Quote {
         foreach ($_POST["item"] as $key => $item) {
             $line = array(
                 "item" => $_POST["item"][$key],
+                "item_description" => $_POST["item_description"][$key],
                 "workType" => $_POST["workType"][$key],
                 "quantity" => $_POST["quantity"][$key],
                 "cost" => $_POST["cost"][$key],
@@ -338,6 +339,7 @@ class Quote {
         foreach ($_POST["item"] as $key => $item) {
             $line = array(
                 "item" => $_POST["item"][$key],
+                "item_description" => $_POST["item_description"][$key],
                 "workType" => $_POST["workType"][$key],
                 "quantity" => $_POST["quantity"][$key],
                 "cost" => $_POST["cost"][$key],
@@ -534,7 +536,7 @@ class Quote {
         $user   = Auth::user();
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', $quoteid)->first();
 
-        $sql = "SELECT qi.id, qi.company, qi.project, qi.quote, IF(ISNULL(i.name),qi.item,i.name) AS item, qi.quantity, qi.cost, qi.tax, qi.total, qi.workType
+        $sql = "SELECT qi.id, qi.company, qi.project, qi.quote, IF(ISNULL(i.name),qi.item,i.name) AS item, qi.quantity, qi.cost, qi.tax, qi.total, qi.workType, qi.item_description
         FROM `quoteitems` qi
         LEFT JOIN `inventory` i ON i.id = qi.item
         WHERE qi.company =".$user->company." AND qi.quote = ".$quoteid.";";
@@ -834,9 +836,10 @@ class Quote {
         for ($key=0; $key < count($quoteitems); $key++) { 
             $items[] = '<tr>
             <td style="width:5%;">'.($key + 1).'</td>
-            <td style="width:37%;">'.$quoteitems[$key]['item'].'</td>
-            <td style="width:12%;">'.$quoteitems[$key]['quantity'].'</td>
-            <td style="width:18%;">'.money($quoteitems[$key]['cost'], $user->parent->currency).'</td>
+            <td style="width:30%;">'.$quoteitems[$key]['item'].'</td>
+            <td style="width:14%;">'.$quoteitems[$key]['item_description'].'</td>
+            <td style="width:10%;">'.$quoteitems[$key]['quantity'].'</td>
+            <td style="width:13;">'.money($quoteitems[$key]['cost'], $user->parent->currency).'</td>
             <td style="width:10%;">'.$quoteitems[$key]['tax'].'%</td>
             <td style="width:18%;text-align:right;"><b>'.money($quoteitems[$key]['total'], $user->parent->currency).'</b></td>
         </tr>';
@@ -846,9 +849,10 @@ class Quote {
         <table cellpadding="5" cellspacing="5" style="width:100%;background-color: #404448;color:#ffffff;">
             <tr>
                 <td style="width:5%;"><b>#</b></td>
-                <td style="width:37%;"><b>Item</b></td>
-                <td style="width:12%;"><b>Quantity</b></td>
-                <td style="width:18%;"><b>Unit Cost</b></td>
+                <td style="width:30%;"><b>Item</b></td>
+                <td style="width:14%;"><b>Description</b></td>
+                <td style="width:10%;"><b>Qty</b></td>
+                <td style="width:13%;"><b>Unit Cost</b></td>
                 <td style="width:10%;"><b>Tax</b></td>
                 <td style="width:18%;text-align:right;"><b>Total</b></td>
             </tr>

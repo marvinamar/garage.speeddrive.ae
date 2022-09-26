@@ -1522,7 +1522,13 @@
                                 <div class="form-group">
                                     <label class="form-label">Expense / Item name</label>
                                     <div class="form-control-wrap">
-                                        <input type="text" class="form-control form-control-lg" placeholder="Expense / Item name" name="expense" required="">
+                                        <select name="expense" class="select_<?= $index; ?> form-control form-control-lg" data-live-search="true" > <!-- onchange="get_item_details(this)"-->
+                                            <option value="0" selected>Expense / Item name</option>
+                                            <?php foreach ($inventorys as $inventory) { ?>
+                                                <option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <!-- <input type="text" class="form-control form-control-lg" placeholder="Expense / Item name" name="expense" required=""> -->
                                         <input type="hidden" name="project" value="<?=  $project->id ; ?>" required="">
                                     </div>
                                 </div>
@@ -1699,9 +1705,9 @@
                             <div class="row gy-4">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="form-label">Item Description</label>
+                                        <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                            <select name="item[]" id="item[]" class="select_1 form-control" data-live-search="true" onchange="get_item_details(this)">
+                                            <select name="item[]" id="item[]" class="select_1 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
                                                 <option value="0">Select Item</option>
                                                 <?php foreach ($inventorys as $inventory) { ?>
                                                 <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
@@ -1711,11 +1717,21 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" name="item_description[]">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="form-label">Work</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-control" name="workType[]">
+                                            <select class="form-control form-control-lg" name="workType[]">
                                                 <option value="0">Select Work</option>
                                                 <option value="body_work">Body Work</option>
                                                 <option value="mechanical_work">Mechanical Work</option>
@@ -1762,12 +1778,11 @@
                                 </div>
                             </div>
                             <div class="row gy-4">
-
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="form-label">Item Description</label>
                                         <div class="form-control-wrap">
-                                                <select name="item[]" id="item[]" class="select_2 form-control" data-live-search="true" onchange="get_item_details(this)">
+                                                <select name="item[]" id="item[]" class="select_2 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
                                                     <option value="0">Select Item</option>
                                                     <?php foreach ($inventorys as $inventory) { ?>
                                                     <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
@@ -1778,11 +1793,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" name="item_description[]">
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="form-label">Work</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-control" name="workType[]">
+                                            <select class="form-control form-control-lg" name="workType[]">
                                                 <option value="0">Select Work</option>
                                                 <option value="body_work">Body Work</option>
                                                 <option value="mechanical_work">Mechanical Work</option>
@@ -1889,12 +1914,41 @@
                         <p>Create an invoice for this project</p>
                         <input type="hidden" name="project" value="<?=  $project->id ; ?>" required="">
                         <div class="item-lines invoice-items" data-type="quote">
-                            <div class="row gy-4">
-                                <div class="col-sm-4">
+                            <div class="row gy-3">
+                                <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="form-label">Item Description</label>
+                                        <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required="">
+                                            <select name="item[]" id="item[]" class="select_1 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0">Select Item</option>
+                                                <?php foreach ($inventorys as $inventory) { ?>
+                                                <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <!-- <input type="text" class="form-control form-control-lg" placeholder="Item" name="item[]" required=""> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" name="item_description[]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Work</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-control form-control-lg" name="workType[]">
+                                                <option value="0">Select Work</option>
+                                                <option value="body_work">Body Work</option>
+                                                <option value="mechanical_work">Mechanical Work</option>
+                                                <option value="electrical_work">Electrical Work</option>
+                                                <option value="ac_work">AC Work</option>
+                                                <option value="other_work">Other Work</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1910,11 +1964,11 @@
                                     <div class="form-group">
                                         <label class="form-label">Unit Cost ( <?=  currency($user->parent->currency) ; ?> )</label>
                                         <div class="form-control-wrap hide-arrows">
-                                            <input type="number" class="form-control form-control-lg line-cost" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="0.00" step="0.01" required="">
+                                            <input type="number" class="form-control form-control-lg line-cost cost_1" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="0.00" step="0.01" required="">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <div class="form-group">
                                         <label class="form-label">Tax (%)</label>
                                         <div class="form-control-wrap hide-arrows">
@@ -1935,11 +1989,40 @@
                             </div>
                             <div class="row gy-4">
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="form-label">Item Description</label>
+                                        <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required="">
+                                            <select name="item[]" id="item[]" class="select_1 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0">Select Item</option>
+                                                <?php foreach ($inventorys as $inventory) { ?>
+                                                <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <!-- <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required=""> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" name="item_description[]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Work</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-control form-control-lg" name="workType[]">
+                                                <option value="0">Select Work</option>
+                                                <option value="body_work">Body Work</option>
+                                                <option value="mechanical_work">Mechanical Work</option>
+                                                <option value="electrical_work">Electrical Work</option>
+                                                <option value="ac_work">AC Work</option>
+                                                <option value="other_work">Other Work</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1955,11 +2038,11 @@
                                     <div class="form-group">
                                         <label class="form-label">Unit Cost ( <?=  currency($user->parent->currency) ; ?> )</label>
                                         <div class="form-control-wrap hide-arrows">
-                                            <input type="number" class="form-control form-control-lg line-cost" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="0.00" step="0.01" required="">
+                                            <input type="number" class="form-control form-control-lg line-cost cost_2" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="cost[]" value="0.00" step="0.01" required="">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <div class="form-group">
                                         <label class="form-label">Tax (%)</label>
                                         <div class="form-control-wrap hide-arrows">
@@ -1987,7 +2070,7 @@
                         <div class="item-totals border-top mt-2 pt-2">
                             <div class="row gy-4 d-flex justify-content-end">
                                 <div class="col-sm-7">
-                                    <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
+                                    <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item-quote" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="fw-normal">Sub Total:<div class="fw-bold sub-total"><?=  currency($user->parent->currency) ; ?> 0.00</div></div>
@@ -2390,21 +2473,29 @@
         var line = ' <div class="row gy-4"> '
                         +'<div class="col-sm-3">'
                             +'<div class="form-group">'
-                                +'<label class="form-label">Item Description</label> '
+                                +'<label class="form-label">Item</label> '
                                     +'<div class="form-control-wrap"> '
-                                        +'<select name="item[]" id="item[]" class="select_'+count+' form-control" data-live-search="true" onchange="get_item_details(this)">'
+                                        +'<select name="item[]" id="item[]" class="select_'+count+' form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">'
                                         +'<option value="0" >Select Item</option>'
                                         +'<?php foreach ($inventorys as $inventory) { ?>'
                                         +'<option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>'
                                         +'<?php } ?>'
                                         +'</select>'
                                         +'<input type="hidden" name="project" value="<?=  $project->id ; ?>" required="">'
-                    +'</div></div></div>'
-                    +'<div class="col-sm-2">'
+                +'</div></div></div>'
+                +'<div class="col-sm-3">'
+                +'        <div class="form-group">'
+                +'            <label class="form-label">Description</label>'
+                +'            <div class="form-control-wrap">'
+                +'                <input type="text" class="form-control form-control-lg" name="item_description[]">'
+                +'            </div>'
+                +'        </div>'
+                +'</div>'
+                +'<div class="col-sm-2">'
                 +'    <div class="form-group">'
                 +'        <label class="form-label">Work</label>'
                 +'        <div class="form-control-wrap">'
-                +'            <select class="form-control" name="workType[]">'
+                +'            <select class="form-control form-control-lg" name="workType[]">'
                 +'                <option value="0">Select Work</option>'
                 +'                <option value="body_work">Body Work</option>'
                 +'                <option value="mechanical_work">Mechanical Work</option>'

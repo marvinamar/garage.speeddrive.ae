@@ -95,6 +95,8 @@ class Invoice {
                 "project" => escape(input('project')),
                 "invoice" => $invoiceid,
                 "item" => $_POST["item"][$key],
+                "item_description" => $_POST["item_description"][$key],
+                "workType" => $_POST["workType"][$key],
                 "quantity" => $_POST["quantity"][$key],
                 "cost" => $_POST["cost"][$key],
                 "tax" => Asilify::zero($_POST["tax"][$key])
@@ -203,10 +205,11 @@ class Invoice {
         $user   = Auth::user();
         $invoice = Database::table('invoices')->where('company', $user->company)->where('id', input("invoiceid"))->first();
         $invoiceitems = Database::table('invoiceitems')->where('company', $user->company)->where('invoice', $invoice->id)->get();
+        $inventorys = Database::table('inventory')->where('company', $user->company)->get();
         
          $project = Database::table('projects')->where('company', $user->company)->where('id', $invoice->project)->first();
         
-        return view('modals/update-invoice', compact("invoice","invoiceitems","user","project"));
+        return view('modals/update-invoice', compact("invoice","invoiceitems","user","project","inventorys"));
         
     }
     
@@ -422,8 +425,10 @@ class Invoice {
         $tax = $company[0]->vat / 100;
 
         $instance = uniqid("instance-");
+
+        $inventorys = Database::table('inventory')->where('company', $user->company)->get();
         
-        return view('modals/import-invoice-expenses', compact("expenses","user","instance","company","tax"));
+        return view('modals/import-invoice-expenses', compact("expenses","user","instance","company","tax", "inventorys"));
         
     }
 
@@ -465,10 +470,19 @@ class Invoice {
      * @return \Pecee\Http\Response
      */
     public function render($invoiceid) {
-        
+        include("config/connect.php");
         $user   = Auth::user();
         $invoice = Database::table('invoices')->where('company', $user->company)->where('id', $invoiceid)->first();
-        $invoiceitems = Database::table('invoiceitems')->where('company', $user->company)->where('invoice', $invoiceid)->get();
+        // $invoiceitems = Database::table('invoiceitems')->where('company', $user->company)->where('invoice', $invoiceid)->get();
+
+        $sql = "SELECT it.id,it.company,it.project,it.invoice,IF(ISNULL(inv.name),it.item,inv.name) AS item,it.item_description,it.workType,it.quantity,it.cost,it.tax,it.total
+        FROM `invoiceitems` it
+        LEFT JOIN inventory inv ON it.item = inv.id
+        WHERE it.company = ".$user->company."  AND it.invoice = ".$invoiceid.";";
+        $result = mysqli_query($con, $sql);
+        $query = $ndb->prepare($sql);
+        $query->execute();
+        $invoiceitems  = $query->fetchAll();
         
         if (empty($invoice) || empty($invoiceitems)) {
             return view('errors/404');
@@ -766,16 +780,28 @@ class Invoice {
         }
         $pdf->SetXY($xPos, $yPos);
         
-        $items = array();
-        foreach ($invoiceitems as $key => $invoiceitem) {
-            $items[] = '<tr style="border-bottom:1px;border-color:#ddd;">
-                <td style="width:5%;">'.($key + 1).'</td>
-                <td style="width:37%;">'.$invoiceitem->item.'</td>
-                <td style="width:12%;">'.$invoiceitem->quantity.'</td>
-                <td style="width:18%;">'.money($invoiceitem->cost, $user->parent->currency).'</td>
-                <td style="width:10%;">'.$invoiceitem->tax.'%</td>
-                <td style="width:18%;text-align:right;padding-right:0;"><b>'.money($invoiceitem->total, $user->parent->currency).'</b></td>
-            </tr>';
+        // $items = array();
+        // foreach ($invoiceitems as $key => $invoiceitem) {
+        //     $items[] = '<tr style="border-bottom:1px;border-color:#ddd;">
+        //         <td style="width:5%;">'.($key + 1).'</td>
+        //         <td style="width:37%;">'.$invoiceitem->item.'</td>
+        //         <td style="width:12%;">'.$invoiceitem->quantity.'</td>
+        //         <td style="width:18%;">'.money($invoiceitem->cost, $user->parent->currency).'</td>
+        //         <td style="width:10%;">'.$invoiceitem->tax.'%</td>
+        //         <td style="width:18%;text-align:right;padding-right:0;"><b>'.money($invoiceitem->total, $user->parent->currency).'</b></td>
+        //     </tr>';
+        // }
+
+        for ($key=0; $key < count($invoiceitems); $key++) { 
+            $items[] = '<tr>
+            <td style="width:5%;">'.($key + 1).'</td>
+            <td style="width:30%;">'.$invoiceitems[$key]['item'].'</td>
+            <td style="width:14%;">'.$invoiceitems[$key]['item_description'].'</td>
+            <td style="width:10%;">'.$invoiceitems[$key]['quantity'].'</td>
+            <td style="width:13;">'.money($invoiceitems[$key]['cost'], $user->parent->currency).'</td>
+            <td style="width:10%;">'.$invoiceitems[$key]['tax'].'%</td>
+            <td style="width:18%;text-align:right;"><b>'.money($invoiceitems[$key]['total'], $user->parent->currency).'</b></td>
+        </tr>';
         }
 
 
@@ -783,9 +809,10 @@ class Invoice {
         <table cellpadding="5" cellspacing="5" style="width:100%;background-color: #404448;color:#ffffff;">
             <tr>
                 <td style="width:5%;"><b>#</b></td>
-                <td style="width:37%;"><b>Item</b></td>
-                <td style="width:12%;"><b>Quantity</b></td>
-                <td style="width:18%;"><b>Unit Cost</b></td>
+                <td style="width:30%;"><b>Item</b></td>
+                <td style="width:14%;"><b>Description</b></td>
+                <td style="width:10%;"><b>Qty</b></td>
+                <td style="width:13%;"><b>Unit Cost</b></td>
                 <td style="width:10%;"><b>Tax</b></td>
                 <td style="width:18%;text-align:right;"><b>Total</b></td>
             </tr>

@@ -183,9 +183,10 @@
                             <div class="row gy-4 item_list">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="form-label">Item Description</label>
+                                        <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                            <select name="item[]" id="item[]" class="select_1 form-control" data-live-search="true" onchange="get_item_details(this)">
+                                            <select name="item[]" id="item[]" class="select_1 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0">Select Item</option>
                                                 <?php foreach ($inventorys as $inventory) { ?>
                                                 <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
                                                 <?php } ?>
@@ -195,11 +196,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" name="item_description[]">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="form-label">Work</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-control" name="workType[]">
+                                            <select class="form-control form-control-lg" name="workType[]">
                                                 <option value="0">Select Work</option>
                                                 <option value="body_work">Body Work</option>
                                                 <option value="mechanical_work">Mechanical Work</option>
@@ -249,9 +258,10 @@
 
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="form-label">Item Description</label>
+                                        <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                            <select name="item[]" id="item[]" class="select_2 form-control" data-live-search="true" onchange="get_item_details(this)">
+                                            <select name="item[]" id="item[]" class="select_2 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0">Select Item</option>
                                                 <?php foreach ($inventorys as $inventory) { ?>
                                                 <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
                                                 <?php } ?>
@@ -261,11 +271,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" name="item_description[]">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label class="form-label">Work</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-control" name="workType[]">
+                                            <select class="form-control form-control-lg" name="workType[]">
                                                 <option value="0">Select Work</option>
                                                 <option value="body_work">Body Work</option>
                                                 <option value="mechanical_work">Mechanical Work</option>

@@ -76,7 +76,10 @@ class Jobcards {
             $data["assessment"] = escape(input('jobcardid'));
         }
 
+        $data["approved"] = 'yes';
+
         Database::table('jobcards')->insert($data);
+
         return response()->json(responder("success", "Alright!", "Job card successfully created.", "redirect('" . url('Projects@details', array(
             'projectid' => input('project'),
             'Isqt' => 'false'

@@ -1,4 +1,4 @@
-<?php global $s_v_data, $expense, $user, $suppliers; ?>
+<?php global $s_v_data, $expense, $user, $suppliers, $inventorys; ?>
                 <form class="simcy-form  modal-section" action="<?=  url('Expenses@update') ; ?>" data-parsley-validate="" method="POST" loader="true">
                     <div class="modal-body">
                         <p>Update a project expense</p>
@@ -7,7 +7,17 @@
                                 <div class="form-group">
                                     <label class="form-label">Expense</label>
                                     <div class="form-control-wrap">
-                                        <input type="text" class="form-control form-control-lg" placeholder="Expense" name="expense" value="<?=  $expense->expense ; ?>" required="">
+                                        <!-- <input type="text" class="form-control form-control-lg" placeholder="Expense" name="expense" value="<?=  $expense->expense ; ?>" required=""> -->
+                                        <select name="expense" class="select_<?= $index; ?> form-control form-control-lg" data-live-search="true" > <!-- onchange="get_item_details(this)"-->
+                                            <option value="0" selected>Expense / Item name</option>
+                                            <?php foreach ($inventorys as $inventory) { ?>
+                                            <?php if ($inventory->id == $expense->expense) { ?>
+                                                <option value="<?= $inventory->id; ?>" selected><?= $inventory->name; ?></option>
+                                            <?php } else { ?>
+                                                <option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>
+                                            <?php } ?>
+                                            <?php } ?>
+                                        </select>
                                         <input type="hidden" name="expenseid" value="<?=  $expense->id ; ?>" required="">
                                     </div>
                                 </div>

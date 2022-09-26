@@ -463,8 +463,9 @@ class Expenses {
         $user   = Auth::user();
         $expense = Database::table('expenses')->where('company', $user->company)->where('id', input("expenseid"))->first();
         $suppliers = Database::table('suppliers')->where('company', $user->company)->orderBy("id", false)->get();
+        $inventorys = Database::table('inventory')->where('company', $user->company)->get();
         
-        return view('modals/update-expense', compact("expense","user","suppliers"));
+        return view('modals/update-expense', compact("expense","user","suppliers","inventorys"));
         
     }
     

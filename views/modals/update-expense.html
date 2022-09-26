@@ -6,7 +6,17 @@
                                 <div class="form-group">
                                     <label class="form-label">Expense</label>
                                     <div class="form-control-wrap">
-                                        <input type="text" class="form-control form-control-lg" placeholder="Expense" name="expense" value="{{ $expense->expense }}" required="">
+                                        <!-- <input type="text" class="form-control form-control-lg" placeholder="Expense" name="expense" value="{{ $expense->expense }}" required=""> -->
+                                        <select name="expense" class="select_{{$index}} form-control form-control-lg" data-live-search="true" > <!-- onchange="get_item_details(this)"-->
+                                            <option value="0" selected>Expense / Item name</option>
+                                            @foreach($inventorys as $inventory)
+                                            @if($inventory->id == $expense->expense)
+                                                <option value="{{$inventory->id}}" selected>{{$inventory->name}}</option>
+                                            @else
+                                                <option value="{{$inventory->id}}" >{{$inventory->name}}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
                                         <input type="hidden" name="expenseid" value="{{ $expense->id }}" required="">
                                     </div>
                                 </div>

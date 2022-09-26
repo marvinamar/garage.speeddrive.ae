@@ -259,6 +259,7 @@ class Projects {
             $quotes = Database::table('quotes')->where('company', $user->company)->where('project', $project->id)->orderBy("id", false)->get();
             foreach ($quotes as $key => $quote) {
                 $quote->items = Database::table('quoteitems')->where('quote', $quote->id)->count("id", "total")[0]->total;
+                $quote->inventory = Database::table('inventory')->where('id', $quote->items)->first();
             }
 
         }elseif (isset($_GET["view"]) && $_GET["view"] == "payments") {
@@ -324,6 +325,7 @@ class Projects {
         $user   = Auth::user();
         $project = Database::table('projects')->where('company', $user->company)->where('id', input("projectid"))->first();
         $insurance = Database::table('insurance')->where('company', $user->company)->orderBy("id", false)->get();
+        
 
         $makes = Database::table('makes')->where('status', "Enabled")->orderBy("id", false)->get();
 

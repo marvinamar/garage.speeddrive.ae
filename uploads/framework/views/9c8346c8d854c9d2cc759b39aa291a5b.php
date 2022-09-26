@@ -11,16 +11,24 @@
                         <label class="form-label">Item Description</label>
                         <div class="form-control-wrap">
                             <select name="item[]" class="select_<?= $index; ?> form-control" data-live-search="true" onchange="get_item_details(this)">
-                                <option value="0">Select Item</option>
+                                <option value="0" selected>Select Item</option>
                                 <?php foreach ($inventorys as $inventory) { ?>
                                     <?php if ($inventory->id == $quoteitem->item) { ?>
                                         <option value="<?= $inventory->id; ?>" selected><?= $inventory->name; ?></option>
                                     <?php } else { ?>
-                                        <option value="<?= $inventory->id; ?>" selected><?= $inventory->name; ?></option>
+                                        <option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>
                                     <?php } ?>
                                 <?php } ?>
                             </select>
                             <input type="hidden" name="itemid[]" value="<?=  $quoteitem->id ; ?>" required="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control form-control-lg" name="item_descripton[]" value="<?= $quoteitem->item_description; ?>">
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-<?php global $s_v_data, $invoice, $invoiceitems, $user, $project; ?>
+<?php global $s_v_data, $invoice, $invoiceitems, $user, $project, $inventorys; ?>
                 <form class="simcy-form" action="<?=  url('Invoice@update') ; ?>" data-parsley-validate="" method="POST" loader="true">
                     <div class="modal-body update-invoice-calculation">
                         <p>Update invoice info.</p>
@@ -7,12 +7,44 @@
                             <?php foreach ($invoiceitems as $index => $invoiceitem) { ?>
                             <div class="row gy-4">
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="form-label">Item Description</label>
+                                        <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control form-control-lg" placeholder="Item Description" value="<?=  $invoiceitem->item ; ?>" name="item[]" required="">
+                                            <select name="item[]" class="select_<?= $index; ?> form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
+                                                <option value="0" selected>Select Item</option>
+                                                <?php foreach ($inventorys as $inventory) { ?>
+                                                    <?php if ($inventory->id == $invoiceitem->item) { ?>
+                                                        <option value="<?= $inventory->id; ?>" selected><?= $inventory->name; ?></option>
+                                                    <?php } else { ?>
+                                                        <option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            </select>
                                             <input type="hidden" name="itemid[]" value="<?=  $invoiceitem->id ; ?>" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" name="item_description[]" value="<?= $invoiceitem->item_description; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Work</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-control form-control-lg" name="workType[]">
+                                                <option value="0" <?= $invoiceitem->workType == '0' ? 'selected' : ''; ?>>Select Work</option>
+                                                <option value="body_work" <?= $invoiceitem->workType == 'body_work' ? 'selected' : ''; ?>>Body Work</option>                                                
+                                                <option value="mechanical_work" <?= $invoiceitem->workType == 'mechanical_work' ? 'selected' : ''; ?>>Mechanical Work</option>                                                
+                                                <option value="electrical_work" <?= $invoiceitem->workType == 'electrical_work' ? 'selected' : ''; ?>>Electrical Work</option>
+                                                <option value="ac_work" <?= $invoiceitem->workType == 'ac_work' ? 'selected' : ''; ?>>AC Work</option>                                                
+                                                <option value="other_work" <?= $invoiceitem->workType == 'other_work' ? 'selected' : ''; ?>>Other Work</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -32,7 +64,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <div class="form-group">
                                         <label class="form-label">Tax (%)</label>
                                         <div class="form-control-wrap hide-arrows">
@@ -64,7 +96,7 @@
                         <div class="item-totals border-top mt-2 pt-2">
                             <div class="row gy-4 d-flex justify-content-end">
                                 <div class="col-sm-2">
-                                    <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
+                                    <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item-quote" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
                                 </div>
 
                                 
@@ -84,12 +116,12 @@
                                 
                                 
                                 <div class="col-sm-4 text-right">
-                                    <div class="fw-normal">Sub Total: <?=  currency($user->parent->currency) ; ?> <div class="fw-bold sub-total"><?=  $invoice->subtotal ; ?></div></div>
+                                    <div class="fw-normal">Sub Totalsss: <?=  currency($user->parent->currency) ; ?> <div class="fw-bold sub-total"><?=  $invoice->subtotal ; ?></div></div>
                                     <div class="fw-normal">VAT Tax: <?=  currency($user->parent->currency) ; ?> <div class="fw-bold tax-total"><?=  $invoice->tax_amount ; ?></div></div>
                                     <div class="fw-bold fs-19px border-top">Total: <?=  currency($user->parent->currency) ; ?> <div class="fw-bold grand-total"><?=  $invoice->total ; ?></div></div>
-                                    <input type="show"  value="<?=  $invoice->total ; ?>" id="gtotal">
-                                    <input type="show"  value="<?=  $invoice->subtotal ; ?>" id="gsubtotal">
-                                    <input type="show"  value="<?=  $invoice->tax_amount ; ?>" id="gtaxtotal">
+                                    <input type="hidden"  value="<?=  $invoice->total ; ?>" id="gtotal">
+                                    <input type="hidden"  value="<?=  $invoice->subtotal ; ?>" id="gsubtotal">
+                                    <input type="hidden"  value="<?=  $invoice->tax_amount ; ?>" id="gtaxtotal">
                                 </div>
                                 <div class="col-sm-1">
                                 </div>
@@ -140,10 +172,6 @@
                         <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Save Changes</span></button>
                     </div>
                 </form>
-                
-                <input type="show"  value="<?=  $invoice->total ; ?>" id="Ogtotal">
-                <input type="show"  value="<?=  $invoice->subtotal ; ?>" id="Ostotal">
-                <input type="show"  value="<?=  $invoice->tax_amount ; ?>" id="Ottotal">
                 
                 
                  <!-- Modal add expense to invoice (edit) -->

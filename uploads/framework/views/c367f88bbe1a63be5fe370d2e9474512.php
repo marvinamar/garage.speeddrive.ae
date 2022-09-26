@@ -126,7 +126,7 @@
     <div class="modal-footer bg-light">
         <button class="btn btn-white btn-dim btn-outline-light" type="button" data-dismiss="modal"><em class="icon ni ni-cross-circle"></em><span>Cancel</span></button>
         <?php if (empty($approved)) { ?>
-        <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Create Approved Job Card</span></button>
+        <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Create Approveds Job Card</span></button>
         <?php } ?>
     </div>
 </form>
