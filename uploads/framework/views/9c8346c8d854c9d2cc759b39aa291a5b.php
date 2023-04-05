@@ -8,9 +8,9 @@
             <div class="row gy-4">
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label class="form-label">Item Description</label>
+                        <label class="form-label">Item</label>
                         <div class="form-control-wrap">
-                            <select name="item[]" class="select_<?= $index; ?> form-control" data-live-search="true" onchange="get_item_details(this)">
+                            <select name="item[]" class="select_<?= $index; ?> form-control form-control-lg selectpicker" data-live-search="true" onchange="get_item_details(this)">
                                 <option value="0" selected>Select Item</option>
                                 <?php foreach ($inventorys as $inventory) { ?>
                                     <?php if ($inventory->id == $quoteitem->item) { ?>
@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <label class="form-label">Description</label>
                         <div class="form-control-wrap">
-                            <input type="text" class="form-control form-control-lg" name="item_descripton[]" value="<?= $quoteitem->item_description; ?>">
+                            <input type="text" class="form-control form-control-lg" name="item_description[]" value="<?= $quoteitem->item_description; ?>">
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <label class="form-label">Work</label>
                         <div class="form-control-wrap">
-                            <select class="form-control" name="workType[]">
+                            <select class="form-control form-control-lg" name="workType[]">
                                 <option value="0" <?= $quoteitem->workType == '0' ? 'selected' : ''; ?>>Select Work</option>
                                 <option value="body_work" <?= $quoteitem->workType == 'body_work' ? 'selected' : ''; ?>>Body Work</option>                                                
                                 <option value="mechanical_work" <?= $quoteitem->workType == 'mechanical_work' ? 'selected' : ''; ?>>Mechanical Work</option>                                                
@@ -126,7 +126,7 @@
         <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Save Changes</span></button>
     </div>
 </form>
-
+<script>$('.selectpicker').selectpicker('refresh');</script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.grouped').select2({
@@ -154,18 +154,26 @@ var line = ' <div class="row gy-4"> '
                     +'<div class="form-group">'
                         +'<label class="form-label">Item Description</label> '
                             +'<div class="form-control-wrap"> '
-                                +'<select name="item[]" id="item[]" class="select_'+count+' form-control" data-live-search="true" onchange="get_item_details(this)">'
+                                +'<select name="item[]" id="item[]" class="select_'+count+' form-control form-control-lg  selectpicker" data-live-search="true" onchange="get_item_details(this)">'
                                 +'<?php foreach ($inventorys as $inventory) { ?>'
                                 +'<option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>'
                                 +'<?php } ?>'
                                 +'</select>'
                                 +'<input type="hidden" name="project" value="<?=  $project->id ; ?>" required="">'
             +'</div></div></div>'
+            +'<div class="col-sm-3">'
+                        +'        <div class="form-group">'
+                        +'            <label class="form-label">Description</label>'
+                        +'            <div class="form-control-wrap">'
+                        +'                <input type="text" class="form-control form-control-lg" name="item_description[]" value="<?= $quoteitem->item_description; ?>">'
+                        +'            </div>'
+                        +'        </div>'
+                        +'</div>'
             +'<div class="col-sm-2">'
         +'    <div class="form-group">'
         +'        <label class="form-label">Work</label>'
         +'        <div class="form-control-wrap">'
-        +'            <select class="form-control" name="workType[]">'
+        +'            <select class="form-control form-control-lg" name="workType[]">'
         +'                <option value="0">Select Work</option>'
         +'                <option value="body_work">Body Work</option>'
         +'                <option value="mechanical_work">Mechanical Work</option>'
@@ -182,9 +190,11 @@ var line = ' <div class="row gy-4"> '
 holder.append(line);
 $('#count').val(count)
 $('[data-toggle="tooltip"]').tooltip();
+$('.selectpicker').selectpicker('refresh');
 
 });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 <script>
 function get_item_details(select){
     var selected = select.value;
@@ -204,5 +214,5 @@ function get_item_details(select){
     })
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+
 <?php return;

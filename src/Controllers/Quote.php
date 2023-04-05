@@ -837,10 +837,10 @@ class Quote {
             $items[] = '<tr>
             <td style="width:5%;">'.($key + 1).'</td>
             <td style="width:30%;">'.$quoteitems[$key]['item'].'</td>
-            <td style="width:14%;">'.$quoteitems[$key]['item_description'].'</td>
-            <td style="width:10%;">'.$quoteitems[$key]['quantity'].'</td>
-            <td style="width:13;">'.money($quoteitems[$key]['cost'], $user->parent->currency).'</td>
-            <td style="width:10%;">'.$quoteitems[$key]['tax'].'%</td>
+            <td style="width:20%;">'.$quoteitems[$key]['item_description'].'</td>
+            <td style="width:6%;">'.$quoteitems[$key]['quantity'].'</td>
+            <td style="width:15%;">'.money($quoteitems[$key]['cost'], $user->parent->currency).'</td>
+            <td style="width:6%;">'.$quoteitems[$key]['tax'].'%</td>
             <td style="width:18%;text-align:right;"><b>'.money($quoteitems[$key]['total'], $user->parent->currency).'</b></td>
         </tr>';
         }
@@ -850,10 +850,10 @@ class Quote {
             <tr>
                 <td style="width:5%;"><b>#</b></td>
                 <td style="width:30%;"><b>Item</b></td>
-                <td style="width:14%;"><b>Description</b></td>
-                <td style="width:10%;"><b>Qty</b></td>
-                <td style="width:13%;"><b>Unit Cost</b></td>
-                <td style="width:10%;"><b>Tax</b></td>
+                <td style="width:20%;"><b>Description</b></td>
+                <td style="width:6%;"><b>Qty</b></td>
+                <td style="width:15%;"><b>Unit Cost</b></td>
+                <td style="width:6%;"><b>Tax</b></td>
                 <td style="width:18%;text-align:right;"><b>Total</b></td>
             </tr>
         </table>
@@ -1017,7 +1017,7 @@ class PDF extends TCPDF {
 
         $this->SetY(-50);
 
-        $yPos = $this->getY() - 10;
+        $yPos = $this->getY() -3;
 
         $this->Image(env("APP_URL")."/assets/images/footer.png", 0, $yPos, 600);
 

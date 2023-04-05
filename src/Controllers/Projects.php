@@ -176,19 +176,8 @@ class Projects {
         $update = array(
             "isApproved" => true,
         );
-
         Database::table('quotes')->where('id', $quoteId)->update($update);
-
-        // return response()->json(responder("success", "Alright!", "Quote successfully approved.", "redirect('" . url('Projects@details', array(
-        //     'projectid' => $projectid,
-        //     'Isqt' => 'false'
-        // )) . "', true)"));
-
-        return redirect(url('Projects@details', array(
-            'projectid' => $projectid,
-            'Isqt' => 'false'
-        )), true);
-
+        return redirect(url('Projects@details', array('projectid' => $projectid,'Isqt' => 'false')).'?view=invoices', true);
     }
 
 

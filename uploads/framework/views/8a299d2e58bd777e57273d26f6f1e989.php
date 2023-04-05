@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $pay_expenses, $inventorys, $date, $time; ?>
+<?php global $s_v_data, $user, $title, $widgets, $projects, $tasks, $income; ?>
                 <div class="nk-header nk-header-fixed is-light">
                     <div class="container-fluid">
                         <div class="nk-header-wrap">

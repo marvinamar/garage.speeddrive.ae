@@ -1707,7 +1707,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                            <select name="item[]" id="item[]" class="select_1 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
+                                            <select name="item[]" id="item[]" class="select_1 form-control form-control-lg selectpicker" data-live-search="true" onchange="get_item_details(this)">
                                                 <option value="0">Select Item</option>
                                                 <?php foreach ($inventorys as $inventory) { ?>
                                                 <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
@@ -1780,9 +1780,9 @@
                             <div class="row gy-4">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="form-label">Item Description</label>
+                                        <label class="form-label">Item</label>
                                         <div class="form-control-wrap">
-                                                <select name="item[]" id="item[]" class="select_2 form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">
+                                                <select name="item[]" id="item[]" class="select_2 form-control form-control-lg selectpicker " data-live-search="true" onchange="get_item_details(this)">
                                                     <option value="0">Select Item</option>
                                                     <?php foreach ($inventorys as $inventory) { ?>
                                                     <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
@@ -2468,6 +2468,7 @@
 <script>
     $("body").on("click", ".add-item-quote", function(event){
         event.preventDefault();
+        // reload_js();
         var count = parseFloat($('#count').val()) + 1;
         var holder = $(this).closest(".modal").find(".item-lines");
         var line = ' <div class="row gy-4"> '
@@ -2475,7 +2476,7 @@
                             +'<div class="form-group">'
                                 +'<label class="form-label">Item</label> '
                                     +'<div class="form-control-wrap"> '
-                                        +'<select name="item[]" id="item[]" class="select_'+count+' form-control form-control-lg" data-live-search="true" onchange="get_item_details(this)">'
+                                        +'<select name="item[]" id="item[]" class="select_'+count+' form-control form-control-lg selectpicker" data-live-search="true" onchange="get_item_details(this)">'
                                         +'<option value="0" >Select Item</option>'
                                         +'<?php foreach ($inventorys as $inventory) { ?>'
                                         +'<option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>'
@@ -2512,12 +2513,19 @@
         holder.append(line);
         $('#count').val(count)
         $('[data-toggle="tooltip"]').tooltip();
+        $('.selectpicker').selectpicker('refresh');
         
     });
 
     
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+
+    <script>
+        function reload_js(){
+           src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js";
+        }
+    </script>
 
     <script>
         function get_item_details(select){
