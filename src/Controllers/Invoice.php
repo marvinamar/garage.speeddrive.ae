@@ -75,7 +75,8 @@ class Invoice {
             "invoice_date" => escape(input('invoice_date')),
             "due_date" => escape(input('due_date')),
             "notes" => escape(input('notes')),
-            "payment_details" => escape(input('payment_details'))
+            "payment_details" => escape(input('payment_details')),
+            "discount_details" => escape(input('discount_details'))
         );
 
         if (!empty($project->insurance)) {
@@ -114,10 +115,34 @@ class Invoice {
 
         }
 
+        $discount = escape(input('discount')) > 0 ? escape(input('discount')) : escape(input('discount'));
+        if($tax > 0){
+            if($discount > 0){
+                $dicounted_total = $total - $discount;
+                $subtotal = $total;
+                $tax = $dicounted_total * 0.05;
+                $total = $dicounted_total + $tax;
+            }
+            else{
+                $subtotal = $total;
+            }
+        }
+        else{
+            if($discount > 0){
+                $dicounted_total = $total - $discount;
+                $subtotal = $total;
+                $total = $dicounted_total;
+            }
+            else{
+                $subtotal = $total;
+            }
+        }
+        
         $update = array(
-            "subtotal" => round($total, 2),
+            "subtotal" => round($subtotal, 2),
             "tax_amount" => round($tax, 2),
-            "total" => round($total + $tax, 2)
+            "discount" => round($discount, 2),
+            "total" => round($total, 2)
         );
 
         if (empty($update["total"])) {
@@ -131,7 +156,7 @@ class Invoice {
         $salesAccount   = Database::table('clients')->where('fullname','Sales Account')->where('isDefault','1')->get();
 
         //Client Account
-        Ledgerposting::save_ledger_posting($invoiceid, $project->client, 'cleint', 0, round($total, 2),'Invoice',escape(input('invoice_date')));
+        Ledgerposting::save_ledger_posting($invoiceid, $project->client, 'cleint', 0, round($subtotal, 2),'Invoice',escape(input('invoice_date')));
 
         //Input VAT account
         if($tax > 0)
@@ -140,7 +165,7 @@ class Invoice {
         }
 
         //Sales Account
-        Ledgerposting::save_ledger_posting($invoiceid, $salesAccount[0]->id, 'sales_account', round($total + $tax, 2), 0,'Invoice',escape(input('invoice_date')));
+        Ledgerposting::save_ledger_posting($invoiceid, $salesAccount[0]->id, 'sales_account', round($total, 2), 0,'Invoice',escape(input('invoice_date')));
         // Ledgerposting
         
         return response()->json(responder("success", "Alright!", "Invoice successfully created.", "redirect('" . url('Invoice@view', array(
@@ -258,14 +283,39 @@ class Invoice {
 
         }
 
+        $discount = escape(input('discount')) > 0 ? escape(input('discount')) : escape(input('discount'));
+        if($tax > 0){
+            if($discount > 0){
+                $dicounted_total = $total - $discount;
+                $subtotal = $total;
+                $tax = $dicounted_total * 0.05;
+                $total = $dicounted_total + $tax;
+            }
+            else{
+                $subtotal = $total;
+            }
+        }
+        else{
+            if($discount > 0){
+                $dicounted_total = $total - $discount;
+                $subtotal = $total;
+                $total = $dicounted_total;
+            }
+            else{
+                $subtotal = $total;
+            }
+        }
+
         $data = array(
             "invoice_date" => escape(input('invoice_date')),
             "due_date" => escape(input('due_date')),
             "notes" => escape(input('notes')),
             "payment_details" => escape(input('payment_details')),
-            "subtotal" => round($total, 2),
+            "discount_details" => escape(input('discount_details')),
+            "discount" => round($discount, 2),
+            "subtotal" => round($subtotal, 2),
             "tax_amount" => round($tax, 2),
-            "total" => round($total + $tax, 2)
+            "total" => round($total, 2)
         );
 
         Database::table('invoices')->where('id', input("invoiceid"))->where('company', $user->company)->update($data);
@@ -288,7 +338,7 @@ class Invoice {
         $salesAccount   = Database::table('clients')->where('fullname','Sales Account')->where('isDefault','1')->get();
 
         //Client Account
-        Ledgerposting::save_ledger_posting($invoice->id, $invoice->client, 'cleint', 0, round($total, 2),'Invoice',escape(input('invoice_date')));
+        Ledgerposting::save_ledger_posting($invoice->id, $invoice->client, 'cleint', 0, round($subtotal, 2),'Invoice',escape(input('invoice_date')));
 
         //Input VAT account
         if($tax > 0)
@@ -297,7 +347,7 @@ class Invoice {
         }
 
         //Sales Account
-        Ledgerposting::save_ledger_posting($invoice->id, $salesAccount[0]->id, 'sales_account', round($total + $tax, 2), 0,'Invoice',escape(input('invoice_date')));
+        Ledgerposting::save_ledger_posting($invoice->id, $salesAccount[0]->id, 'sales_account', round($total, 2), 0,'Invoice',escape(input('invoice_date')));
         // Ledgerposting
         
         return response()->json(responder("success", "Alright!", "Invoice successfully updated.", "redirect('" . url('invoice@view', array(
@@ -798,7 +848,7 @@ class Invoice {
             <td style="width:30%;">'.$invoiceitems[$key]['item'].'</td>
             <td style="width:14%;">'.$invoiceitems[$key]['item_description'].'</td>
             <td style="width:10%;">'.$invoiceitems[$key]['quantity'].'</td>
-            <td style="width:13;">'.money($invoiceitems[$key]['cost'], $user->parent->currency).'</td>
+            <td style="width:13%;">' .money($invoiceitems[$key]['cost'], $user->parent->currency). '</td>
             <td style="width:10%;">'.$invoiceitems[$key]['tax'].'%</td>
             <td style="width:18%;text-align:right;"><b>'.money($invoiceitems[$key]['total'], $user->parent->currency).'</b></td>
         </tr>';
@@ -841,7 +891,7 @@ class Invoice {
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','B',11);
         $pdf->SetTextColor(82, 100, 132);
-        $pdf->MultiCell(60, 20, "Subtotal ", null, "R");
+        $pdf->MultiCell(100, 20, "Subtotal ", null, "R");
         $pdf->SetXY($xPos, $yPos);
         $pdf->MultiCell(193, 20, money($invoice->subtotal, $user->parent->currency), null, "R");
 
@@ -849,11 +899,19 @@ class Invoice {
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','',10);
         $pdf->SetTextColor(128, 148, 174);
-        $pdf->MultiCell(60, 20, "Tax ", null, "R");
+        $pdf->MultiCell(100, 20, "Tax ", null, "R");
         $pdf->SetXY($xPos, $yPos);
         $pdf->MultiCell(193, 20, money($invoice->tax_amount, $user->parent->currency), null, "R");
 
         $yPos = $pdf->GetY();
+        $pdf->SetXY($xPos, $yPos);
+        $pdf->SetFont('','',10);
+        $pdf->SetTextColor(128, 148, 174);
+        $pdf->MultiCell(100, 100, $invoice->discount_details, null, "R");
+        $pdf->SetXY($xPos, $yPos);
+        $pdf->MultiCell(193, 20, money($invoice->discount, $user->parent->currency), null, "R");
+
+        $yPos = $pdf->GetY() + 20;
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFillColor(9, 113, 254);
         $pdf->Rect($xPos - 5, $yPos, 230, 30, 'F');
@@ -862,7 +920,7 @@ class Invoice {
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','B',13);
         $pdf->SetTextColor(254, 254, 254);
-        $pdf->MultiCell(60, 20, "TOTAL", null, "R");
+        $pdf->MultiCell(100, 20, "TOTAL", null, "R");
         $pdf->SetXY($xPos, $yPos);
         $pdf->MultiCell(193, 20, money($invoice->total, $user->parent->currency), null, "R");
         $totalsY = $pdf->GetY();
@@ -894,7 +952,7 @@ class Invoice {
             $pdf->writeHTML(nl2br($invoice->payment_details), true, false, true, false, '');
         }
 
-        // notes
+        // Notes
         if(!empty($invoice->notes)){
 
             $xPos = $pdf->GetX();
@@ -929,6 +987,41 @@ class Invoice {
 
         }
 
+        // // notes
+        // if(!empty($invoice->discount_details)){
+
+        //     $xPos = $pdf->GetX();
+        //     if(!empty($invoice->notes)){
+        //         $yPos = $pdf->GetY() + 30;
+        //     }else{
+        //         if ($yPos > 87 || $yPos < 790) {
+        //             $yPos = $pdf->GetY() - 67;
+        //         }
+        //     }
+
+        //     // if (($yPos + 50) > 790) {
+        //     //     $pdf->AddPage();
+        //     //     $yPos = $pdf->GetY();
+        //     // }
+
+        //     $pdf->SetXY($xPos, $yPos);
+        //     $pdf->SetFont('','B',12);
+        //     $pdf->SetTextColor(9, 113, 254);
+        //     $pdf->MultiCell(250, 25, "Discount Details: ", null, "L");
+        //     $pdf->SetDrawColor(229, 233, 243);
+        //     $pdf->SetLineWidth(2);
+
+        //     $yPos = $pdf->GetY();
+        //     $pdf->Line($xPos, $yPos, $xPos + 250, $yPos);
+
+        //     $yPos = $pdf->GetY() + 12;
+        //     $pdf->SetXY($xPos, $yPos);
+        //     $pdf->SetFont('','',10);
+        //     $pdf->SetTextColor(82, 100, 132);
+        //     $pdf->writeHTML(nl2br($invoice->discount_details), true, false, true, false, '');
+
+        // }
+
         // Customer acceptance signature
         if($user->parent->invoice_signing == "Enabled" && !empty($invoice->signature)){
             $xPos = $pdf->GetX();
@@ -955,6 +1048,8 @@ class Invoice {
             $pdf->SetXY($xPos, $yPos);
             $pdf->SetFont('','',10);
             $pdf->SetTextColor(82, 100, 132);
+
+            // $test = env("APP_URL");
 
             $pdf->Image(env("APP_URL")."/uploads/invoicesignatures/".$invoice->signature, $xPos, $yPos, 80);
             $pdf->SetXY($xPos, $yPos + 50);

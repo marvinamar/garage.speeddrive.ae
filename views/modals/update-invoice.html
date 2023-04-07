@@ -115,12 +115,16 @@
                                 
                                 
                                 <div class="col-sm-4 text-right">
-                                    <div class="fw-normal">Sub Totalsss: {{ currency($user->parent->currency) }} <div class="fw-bold sub-total">{{ $invoice->subtotal }}</div></div>
+                                    <div class="fw-normal">Sub Total: {{ currency($user->parent->currency) }} <div class="fw-bold sub-total">{{ $invoice->subtotal }}</div></div>
                                     <div class="fw-normal">VAT Tax: {{ currency($user->parent->currency) }} <div class="fw-bold tax-total">{{ $invoice->tax_amount }}</div></div>
+                                    <div class="fw-normal">Discount: <div class="fw-bold discount"> <input type="number"  class="form-control text-right" name="discount" id="discount" value="{{ $invoice->discount }}"> </div> </div>
                                     <div class="fw-bold fs-19px border-top">Total: {{ currency($user->parent->currency) }} <div class="fw-bold grand-total">{{ $invoice->total }}</div></div>
                                     <input type="hidden"  value="{{ $invoice->total }}" id="gtotal">
                                     <input type="hidden"  value="{{ $invoice->subtotal }}" id="gsubtotal">
                                     <input type="hidden"  value="{{ $invoice->tax_amount }}" id="gtaxtotal">
+                                    <input type="hidden" name="TaxTotal" id="TaxTotal" value="{{ $invoice->total }}">
+                                    <input type="hidden" name="SubTotal" id="SubTotal" value="{{ $invoice->subtotal }}">
+                                    <input type="hidden" name="GrandTotal" id="GrandTotal" value="{{ $invoice->tax_amount }}">
                                 </div>
                                 <div class="col-sm-1">
                                 </div>
@@ -144,7 +148,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="form-group mt-1">
                                         <label class="form-label">Notes</label>
                                         <div class="form-control-wrap">
@@ -154,13 +158,22 @@
                                         <div class="form-note">Notes will be printed on the invoice.</div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="form-label">Payment Details</label>
                                         <div class="form-control-wrap">
                                             <textarea class="form-control form-control-lg unset-mh" placeholder="Payment Details" rows="2" name="payment_details">{{ $invoice->payment_details }}</textarea>
                                         </div>
                                         <div class="form-note">Payment details will be printed on the invoice.</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Discount Details</label>
+                                        <div class="form-control-wrap">
+                                            <textarea class="form-control form-control-lg unset-mh" placeholder="Discount Details" rows="2" name="discount_details">{{ $invoice->discount_details }}</textarea>
+                                        </div>
+                                        <div class="form-note">discount details will be printed on the invoice.</div>
                                     </div>
                                 </div>
                             </div>
@@ -203,4 +216,25 @@
         </div>
     </div>
     
+
+    <script>
+        $('#discount, #insurance_exception_amount').on("change",function() {
+    
+    var discount = $('#discount').val();
+    // var insurance_exception_amount = $('#insurance_exception_amount').val();
+    // var grandtotal = $('#GrandTotal').val();
+    var subtotal = $('#SubTotal').val();
+    var taxtotal = $('#TaxTotal').val();
+    
+    subtotal = parseFloat(subtotal) - parseFloat(discount);
+
+
+    if(taxtotal > 0){
+        var tax = parseFloat(subtotal) * 0.05;
+        $('.tax-total').text(currency+" "+tax.toFixed(2));
+        var grandtotal = subtotal + tax;
+    }
+    $('.grand-total').text(currency+" "+grandtotal.toFixed(2));
+});
+    </script>
     

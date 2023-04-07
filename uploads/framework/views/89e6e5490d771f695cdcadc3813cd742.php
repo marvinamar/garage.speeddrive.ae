@@ -2075,7 +2075,12 @@
                                 <div class="col-sm-4 text-right">
                                     <div class="fw-normal">Sub Total:<div class="fw-bold sub-total"><?=  currency($user->parent->currency) ; ?> 0.00</div></div>
                                     <div class="fw-normal">Tax:<div class="fw-bold tax-total"><?=  currency($user->parent->currency) ; ?> 0.00</div></div>
+                                    <div class="fw-normal">Discount: <div class="fw-bold discount"> <input type="number"  class="form-control text-right" name="discount" id="discount" value="0.00"> </div> </div>
+                                    <!-- <div class="fw-normal" style="margin-top: 5px;">Insurance Exception Amount: <div class="fw-bold insurance-exception-amount"> <input type="number"  class="form-control text-right" name="insurance_exception_amount" id="insurance_exception_amount" value="0.00"> </div> </div> -->
                                     <div class="fw-bold fs-19px border-top">Total:<div class="fw-bold grand-total"><?=  currency($user->parent->currency) ; ?> 0.00</div></div>
+                                    <input type="hidden" name="TaxTotal" id="TaxTotal">
+                                    <input type="hidden" name="SubTotal" id="SubTotal">
+                                    <input type="hidden" name="GrandTotal" id="GrandTotal">
                                 </div>
                                 <div class="col-sm-1">
                                 </div>
@@ -2099,7 +2104,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="form-label">Notes</label>
                                         <div class="form-control-wrap">
@@ -2108,13 +2113,22 @@
                                         <div class="form-note">Notes will be printed on the invoice.</div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="form-label">Receipt Details</label>
                                         <div class="form-control-wrap">
                                             <textarea class="form-control form-control-lg unset-mh" placeholder="Payment Details" rows="2" name="payment_details"><?=  $user->parent->payment_details ; ?></textarea>
                                         </div>
                                         <div class="form-note">receipt details will be printed on the invoice.</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Discount Details</label>
+                                        <div class="form-control-wrap">
+                                            <textarea class="form-control form-control-lg unset-mh" placeholder="Discount Details" rows="2" name="discount_details"></textarea>
+                                        </div>
+                                        <div class="form-note">discount details will be printed on the invoice.</div>
                                     </div>
                                 </div>
                             </div>

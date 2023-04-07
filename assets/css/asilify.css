@@ -318,10 +318,12 @@ textarea.form-control.unset-min-height {
 .card-content {
     max-width: 100%;
 }
-.grand-total, .tax-total, .sub-total {
+.grand-total, .tax-total, .sub-total, .discount, .insurance-exception-amount {
     display: inline-block;
     width: 190px;
 }
+
+
 
 @media (max-width: 470px) {
     .record-booking-desktop {

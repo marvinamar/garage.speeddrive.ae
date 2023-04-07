@@ -338,6 +338,7 @@ NioApp.calculatetotal = function(items) {
     items.siblings(".item-totals").find(".sub-total").text(currency+" "+subtotal.toFixed(2));
     items.siblings(".item-totals").find(".tax-total").text(currency+" "+taxtotal.toFixed(2));
     items.siblings(".item-totals").find(".grand-total").text(currency+" "+grandtotal.toFixed(2));
+
     return;
 
 }
@@ -364,14 +365,40 @@ function calculatetotal(items) {
         taxtotal = taxtotal + rowtaxtotal;
     });
 
+    var discount = $('#discount').val();
+
+    grandtotal = parseFloat(grandtotal) - parseFloat(discount);
+
     items.siblings(".item-totals").find(".sub-total").text(currency+" "+subtotal.toFixed(2));
     items.siblings(".item-totals").find(".tax-total").text(currency+" "+taxtotal.toFixed(2));
     items.siblings(".item-totals").find(".grand-total").text(currency+" "+grandtotal.toFixed(2));
-    document.getElementById('gtotal').value = grandtotal;
-    document.getElementById('gsubtotal').value = subtotal;
+    // document.getElementById('gtotal').value = parseFloat(grandtotal);
+    // document.getElementById('gsubtotal').value = subtotal;
+    document.getElementById('TaxTotal').value = parseFloat(taxtotal);
+    document.getElementById('SubTotal').value = parseFloat(subtotal);
+    document.getElementById('GrandTotal').value = parseFloat(grandtotal);
     return;
 
 }
+
+$('#discount, #insurance_exception_amount').on("change",function() {
+    alert('Reached');
+    var discount = $('#discount').val();
+    // var insurance_exception_amount = $('#insurance_exception_amount').val();
+    // var grandtotal = $('#GrandTotal').val();
+    var subtotal = $('#SubTotal').val();
+    var taxtotal = $('#TaxTotal').val();
+    
+    subtotal = parseFloat(subtotal) - parseFloat(discount);
+
+
+    if(taxtotal > 0){
+        var tax = parseFloat(subtotal) * 0.05;
+        $('.tax-total').text(currency+" "+tax.toFixed(2));
+        var grandtotal = subtotal + tax;
+    }
+    $('.grand-total').text(currency+" "+grandtotal.toFixed(2));
+});
 
 
 /*

@@ -299,13 +299,17 @@
                         </div>
                         <div class="item-totals border-top mt-2 pt-2">
                             <div class="row gy-4 d-flex justify-content-end">
-                                <div class="col-sm-7">
+                                <div class="col-sm-4">
                                     <a href="" class="btn btn-dim btn-outline-primary mt-2 add-item" data-type="invoice"><em class="icon ni ni-plus"></em><span>Add Item</span> </a>
                                 </div>
-                                <div class="col-sm-4 text-right">
+                                <div class="col-sm-7 text-right">
                                     <div class="fw-normal">Sub Total:<div class="fw-bold sub-total"><?=  currency($user->parent->currency) ; ?> 0.00</div></div>
                                     <div class="fw-normal">Tax:<div class="fw-bold tax-total"><?=  currency($user->parent->currency) ; ?> 0.00</div></div>
+                                    <div class="fw-normal">Discount: <div class="fw-bold discount"> <input type="number"  class="form-control text-right" name="discount" id="discount" value="0.00"> </div> </div>
+                                    <div class="fw-normal" style="margin-top: 5px;">Insurance Exception Amount: <div class="fw-bold insurance-exception-amount"> <input type="number"  class="form-control text-right" name="insurance_exception_amount" id="insurance_exception_amount" value="0.00"> </div> </div>
                                     <div class="fw-bold fs-19px border-top">Total:<div class="fw-bold grand-total"><?=  currency($user->parent->currency) ; ?> 0.00</div></div>
+                                    <input type="text" name="SubTotal" id="SubTotal">
+                                    <input type="text" name="GrandTotal" id="GrandTotal">
                                 </div>
                                 <div class="col-sm-1">
                                 </div>

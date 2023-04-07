@@ -434,6 +434,7 @@ class Quote {
                 "project" => $quoteitem->project,
                 "invoice" => $invoiceid,
                 "item" => $quoteitem->item,
+                "item_description" => $quoteitem->item_description,
                 "quantity" => $quoteitem->quantity,
                 "cost" => $quoteitem->cost,
                 "total" => $quoteitem->total,
