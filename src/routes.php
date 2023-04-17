@@ -131,6 +131,7 @@ Router::group(array(
         Router::get('/tasks/pending', 'Tasks@pending');
         Router::post('/tasks/import/workrequested', 'Tasks@workrequested');
         Router::post('/tasks/import/jobcards', 'Tasks@jobcards');
+        Router::post('/tasks/add-to-invoice', 'Tasks@add_to_invoice');
         
         // Job cards
         Router::post('/jobcards/create', 'Jobcards@create');
@@ -145,6 +146,8 @@ Router::group(array(
         ));
         Router::post('/jobcards/send', 'Jobcards@send');
         Router::post('/jobcards/delete', 'Jobcards@delete');
+        Router::post('/jobcards/insert-to-invoice', 'Jobcards@job_card_insert_in_invoice');
+
         
         // Expenses
         Router::post('/expenses/create', 'Expenses@create');

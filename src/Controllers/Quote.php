@@ -116,12 +116,80 @@ class Quote {
 
         Database::table('quotes')->where('id', $quoteid)->where('company', $user->company)->update($update);
 
-        return response()->json(responder("success", "Alright!", "Quote successfully created.", "redirect('" . url('Quote@get') . "')"));
+        //##### Check If Invoice Not Yet Created against this project #####\\
+        $_invoice = Database::table('invoice')->where('company', $user->company)->where('id', input('project'))->first();
+
+        //##### Create Invoice #####\\
+        if($_invoice == null){
+            $invoiceid = $this->auto_convert_quote_to_invoice($quoteid);
+        }
+
+        return response()->json(responder("success", "Alright!", "Quote successfully converted to invoice.", "redirect('" . url('invoice@view', array(
+            'invoiceid' => $invoiceid
+        )) . "')"));
+
+        // return response()->json(responder("success", "Alright!", "Quote successfully created.", "redirect('" . url('Quote@get') . "')"));
 
         // return response()->json(responder("success", "Alright!", "Quote successfully created.", "redirect('" . url('Quote@view', array(
         //     'quoteid' => $quoteid
         // )) . "')"));
 
+    }
+
+    public function auto_convert_quote_to_invoice($quoteid, $projectid){
+        $user = Auth::user();
+        $total = 0;
+
+        $quote = Database::table('quotes')->where('company', $user->company)->where('id', $quoteid)->first();
+        $project = Database::table('projects')->where('company', $user->company)->where('id', $projectid)->first();
+
+        $data = array(
+            "company" => $quote->company,
+            "project" => $quote->project,
+            "subtotal" => $quote->subtotal,
+            "tax" => $quote->tax,
+            "tax_amount" => $quote->tax_amount,
+            "total" => $quote->total,
+            "invoice_date" => $project->start_date,
+            "due_date" => $project->end_date,
+            "notes" => $quote->notes,
+            "quote" => $quote->id,
+            "payment_details" => ''
+        );
+
+        if (!empty($quote->client)) {
+            $data["client"] = $quote->client;
+        }
+
+        if (!empty($quote->insurance)) {
+            $data["insurance"] = $quote->insurance;
+        }
+
+        Database::table('invoices')->insert($data);
+        $invoiceid = Database::table('invoices')->insertId();
+
+        $quoteitems = Database::table('quoteitems')->where('company', $user->company)->where('quote', $quote->id)->get();
+        foreach ($quoteitems as $key => $quoteitem) {
+
+            $line = array(
+                "company" => $quoteitem->company,
+                "project" => $quoteitem->project,
+                "invoice" => $invoiceid,
+                "item" => $quoteitem->item,
+                "item_description" => $quoteitem->item_description,
+                "quantity" => $quoteitem->quantity,
+                "cost" => $quoteitem->cost,
+                "total" => $quoteitem->total,
+                "tax" => $quoteitem->tax,
+                "ref_module" => 'quote',
+                "ref_id" => $quote->id
+            );
+
+            Database::table('invoiceitems')->insert($line);
+
+        }
+
+        return $invoiceid;
     }
 
     public function create_at_project(){
@@ -184,6 +252,17 @@ class Quote {
         Database::table('quotes')->where('id', $quoteid)->where('company', $user->company)->update($update);
 
         $quote = Database::table('quotes')->where('company', $user->company)->where('id', $quoteid)->first();
+
+        //##### Check If Invoice Not Yet Created against this project #####\\
+        $_invoice = Database::table('invoice')->where('company', $user->company)->where('id', input('project'))->first();
+
+        //##### Create Invoice #####\\
+        if($_invoice == null){
+            $invoiceid = $this->auto_convert_quote_to_invoice($quoteid, input('project'));
+        }
+        else{
+
+        }
 
         return response()->json(responder("success", "Alright!", "Quote successfully deleted.", "redirect('" . url('Projects@details', array(
             'projectid' => $quote->project,

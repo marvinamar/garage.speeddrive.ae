@@ -78,7 +78,7 @@
                                         <div class="form-group">
                                             <label class="form-label">Due Date</label>
                                             <div class="form-control-wrap">
-                                                <input type="date" class="form-control form-control-lg" placeholder="Due Date" name="due_date<?=  $index ; ?>" required="">
+                                                <input type="date" class="form-control form-control-lg" placeholder="Due Date" name="due_date<?=  $index ; ?>" required="" value="<?= date('Y-m-d'); ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                         <div class="form-group">
                                             <label class="form-label">Due Time</label>
                                             <div class="form-control-wrap">
-                                                <input type="time" class="form-control form-control-lg" placeholder="Due Time" name="due_time">
+                                                <input type="time" class="form-control form-control-lg" placeholder="Due Time" name="due_time" value="<?= date('H:s'); ?>">
                                             </div>
                                         </div>
                                     </div>

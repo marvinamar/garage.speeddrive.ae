@@ -108,13 +108,12 @@
                                                             <?php } ?>
                                                         </td>
                                                         <?php if ($user->role == "Owner" || $user->role == "Manager") { ?>
-                                                            <td class="nk-tb-col">
+                                                        <td class="nk-tb-col">
+                                                            <span><?=  money($project->invoiced, $user->parent->currency) ; ?></span><br>
+                                                        </td>    
+                                                        <td class="nk-tb-col">
                                                                 <span><?=  money(($project->cost), $user->parent->currency) ; ?></span>
                                                             </td>
-                                                            <td class="nk-tb-col">
-                                                                <span><?=  money($project->invoiced, $user->parent->currency) ; ?></span><br>
-                                                            </td>
-
                                                             <td class="nk-tb-col">
                                                                 <span class="tb-amount"><?=  money(($project->invoiced - $project->cost), $user->parent->currency) ; ?></span>
                                                             </td>

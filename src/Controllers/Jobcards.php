@@ -546,6 +546,11 @@ class Jobcards {
         die();
 
     }
+
+    public function job_card_insert_in_invoice(){
+        $jobcardid = input("jobcardid");
+
+    }
     
 }
 

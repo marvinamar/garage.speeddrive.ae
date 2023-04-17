@@ -529,6 +529,8 @@
                                                                 </div>
                                                                 <div class="bq-note-meta">
                                                                     <span class="bq-note-added">Job Card <span class="fw-bold">#{{ $jobcard->id }}</span> Created on <span class="date">{{ date("F j, Y", strtotime(timezoned($jobcard->created_at, $user->parent->timezone))) }}</span> at <span class="time">{{ date("h:ia", strtotime(timezoned($jobcard->created_at, $user->parent->timezone))) }}</span></span>
+                                                                    <!-- <span class="bq-note-sep sep">•</span>
+                                                                    <a href="" class="link link-sm link-primary fetch-display-click" data="jobcardid:{{ $jobcard->id }}|action:insert" url="{{ url('Jobcards@job_card_insert_in_invoice') }}" >Add In Invoice</a> holder=".update-holder-lg" modal="#update-lg" -->
                                                                     <span class="bq-note-sep sep">•</span>
                                                                     <a href="" class="link link-sm link-primary fetch-display-click" data="jobcardid:{{ $jobcard->id }}|action:edit" url="{{ url('Jobcards@updateview') }}" holder=".update-holder-lg" modal="#update-lg">Edit Job Card</a>
                                                                     @if($jobcard->approved == "No")
@@ -647,6 +649,7 @@
                                                                                     <ul class="link-list-opt no-bdr">
                                                                                     <li><a class="fetch-display-click" data="taskid:{{ $task->id }}|action:view" url="{{ url('Tasks@updateview') }}" holder=".update-holder" modal="#update" href=""><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
                                                                                     <li><a class="fetch-display-click" data="taskid:{{ $task->id }}|action:edit" url="{{ url('Tasks@updateview') }}" holder=".update-holder" modal="#update" href=""><em class="icon ni ni-pen"></em><span>Edit Details</span></a></li>
+                                                                                    <li><a class="send-to-server-click" data="taskid:{{ $task->id }}" url="{{ url('Tasks@add_to_invoice') }}" href=""><em class="icon ni ni-plus"></em><span>Add To Invoice</span></a></li>
                                                                                     <li><a href="{{ url('Tasks@download', array('taskid' => $task->id)) }}"><em class="icon ni ni-download-cloud"></em><span>Download</span></a></li>
                                                                                     @if($task->status == "In Progress")
                                                                                     <li><a href="" class="send-to-server-click"  data="taskid:{{ $task->id }}" url="{{ url('Tasks@cancel') }}" warning-title="Are you sure?" warning-message="This task will be marked as cancelled." warning-button="Yes, Cancel!"><em class="icon ni ni-na"></em><span>Cancel Task</span></a></li>

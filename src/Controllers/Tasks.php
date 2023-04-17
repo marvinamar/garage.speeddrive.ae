@@ -705,6 +705,9 @@ class Tasks {
         die();
 
     }
+    public function add_to_invoice(){
+        $task_id = input('taskid');
+    }
     
 }
 

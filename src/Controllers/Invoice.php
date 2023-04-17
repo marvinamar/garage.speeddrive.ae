@@ -293,6 +293,7 @@ class Invoice {
             }
             else{
                 $subtotal = $total;
+                $total = $subtotal + $tax;
             }
         }
         else{
@@ -632,8 +633,6 @@ class Invoice {
      * @return Json
      */
     public function generate($user, $invoice, $invoiceitems, $project, $client, $save = false) {
-
-
 
         $outputName = uniqid("asilify_").".pdf";
         $outputPath = config("app.storage")."/tmp/". $outputName;

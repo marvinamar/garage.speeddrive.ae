@@ -307,7 +307,7 @@ class Database {
     public function insert(array $field_value_pairs) {
         $this->addFields(array_keys($field_value_pairs));
         $this->addValues(array_values($field_value_pairs));
-        // echo "INSERT INTO {$this->tableName} ({$this->getFields()}) VALUES ({$this->getValues(',')})";
+        $dd =  "INSERT INTO {$this->tableName} ({$this->getFields()}) VALUES ({$this->getValues(',')})";
         return $this->conn->query("INSERT INTO {$this->tableName} ({$this->getFields()}) VALUES ({$this->getValues(',')})");
     }
     

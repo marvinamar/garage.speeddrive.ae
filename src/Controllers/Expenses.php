@@ -3,6 +3,7 @@ namespace Simcify\Controllers;
 
 use Simcify\Database;
 use Simcify\Auth;
+use Twilio\Rest\Wireless\V1\Sim\DataSessionInstance;
 
 class Expenses {
     
@@ -160,9 +161,9 @@ class Expenses {
                 "company" => $user->company,
                 "project" => escape(input('project')),
                 "inventory" => escape(input('inventory')),
-                "expense" => $inventory->name,
+                "expense" => $inventory->id,
                 "amount" => escape(input('totalamount') ),
-                "cost" => $inventory->unit_cost,
+                // "cost" => $inventory->unit_cost,
                 "quantity" => escape(input('consumed')),
                 "units" => $inventory->quantity_unit,
                 "expense_date" => escape(input('expensedate'))
@@ -206,7 +207,40 @@ class Expenses {
         //Sales Account
         Ledgerposting::save_ledger_posting($expenseid, $cashAccount[0]->id, 'sales_account', escape(input('amount')), 0,'Expense',escape(input('expense_date')));
         // Ledgerposting
+
+        // ### Auto Insert To Invoice \\
+
+        if($expenseid > 0){
+            $_expense = Database::table('expenses')->where('company', $user->company)->where('id', $expenseid)->first();
+            $_invoice = Database::table('invoices')->where('company', $user->company)->where('project', $_expense->project)->first();
+
+            if($_invoice != null){
+                //Invoice
+                $subtotal = $_invoice->subtotal + $_expense->amount;
+                $total = $_invoice->total + $_expense->amount;
+                Database::table('invoices')->where('id', $_invoice->id)->where('company', $user->company)->update(['total'=>$total,'subtotal'=>$subtotal]);
         
+                $data = array(
+                    "company" => $user->company,
+                    "project" => $_expense->project,
+                    "invoice" => $_invoice->id,
+                    "item" => $_expense->expense,
+                    "item_description" => '',
+                    "workType" => '',
+                    "quantity" => $_expense->quantity,
+                    "cost" => $_expense->amount,
+                    "tax" => 0,
+                    "total" => $_expense->amount,
+                    "ref_module" => 'expense',
+                    "ref_id" => $_expense->id
+                );
+
+                //InvoiceItems
+                Database::table('invoiceitems')->insert($data);
+            }
+
+            // ### Auto Insert To Invoice \\
+        }
         return response()->json(responder("success", "Alright!", "Expense successfully added.", "redirect('" . url('Projects@details', array(
             'projectid' => input('project'),
             'Isqt' => 'false'
@@ -570,6 +604,32 @@ class Expenses {
                 Database::table('inventory')->where('company', $user->company)->where('id', $inventory->id)->update(array(
                     "quantity" => round(($inventory->quantity + $expense->quantity), 2)
                 ));
+            }
+
+            $_expese_invoiceItem = Database::table('invoiceitems')->where('ref_id',$expense->id)->where('ref_module','expense')->first();
+            $_invoice = Database::table('invoices')->where('id',$_expese_invoiceItem->invoice)->first();
+
+            if($_expese_invoiceItem != null){
+                if($_expese_invoiceItem->tax > 0){
+                    $_tax_percantage = $_expese_invoiceItem->tax / 100;
+                    $_tax = $_expese_invoiceItem->cost * $_tax_percantage;
+
+                    $data = array(
+                        'subtotal' => $_invoice->subtotal - $_expese_invoiceItem->cost, 
+                        'tax' => $_invoice->tax - $_tax,
+                        'total' => $_invoice->total - $_expese_invoiceItem->total,
+                    );
+
+                    
+                }
+                else{
+                    $data = array(
+                        'subtotal' => $_invoice->subtotal - $_expese_invoiceItem->cost, 
+                        'total' => $_invoice->total - $_expese_invoiceItem->total,
+                    );
+                }
+                Database::table('invoices')->where('id', $_invoice->id)->update($data);
+                Database::table('invoiceitems')->where('id', $_expese_invoiceItem->id)->delete();
             }
         }
 

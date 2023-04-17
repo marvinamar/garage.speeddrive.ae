@@ -51,6 +51,7 @@
                                                         <th class="nk-tb-col text-center">#</th>
                                                         <th class="nk-tb-col"><span class="sub-text">Item / Shelf No.</span></th>
                                                         <th class="nk-tb-col tb-col-md"><span class="sub-text">Quantity / Item Code</span></th>
+                                                        <th class="nk-tb-col tb-col-md"><span class="sub-text">Purchase Cost</span></th>
                                                         <th class="nk-tb-col tb-col-md"><span class="sub-text">Unit Cost</span></th>
                                                         <th class="nk-tb-col tb-col-md"><span class="sub-text">Supplier</span></th>
                                                         <th class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></th>
@@ -70,6 +71,9 @@
                                                         <td class="nk-tb-col tb-col-mb">
                                                                 <span class="tb-lead"><?=  $item->quantity ; ?> <?=  $item->quantity_unit ; ?></span>
                                                                 <span><?=  $item->item_code ; ?></span>
+                                                        </td>
+                                                        <td class="nk-tb-col tb-col-mb" data-order="<?=  $item->purchase_cost ; ?>">
+                                                            <span class="tb-amount"><?=  money($item->purchase_cost, $user->parent->currency) ; ?> </span>
                                                         </td>
                                                         <td class="nk-tb-col tb-col-mb" data-order="<?=  $item->unit_cost ; ?>">
                                                             <span class="tb-amount"><?=  money($item->unit_cost, $user->parent->currency) ; ?> </span>
@@ -198,16 +202,28 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label class="form-label">Purchase Cost</label>
+                                    <div class="form-control-wrap">
+                                        <div class="form-text-hint">
+                                            <span class="overline-title"><?=  $user->parent->currency ; ?></span>
+                                        </div>
+                                        <input type="number" class="form-control form-control-lg" placeholder="Purchase Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="purchase_cost" id="purchase_cost" value="0.00" step="0.01" min="0.00" required="required" onchange="profit();">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     <label class="form-label">Unit Cost</label>
                                     <div class="form-control-wrap">
                                         <div class="form-text-hint">
                                             <span class="overline-title"><?=  $user->parent->currency ; ?></span>
                                         </div>
-                                        <input type="number" class="form-control form-control-lg" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="unit_cost" value="0.00" step="0.01" min="0.00" required="required">
+                                        <input type="number" class="form-control form-control-lg" placeholder="Unit Cost" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="unit_cost" id="unit_cost" value="0.00" step="0.01" min="0.00" required="required" onchange="profit();">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <p id="profit" class="col-sm-12 text-sm-center text-success"></p>
+                            <div class="col-sm-12">
                                 <div class="form-group">
                                     <label class="form-label">Select Supplier</label>
                                     <div class="form-control-wrap">
@@ -303,6 +319,25 @@
     <!-- JavaScript -->
     <?= view( 'includes/scripts', $s_v_data ); ?>
 </body>
-
 </html>
+
+<script>
+
+    function profit()
+    {   
+        var unit_cost = $('#unit_cost').val();
+        var purchase_cost = $('#purchase_cost').val();
+
+        if(unit_cost > 0 && purchase_cost > 0)
+        {
+            var profit = unit_cost - purchase_cost;
+            $('#profit').append('Profit :' + profit);
+        }
+    }
+    
+    $('#create').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+        $('#profit').remove();
+    });
+</script>
 <?php return;

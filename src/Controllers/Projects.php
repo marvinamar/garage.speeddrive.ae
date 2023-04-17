@@ -213,6 +213,8 @@ class Projects {
             if (!empty($expense->supplier)) {
                 $expense->supplier = Database::table('suppliers')->where('id', $expense->supplier)->first();
             }
+                $_inventory = Database::table('inventory')->where('id', $expense->expense)->first();
+                $expense->expense = $_inventory->name;
         }
 
         $jobcards = Database::table('jobcards')->where('company', $user->company)->where('project', $project->id)->orderBy("id", false)->get();
