@@ -78,6 +78,12 @@
                                                          active
                                                          <?php } ?>" href="<?=  url('Team@details', array('teamid' => $member->id)) ; ?>?view=payments"><em class="icon ni ni-align-left"></em><span>Payments</span></a>
                                                     </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link
+                                                        <?php if (isset($_GET['view']) && $_GET['view'] == 'income_expense') { ?>
+                                                         active
+                                                         <?php } ?>" href="<?=  url('Team@details', array('teamid' => $member->id)) ; ?>?view=income_expense"><em class="icon ni ni-align-left"></em><span>Income / Expense Report</span></a>
+                                                    </li>
                                                 </ul><!-- .nav-tabs -->
                                                 <?php if (!isset($_GET["view"])) { ?>
                                                 <div class="card-inner">
@@ -389,6 +395,165 @@
                                                             <?php } ?>
                                                         </tbody>
                                                     </table>
+                                                </div><!-- .card-inner -->
+                                                <?php } else if (isset($_GET["view"]) && $_GET["view"] == "income_expense") { ?>
+                                                <div class="card-inner row">
+
+                                                    <!-- Income Part -->
+
+                                                    <div class="col-md-6">
+                                                        <div class="nk-block mb-2">
+                                                            <div class="nk-block-head">
+                                                                <a href="" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addpayment"><em class="icon ni ni-plus"></em><span>Add Payment</span></a>
+                                                                <h5 class="title">Income</h5>
+                                                                <!-- <p>A list of payments made to <?=  $member->fname ; ?> <?=  $member->lname ; ?>.</p> -->
+                                                            </div><!-- .nk-block-head -->
+                                                        </div><!-- .nk-block -->
+    
+                                                        <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                            <thead>
+                                                                <tr class="nk-tb-item nk-tb-head">
+                                                                    <th class="nk-tb-col text-center">#</th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Member</span></th>
+                                                                    <th class="nk-tb-col"><span class="sub-text">Amount</span></th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Date</span></th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Mode</span></th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Note</span></th>
+                                                                    <th class="nk-tb-col nk-tb-col-tools text-right">
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php if (!empty($payments)) { ?>
+                                                                <?php foreach ($payments as $index => $payment) { ?>
+                                                                <tr class="nk-tb-item">
+                                                                    <td class="nk-tb-col text-center"><?=  $index + 1 ; ?></td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <div class="user-card">
+                                                                            <div class="user-info">
+                                                                                <span class="tb-lead"><?=  $member->fname ; ?> <?=  $member->lname ; ?> <span class="dot dot-success d-md-none ml-1"></span></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span><?=  $member->phonenumber ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col">
+                                                                        <span class="tb-amount"><?=  money($payment->amount, $user->parent->currency) ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <span><?=  date("F j, Y", strtotime($payment->payment_date)) ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <span><?=  $payment->mode ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <p class="text-ellipsis w-100px"><span><?=  $payment->note ; ?></span></p>
+                                                                    </td>
+                                                                    <td class="nk-tb-col nk-tb-col-tools">
+                                                                        <ul class="nk-tb-actions gx-1">
+                                                                            <li>
+                                                                                <div class="drodown">
+                                                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <ul class="link-list-opt no-bdr">
+                                                                                        <li><a class="fetch-display-click" data="paymentid:<?=  $payment->id ; ?>" url="<?=  url('Teampayment@updateview') ; ?>" holder=".update-holder" modal="#update" href=""><em class="icon ni ni-pen"></em><span>Edit Details</span></a></li>
+                                                                                        <?php if ($user->role == "Owner") { ?>
+                                                                                        <li class="divider"></li>
+                                                                                        <li><a class="send-to-server-click"  data="paymentid:<?=  $payment->id ; ?>" url="<?=  url('Teampayment@delete') ; ?>" warning-title="Are you sure?" warning-message="This payment will be deleted permanently." warning-button="Yes, delete!" href=""><em class="icon ni ni-trash"></em><span>Delete Payment</span></a></li>
+                                                                                        <?php } ?>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </td>
+                                                                </tr><!-- .nk-tb-item  -->
+                                                                <?php } ?>
+                                                                <?php } else { ?>
+                                                                <tr>
+                                                                    <td class="text-center" colspan="8">It's empty here!</td>
+                                                                </tr>
+                                                                <?php } ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <!-- Expense Part -->
+
+                                                    <div class="col-md-6">
+                                                        <div class="nk-block mb-2">
+                                                            <div class="nk-block-head">
+                                                                <a href="" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addpayment"><em class="icon ni ni-plus"></em><span>Add Payment</span></a>
+                                                                <h5 class="title">Expense</h5>
+                                                            </div><!-- .nk-block-head -->
+                                                        </div><!-- .nk-block -->
+    
+                                                        <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                            <thead>
+                                                                <tr class="nk-tb-item nk-tb-head">
+                                                                    <th class="nk-tb-col text-center">#</th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Details</span></th>
+                                                                    <th class="nk-tb-col"><span class="sub-text">Amount</span></th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Date</span></th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Mode</span></th>
+                                                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Note</span></th>
+                                                                    <th class="nk-tb-col nk-tb-col-tools text-right">
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php if (!empty($payments)) { ?>
+                                                                <?php foreach ($payments as $index => $payment) { ?>
+                                                                <tr class="nk-tb-item">
+                                                                    <td class="nk-tb-col text-center"><?=  $index + 1 ; ?></td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <div class="user-card">
+                                                                            <div class="user-info">
+                                                                                <span class="tb-lead"><?=  $member->fname ; ?> <?=  $member->lname ; ?> <span class="dot dot-success d-md-none ml-1"></span></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span><?=  $member->phonenumber ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col">
+                                                                        <span class="tb-amount"><?=  money($payment->amount, $user->parent->currency) ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <span><?=  date("F j, Y", strtotime($payment->payment_date)) ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <span><?=  $payment->mode ; ?></span>
+                                                                    </td>
+                                                                    <td class="nk-tb-col tb-col-md">
+                                                                        <p class="text-ellipsis w-100px"><span><?=  $payment->note ; ?></span></p>
+                                                                    </td>
+                                                                    <td class="nk-tb-col nk-tb-col-tools">
+                                                                        <ul class="nk-tb-actions gx-1">
+                                                                            <li>
+                                                                                <div class="drodown">
+                                                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <ul class="link-list-opt no-bdr">
+                                                                                        <li><a class="fetch-display-click" data="paymentid:<?=  $payment->id ; ?>" url="<?=  url('Teampayment@updateview') ; ?>" holder=".update-holder" modal="#update" href=""><em class="icon ni ni-pen"></em><span>Edit Details</span></a></li>
+                                                                                        <?php if ($user->role == "Owner") { ?>
+                                                                                        <li class="divider"></li>
+                                                                                        <li><a class="send-to-server-click"  data="paymentid:<?=  $payment->id ; ?>" url="<?=  url('Teampayment@delete') ; ?>" warning-title="Are you sure?" warning-message="This payment will be deleted permanently." warning-button="Yes, delete!" href=""><em class="icon ni ni-trash"></em><span>Delete Payment</span></a></li>
+                                                                                        <?php } ?>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </td>
+                                                                </tr><!-- .nk-tb-item  -->
+                                                                <?php } ?>
+                                                                <?php } else { ?>
+                                                                <tr>
+                                                                    <td class="text-center" colspan="8">It's empty here!</td>
+                                                                </tr>
+                                                                <?php } ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
                                                 </div><!-- .card-inner -->
                                                 <?php } ?>
                                             </div><!-- .card-content -->

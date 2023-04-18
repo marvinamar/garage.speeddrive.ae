@@ -111,10 +111,10 @@
                                                             <span>{{ money($project->invoiced, $user->parent->currency) }}</span><br>
                                                         </td>    
                                                         <td class="nk-tb-col">
-                                                                <span>{{ money(($project->cost), $user->parent->currency) }}</span>
+                                                                <span>{{ money(($project->receipt), $user->parent->currency) }}</span>
                                                             </td>
                                                             <td class="nk-tb-col">
-                                                                <span class="tb-amount">{{ money(($project->invoiced - $project->cost), $user->parent->currency) }}</span>
+                                                                <span class="tb-amount">{{ money(($project->invoiced - $project->receipt), $user->parent->currency) }}</span>
                                                             </td>
                                                         @endif
                                                         <!-- <td class="nk-tb-col text-center">

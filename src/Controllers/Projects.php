@@ -27,6 +27,7 @@ class Projects {
             $project->total_tasks = Database::table('tasks')->where('project', $project->id)->count("id", "total")[0]->total;
             $project->expenses = Database::table('expenses')->where('project', $project->id)->sum("amount", "total")[0]->total;
             $project->taskcost = Database::table('tasks')->where('project', $project->id)->sum("cost", "total")[0]->total;
+            $project->receipt = Database::table('projectpayments')->where('project', $project->id)->sum("amount","total")[0]->total;
 
             $project->invoiced = Database::table('invoices')->where('project', $project->id)->sum("total", "total")[0]->total;
             $project->cost = $project->taskcost + $project->expenses;

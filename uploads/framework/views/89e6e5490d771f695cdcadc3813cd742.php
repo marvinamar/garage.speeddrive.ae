@@ -1525,7 +1525,7 @@
                                 <div class="form-group">
                                     <label class="form-label">Expense / Item name</label>
                                     <div class="form-control-wrap">
-                                        <select name="expense" class="select_<?= $index; ?> form-control form-control-lg" data-live-search="true" > <!-- onchange="get_item_details(this)"-->
+                                        <select name="expense" class="select_<?= $index; ?> form-control form-control-lg select2" data-live-search="true" > <!-- onchange="get_item_details(this)"-->
                                             <option value="0" selected>Expense / Item name</option>
                                             <?php foreach ($inventorys as $inventory) { ?>
                                                 <option value="<?= $inventory->id; ?>" ><?= $inventory->name; ?></option>
