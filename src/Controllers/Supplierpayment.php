@@ -24,10 +24,19 @@ class Supplierpayment{
         
         foreach ($payments as $key => $payment) {
             $payment->expense = Database::table('expenses')->where('id', $payment->expense)->first();
-            $payment->supplier = Database::table('suppliers')->where('id', $payment->supplier)->first();
+            if($payment->isEmployeeExpense == true){
+                $payment->employee = Database::table('users')->where('id', $payment->employee_id)->first();
+                $payment->supplier = null;
+            }
+            else{
+                $payment->employee = null;
+                $payment->supplier = Database::table('suppliers')->where('id', $payment->supplier)->first();
+            }
         }
 
         $pay_expenses = Database::table('expenses')->get();
+
+        $a = $payments;
         
 
         $clients = Database::table('clients')->where('company', $user->company)->orderBy("id", false)->get();
@@ -43,8 +52,10 @@ class Supplierpayment{
             }
 
         }
+
+        $employees = Database::table('users')->where('role','staff')->where('status','Active')->where('company','1')->get();
         
-        return view("project-suplier-payments", compact("user", "title", "payments","clients","pay_expenses"));
+        return view("project-suplier-payments", compact("user", "title", "payments","clients","pay_expenses","employees"));
         
     }
 
@@ -52,41 +63,72 @@ class Supplierpayment{
         
         $user = Auth::user();
 
-        $expense = Database::table('expenses')->where('company', $user->company)->where('id', input("s_expense"))->first();
+        $as_employee_expense = input("is_exployee_expense");
 
-        $data = array(
-            "company" => $user->company,
-            "project" => $expense->project,
-            "supplier" => $expense->supplier,
-            "expense" => $expense->id,
-            "method" => escape(input('method')),
-            "amount" => escape(input('amount')),
-            "note" => escape(input('note')),
-            "payment_date" => escape(input('payment_date'))
-        );
-        
+        if($as_employee_expense == 'Yes'){
+            $expense = null;
+            $data = array(
+                "company" => $user->company,
+                "project" => 0,
+                "supplier" => 'null',
+                "expense" => 0,
+                "isEmployeeExpense" => 1,
+                "employee_id" => escape(input('employee_id')),
+                "method" => escape(input('method')),
+                "amount" => escape(input('amount')),
+                "note" => escape(input('note')),
+                "payment_date" => escape(input('payment_date'))
+            );
+           
+        }
+        else{
+            $expense = Database::table('expenses')->where('company', $user->company)->where('id', input("s_expense"))->first();
+            $data = array(
+                "company" => $user->company,
+                "project" => $expense->project,
+                "supplier" => $expense->supplier,
+                "expense" => $expense->id,
+                "isEmployeeExpense" => 0,
+                "employee_id" => null,
+                "method" => escape(input('method')),
+                "amount" => escape(input('amount')),
+                "note" => escape(input('note')),
+                "payment_date" => escape(input('payment_date'))
+            );
+        }
         Database::table('s_payments')->insert($data);
         $s_paymentsId = Database::table('s_payments')->insertId();
 
-        //Update Paid to Yes
-        $data["paid"] = "Yes";
-        Database::table('expenses')->where('company', $user->company)->where('id', $expense->id)->update($data);
+        if($as_employee_expense == 'Yes'){
+            //Employee ID
+            Ledgerposting::save_ledger_posting($s_paymentsId, escape(input('employee_id')), 'employee', 0, escape(input('amount')), 'Payment',escape(input('payment_date')));
+        }
+        else{
+            //Update Paid to Yes
+            $data["paid"] = "Yes";
+            Database::table('expenses')->where('company', $user->company)->where('id', $expense->id)->update($data);
 
-        // Ledgerposting
-        $purchaseAccount   = Database::table('suppliers')->where('name','Purchase Account')->where('isDefault','1')->get();
+             // Ledgerposting
+            $purchaseAccount   = Database::table('suppliers')->where('name','Purchase Account')->where('isDefault','1')->get();
 
-        //Client ID
-        Ledgerposting::save_ledger_posting($s_paymentsId, $expense->supplier, 'supplier', $expense->amount, 0, 'Payment',escape(input('payment_date')));
+            //Client ID
+            Ledgerposting::save_ledger_posting($s_paymentsId, $expense->supplier, 'supplier', $expense->amount, 0, 'Payment',escape(input('payment_date')));
 
-        //Sales Account
-        Ledgerposting::save_ledger_posting($s_paymentsId, $purchaseAccount[0]->id, 'purchase_account',  0, $expense->amount,'Payment',escape(input('payment_date')));
-        // Ledgerposting
-        
-        return response()->json(responder("success", "Alright!", "Payment successfully added.", "reload('" . url('Projects@details', array(
-            'projectid' => $expense->project,
-            'Isqt' => 'false'
-        )) . "?view=s_payments')"));
-        
+            //Sales Account
+            Ledgerposting::save_ledger_posting($s_paymentsId, $purchaseAccount[0]->id, 'purchase_account',  0, $expense->amount,'Payment',escape(input('payment_date')));
+            // Ledgerposting
+        }
+       
+        if(!$expense)
+        {
+            return response()->json(responder("success", "Alright!", "Payment successfully saved.", "reload()"));
+        }
+        else{
+            return response()->json(responder("success", "Alright!", "Payment successfully added.", "reload('" . url('Projects@details', array(
+                'projectid' => $expense->project,
+                'Isqt' => 'false'
+            )) . "?view=s_payments')"));
+        }
     }
 
     public function delete() {
@@ -130,17 +172,25 @@ class Supplierpayment{
         $payment = Database::table('s_payments')->where('company', $user->company)->where('id', input("paymentid"))->first();
 
         //Delete Ledger Posting
-        Ledgerposting::delete_ledger_posting(input('paymentid'),'Expense');
+        Ledgerposting::delete_ledger_posting(input('paymentid'),'Payment');
+        
+        if($payment->isEmployeeExpense){
+            //Employee ID
+            Ledgerposting::save_ledger_posting($payment->id, $payment->employee_id, 'employee', 0, escape(input('amount')), 'Payment',escape(input('payment_date')));
+        }
+        else{
+            // Ledgerposting
+            $purchaseAccount   = Database::table('suppliers')->where('name','Purchase Account')->where('isDefault','1')->get();
 
-        // Ledgerposting
-        $purchaseAccount   = Database::table('suppliers')->where('name','Purchase Account')->where('isDefault','1')->get();
+            //Client ID
+            Ledgerposting::save_ledger_posting($payment->id, $payment->supplier, 'supplier', $payment->amount, 0, 'Payment',escape(input('payment_date')));
 
-        //Client ID
-        Ledgerposting::save_ledger_posting($payment->id, $payment->supplier, 'supplier', $payment->amount, 0, 'Payment',escape(input('payment_date')));
+            //Sales Account
+            Ledgerposting::save_ledger_posting($payment->id, $purchaseAccount[0]->id, 'purchase_account',  0, $payment->amount,'Payment',escape(input('payment_date')));
+            // Ledgerposting
+        }
 
-        //Sales Account
-        Ledgerposting::save_ledger_posting($payment->id, $purchaseAccount[0]->id, 'purchase_account',  0, $payment->amount,'Payment',escape(input('payment_date')));
-        // Ledgerposting
+       
 
         return response()->json(responder("success", "Alright!", "Payment successfully updated.", "reload()"));
         

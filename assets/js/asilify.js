@@ -833,6 +833,28 @@ $("body").on("change",".expense-paid", function(){
     }
 });
 
+/*
+* Change if expense is for employee
+*/
+$("body").on("change",".is_exployee_expense", function(){
+    var check_box = $('#is_exployee_expense');
+    var parentModal = $(this).closest(".modal-section");
+    
+    if ($(this).prop("checked")) {
+        parentModal.find(".from-expenses").hide();
+        // parentModal.find(".from-expenses").find("select[name=s_payment]").attr("required", false);
+        
+        parentModal.find(".employee-expense").show();
+        // parentModal.find(".employee-expense").find("select[name=employee_id]").attr("required", true);
+    }else{
+        parentModal.find(".from-expenses").show();
+        // parentModal.find(".from-expenses").find("select[name=s_payment]").attr("required", true);
+
+        parentModal.find(".employee-expense").hide();
+        // parentModal.find(".employee-expense").find("select[name=employee_id]").attr("required", false);
+    }
+});
+
 
 
 /*

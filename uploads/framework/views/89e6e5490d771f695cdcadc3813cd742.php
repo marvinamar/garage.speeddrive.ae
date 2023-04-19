@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $pay_expenses, $inventorys, $date, $time; ?>
+<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $s_payments, $pay_expenses, $inventorys, $date, $time; ?>
 <?= view( 'includes/head', $s_v_data ); ?>
 <link rel="stylesheet" href="<?=  asset('assets/libs/summernote/summernote-lite.min.css') ; ?>" />
 
@@ -2250,7 +2250,7 @@
                 <form class="simcy-form" action="<?=  url('Supplierpayment@create') ; ?>" data-parsley-validate="" method="POST" loader="true">
                 <!-- <form class="simcy-form" action="/project/payments/createspayments" data-parsley-validate="" method="POST" > -->
                     <div class="modal-body">
-                        <p>Add Payment</p>
+                        <p>Add Paymentsss</p>
                         <div class="row gy-4">
                             <div class="col-sm-12">
                                 <div class="form-group">

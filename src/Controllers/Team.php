@@ -24,6 +24,8 @@ class Team {
         $projects = Database::table('projects')->where('company', $user->company)->orderBy("id", false)->get();
         $members = Database::table('users')->where('company', $user->company)->orderBy("id", false)->get();
         foreach ($members as $key => $member) {
+            $total_expense = Database::table('s_payments')->where('company', $user->company)->where('isEmployeeExpense',1)->where('employee_id', $member->id)->sum('amount','total');
+            $member->balance = $member->balance - $total_expense[0]->total;
             $member->pending_tasks = Database::table('tasks')->where('member', $member->id)->where('status', "In progress")->count("id", "total")[0]->total;
             $member->total_tasks = Database::table('tasks')->where('member', $member->id)->count("id", "total")[0]->total;
         }
@@ -150,8 +152,11 @@ class Team {
         }
 
         $projects = Database::table('projects')->where('company', $user->company)->orderBy("id", false)->get();
+
+        $expenses = Database::table('s_payments')->where('company', $user->company)->where('isEmployeeExpense',1)->where('employee_id', $teamid)->orderby('payment_date','desc')->get();
+        $incomes = Database::table('tasks')->where('company', $user->company)->where('member', $teamid)->get();
         
-        return view("team-details", compact("user", "title", "member","notes","tasks","projects","payments"));
+        return view("team-details", compact("user", "title", "member","notes","tasks","projects","payments",'expenses','incomes'));
         
     }
     

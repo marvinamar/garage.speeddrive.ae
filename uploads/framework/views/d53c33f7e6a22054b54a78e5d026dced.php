@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $projects, $clients, $staffmembers, $insurance, $inventorys; ?>
+<?php global $s_v_data, $user, $title, $payments, $clients, $pay_expenses, $employees; ?>
 <!DOCTYPE html>
 <html lang="zxx" class="js">
 
