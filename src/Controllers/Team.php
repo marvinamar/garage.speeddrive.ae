@@ -153,8 +153,8 @@ class Team {
 
         $projects = Database::table('projects')->where('company', $user->company)->orderBy("id", false)->get();
 
-        $expenses = Database::table('s_payments')->where('company', $user->company)->where('isEmployeeExpense',1)->where('employee_id', $teamid)->orderby('payment_date','desc')->get();
-        $incomes = Database::table('tasks')->where('company', $user->company)->where('member', $teamid)->get();
+        $expenses = Database::table('s_payments')->where('company', $user->company)->where('isEmployeeExpense',1)->where('employee_id', $teamid)->orderby('payment_date',false)->get();
+        $incomes = Database::table('tasks')->where('company', $user->company)->where('member', $teamid)->orderby('due_date',false)->get();
         
         return view("team-details", compact("user", "title", "member","notes","tasks","projects","payments",'expenses','incomes'));
         

@@ -45,7 +45,17 @@
                                 <div class="nk-block">
                                     <div class="card card-stretch">
                                         <div class="card-inner">
-                                            <table class="datatable-init nk-tb-list nk-tb-ulist" data-auto-responsive="false">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <span>From: <input type="date" name="from_date" id="from_date" class="form-control" value="<?=  date('Y-m-d') ; ?>"></span>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <span>To: <input type="date" name="to_date" id="to_date" class="form-control" value="<?=  date('Y-m-d') ; ?>"> </span>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <br>
+                                            <table class="nk-tb-list nk-tb-ulist" data-auto-responsive="false" id="datatable_init_quotes" style="width: 100%;">
                                                 <thead>
                                                     <tr class="nk-tb-item nk-tb-head">
                                                         <th class="nk-tb-col text-center">#</th>
@@ -56,6 +66,8 @@
                                                         <th class="nk-tb-col tb-col-md"><span class="sub-text">Total</span></th>
                                                         <th class="nk-tb-col nk-tb-col-tools text-right">
                                                         </th>
+                                                        <th style="display: none;"></th>
+                                                        <th style="display: none;"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -113,6 +125,8 @@
                                                             </li>
                                                         </ul>
                                                     </td>
+                                                    <td style="display: none;"><?=  money($quote->total, $user->parent->currency) ; ?></td>
+                                                    <td style="display: none;"><?=  date("Y-m-d", strtotime($quote->created_at)) ; ?></td>
                                                 </tr><!-- .nk-tb-item  -->
                                                 <?php } ?>
                                                 <?php } else { ?>
@@ -121,6 +135,12 @@
                                                 </tr>
                                                 <?php } ?>
                                                 </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td class="text-right nk-tb-col tb-col-md" colspan="5"><span class="fw-bold">Total:</span></td>
+                                                        <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                    </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div><!-- .card -->
@@ -455,7 +475,65 @@
                     return result;
                 }
             });
-        });
+
+            $('#datatable_init_quotes').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+                var total = 0;
+                console.log(data);
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                var pageTotal = api
+                        .column(7, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                $( api.column(5).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                
+                // alert(pageTotal);k
+                
+            }
+            });
+
+            $('#from_date, #to_date').on('change',function(){
+                // DataTables initialisation
+                var table = $('#datatable_init_quotes').DataTable();
+                // Refilter the table
+                table.draw();
+            });
+
+            $.fn.dataTable.ext.search.push(
+            function( settings, data, dataIndex ) {
+                var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                var date = new Date(data[8]).getDate();
+                var month = new Date(data[8]).getMonth() + 1;
+                var year = new Date(data[8]).getFullYear();
+
+                if(month <= 9){
+                    month = '0'+month;
+                }
+
+                var full_date = year+'-'+month+'-'+date;
+        
+                
+                if (full_date >= from_date && full_date <= to_date) 
+                {
+                    return true;
+                }
+                return false;
+            });
+            
+        });// --END
     </script>
     <script>
         function get_item_details(select){
@@ -520,6 +598,7 @@ $("body").on("click", ".add-item-quote", function(event){
     $('[data-toggle="tooltip"]').tooltip();
     
 });
+    
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 <?php return;

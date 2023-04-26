@@ -409,8 +409,19 @@
                                                                 <!-- <p>A list of payments made to <?=  $member->fname ; ?> <?=  $member->lname ; ?>.</p> -->
                                                             </div><!-- .nk-block-head -->
                                                         </div><!-- .nk-block -->
-    
-                                                        <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <span>From: <input type="date" name="from_date_income" id="from_date_income" class="form-control" value="<?=  date('Y-m-d') ; ?>"></span>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <span>To: <input type="date" name="to_date_income" id="to_date_income" class="form-control" value="<?=  date('Y-m-d') ; ?>"> </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <br>
+
+                                                        <table class="nk-tb-list nk-tb-ulist" data-auto-responsive="false" id="datatable_init_income" style="width: 100%;">
                                                             <thead>
                                                                 <tr class="nk-tb-item nk-tb-head">
                                                                     <th class="nk-tb-col text-center">#</th>
@@ -418,12 +429,13 @@
                                                                     <th class="nk-tb-col tb-col-md"><span class="sub-text">Note</span></th>
                                                                     <th class="nk-tb-col"><span class="sub-text">Amount</span></th>
                                                                     </th>
+                                                                    <th style="display: none;"></th>
+                                                                    <th style="display: none;"></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <?php if (!empty($incomes)) { ?>
                                                                 <?php foreach ($incomes as $index => $income) { ?>
-                                                                <?= $total_invoice = $income->cost; ?>
                                                                 <tr class="nk-tb-item">
                                                                     <td class="nk-tb-col text-center"><?=  $index + 1; ?></td>
                                                                     <td class="nk-tb-col tb-col-md">
@@ -435,6 +447,8 @@
                                                                     <td class="nk-tb-col">
                                                                         <span class="tb-amount"><?=  money($income->cost, $user->parent->currency) ; ?></span>
                                                                     </td>
+                                                                    <td style="display: none;"><?=  money($income->cost, $user->parent->currency) ; ?></td>
+                                                                    <td style="display: none;"><?=  date("Y-m-d", strtotime($income->due_date)) ; ?></td>
                                                                 </tr><!-- .nk-tb-item  -->
                                                                 <?php } ?>
                                                                 <?php } else { ?>
@@ -443,11 +457,13 @@
                                                                 </tr>
                                                                 <?php } ?>
                                                             </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td class="text-right" colspan="3">Total</td>
+                                                                    <td ><?=  money(0, $user->parent->currency) ; ?></td>
+                                                                </tr>
+                                                            </tfoot>
                                                         </table>
-                                                        
-                                                        <div class="col-md-12" style="text-align: right;">
-                                                            <span>Total Income: <?=  $total_invoice ; ?></span>
-                                                        </div>
                                                     </div>
 
 
@@ -459,8 +475,17 @@
                                                                 <h5 class="title">Expense</h5>
                                                             </div><!-- .nk-block-head -->
                                                         </div><!-- .nk-block -->
-    
-                                                        <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <span>From: <input type="date" name="from_date_expense" id="from_date_expense" class="form-control" value="<?=  date('Y-m-d') ; ?>"></span>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <span>To: <input type="date" name="to_date_expense" id="to_date_expense" class="form-control" value="<?=  date('Y-m-d') ; ?>"> </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <br>
+                                                        <table class="nk-tb-list nk-tb-ulist" data-auto-responsive="false" id="datatable_init_expense" style="width: 100%;">
                                                             <thead>
                                                                 <tr class="nk-tb-item nk-tb-head">
                                                                     <th class="nk-tb-col text-center">#</th>
@@ -468,6 +493,8 @@
                                                                     <th class="nk-tb-col tb-col-md"><span class="sub-text">Details</span></th>
                                                                     <th class="nk-tb-col"><span class="sub-text">Amount</span></th>
                                                                     </th>
+                                                                    <th style="display: none;"></th>
+                                                                    <th style="display: none;"></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -484,6 +511,8 @@
                                                                     <td class="nk-tb-col">
                                                                         <span class="tb-amount"><?=  money($expense->amount, $user->parent->currency) ; ?></span>
                                                                     </td>
+                                                                    <td style="display: none;"><?=  money($expense->amount, $user->parent->currency) ; ?></td>
+                                                                    <td style="display: none;"><?=  date("Y-m-d", strtotime($expense->payment_date)) ; ?></td>
                                                                 </tr><!-- .nk-tb-item  -->
                                                                 <?php } ?>
                                                                 <?php } else { ?>
@@ -492,6 +521,12 @@
                                                                 </tr>
                                                                 <?php } ?>
                                                             </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td class="text-right" colspan="3">Total</td>
+                                                                    <td ><?=  money(0, $user->parent->currency) ; ?></td>
+                                                                </tr>
+                                                            </tfoot>
                                                         </table>
                                                     </div>
 
@@ -759,6 +794,88 @@
     <!-- app-root @e -->
     <!-- JavaScript -->
     <?= view( 'includes/scripts', $s_v_data ); ?>
+
+    <script>
+        $(document).ready(function(){
+            $('#datatable_init_income, #datatable_init_expense').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+                var total = 0;
+                console.log(data);
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                var pageTotal = api
+                        .column(4, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                $( api.column(3).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                
+                // alert(pageTotal);k
+                
+            }
+            });
+
+            $('#from_date_income, #to_date_income, #from_date_expense, #to_date_expense').on('change',function(e){
+                if(e.currentTarget.id == 'from_date_income' || e.currentTarget.id == 'to_date_income')
+                {
+                    // DataTables initialisation
+                var table = $('#datatable_init_income').DataTable();
+                }
+                else
+                {
+                    // DataTables initialisation
+                var table = $('#datatable_init_expense').DataTable();
+                }
+                // Refilter the table
+                table.draw();
+            });
+
+            $.fn.dataTable.ext.search.push(
+            function( settings, data, dataIndex ) {
+                alert(settings.sTableId);
+
+                if(settings.sTableId == 'datatable_init_income'){
+                    var from_date = $('#from_date_income').val();
+                    var to_date = $('#to_date_income').val();
+                }
+                else{
+                    var from_date = $('#from_date_expense').val();
+                    var to_date = $('#to_date_expense').val();
+                }
+
+                
+                var date = new Date(data[5]).getDate();
+                var month = new Date(data[5]).getMonth() + 1;
+                var year = new Date(data[5]).getFullYear();
+
+                if(month <= 9){
+                    month = '0'+month;
+                }
+
+                var full_date = year+'-'+month+'-'+date;
+        
+                
+                if (full_date >= from_date && full_date <= to_date) 
+                {
+                    return true;
+                }
+                return false;
+            });
+
+        });
+    </script>
+    <script></script>
+
 </body>
 
 </html>

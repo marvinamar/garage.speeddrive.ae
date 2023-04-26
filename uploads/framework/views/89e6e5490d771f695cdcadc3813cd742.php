@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $s_payments, $pay_expenses, $inventorys, $date, $time; ?>
+<?php global $s_v_data, $user, $title, $client, $notes, $project, $staffmembers, $tasks, $expenses, $quotes, $invoices, $payments, $jobcards, $suppliers, $inventory, $Isqt, $pay_expenses, $inventorys, $date, $time; ?>
 <?= view( 'includes/head', $s_v_data ); ?>
 <link rel="stylesheet" href="<?=  asset('assets/libs/summernote/summernote-lite.min.css') ; ?>" />
 
@@ -582,7 +582,8 @@
                                                         <thead>
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col text-center">#</th>
-                                                                <th class="nk-tb-col tb-col-md"><span class="sub-text">Project / Assigned To</span></th>
+                                                                <th class="nk-tb-col tb-col-md"><span class="sub-text">Project</span></th>
+                                                                <th class="nk-tb-col tb-col-md"><span class="sub-text">Assigned To</span></th>
                                                                 <th class="nk-tb-col"><span class="sub-text">Title</span></th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Due Date</span></th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Cost</span></th>
@@ -607,6 +608,19 @@
                                                                     <?php } else { ?>
                                                                     <span>--|--</span>
                                                                     <?php } ?>
+                                                                </td>
+                                                                <td class="nk-tb-col tb-col-md">
+                                                                    <div class="user-card">
+                                                                        <div class="user-info">
+                                                                            <span class="tb-lead">
+                                                                                <?php if (!empty($task->member)) { ?>
+                                                                                <?=  $task->member->fname ; ?> <?=  $task->member->lname ; ?>
+                                                                                <?php } else { ?>
+                                                                                --|--
+                                                                                <?php } ?>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
                                                                 </td>
                                                                 <td class="nk-tb-col">
                                                                     <span class="tb-amount">

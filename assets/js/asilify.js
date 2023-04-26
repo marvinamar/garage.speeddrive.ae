@@ -1181,7 +1181,10 @@ $("body").on("click", ".asd-add-invoiceitem-as", function(event){
 
     // $('asd-add-invoiceitem-as').style.display = none;
     document.getElementById('asd-add-invoiceitem-as').style.visibility='hidden';
-});
+})
+
+
+
 
 
 // $("body").on("click", ".asd-add-invoiceitem", function(event){
