@@ -779,9 +779,12 @@
                     month = '0'+month;
                 }
 
+                if(date <= 9){
+                    date = '0'+date;
+                }
+
                 var full_date = year+'-'+month+'-'+date;
         
-                
                 if (full_date >= from_date && full_date <= to_date) 
                 {
                     return true;

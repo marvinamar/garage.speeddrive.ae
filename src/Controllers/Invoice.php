@@ -906,7 +906,7 @@ class Invoice {
         $pdf->SetXY($xPos, $yPos);
         $pdf->SetFont('','',10);
         $pdf->SetTextColor(128, 148, 174);
-        $pdf->MultiCell(100, 100, $invoice->discount_details, null, "R");
+        $pdf->MultiCell(100, 100, ($invoice->discount_details == null || $invoice->discount_details == '') ? 'Discount' : $invoice->discount_details, null, "R");
         $pdf->SetXY($xPos, $yPos);
         $pdf->MultiCell(193, 20, money($invoice->discount, $user->parent->currency), null, "R");
 

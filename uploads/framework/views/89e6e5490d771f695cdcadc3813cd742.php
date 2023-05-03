@@ -403,7 +403,7 @@
                                                         </div><!-- .nk-block-head -->
                                                     </div><!-- .nk-block -->
 
-                                                    <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                    <table class="nk-tb-list nk-tb-ulist mt" data-auto-responsive="false" style="width:100%;" id="datatable_init_project_quotes">
                                                         <thead>
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col text-center">#</th>
@@ -435,8 +435,8 @@
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <span><?=  date("F j, Y", strtotime($quote->created_at)) ; ?></span>
                                                                 </td>
-                                                                <td class="nk-tb-col">
-                                                                    <span class="tb-amount"><?=  money($quote->total, $user->parent->currency) ; ?></span>
+                                                                <td class="nk-tb-col tb-amount">
+                                                                    <?=  money($quote->total, $user->parent->currency) ; ?>
                                                                 </td>
                                                                 <td class="nk-tb-col">
                                                                     <?php if ($quote->isApproved == true) { ?>
@@ -476,6 +476,13 @@
                                                             </tr>
                                                             <?php } ?>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td class="text-right nk-tb-col tb-col-md" colspan="4"><span class="fw-bold">Total:</span> <small>perpage</small> <br> 
+                                                                                                                        <span class="fw-bold">Total:</span> <small>all</small></td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 </div><!-- .card-inner -->
 
@@ -578,7 +585,7 @@
                                                         </div><!-- .nk-block-head -->
                                                     </div><!-- .nk-block -->
 
-                                                    <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                    <table class="nk-tb-list nk-tb-ulist mt" data-auto-responsive="false" style="width: 100%;" id="datatable_init_project_tasks">
                                                         <thead>
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col text-center">#</th>
@@ -643,8 +650,8 @@
                                                                         <?php } ?>
                                                                     </span>
                                                                 </td>
-                                                                <td class="nk-tb-col tb-col-md">
-                                                                    <span class="tb-amount"><?=  money($task->cost, $user->parent->currency) ; ?></span>
+                                                                <td class="nk-tb-col tb-col-md tb-amount">
+                                                                    <?=  money($task->cost, $user->parent->currency) ; ?></span>
                                                                 </td>
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <?php if ($task->status == "Completed") { ?>
@@ -686,6 +693,13 @@
                                                             </tr>
                                                             <?php } ?>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td class="text-right nk-tb-col tb-col-md" colspan="5"><span class="fw-bold">Total:</span> <small>perpage</small> <br> 
+                                                                                                                        <span class="fw-bold">Total:</span> <small>all</small></td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 </div><!-- .card-inner -->
                                                 <?php } else if (isset($_GET["view"]) && $_GET["view"] == "expenses") { ?>
@@ -707,14 +721,16 @@
                                                         </div><!-- .nk-block-head -->
                                                     </div><!-- .nk-block -->
 
-                                                    <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                    <table class="nk-tb-list nk-tb-ulist mt" data-auto-responsive="false" id="datatable_init_project_expense" style="width: 100%;">
                                                         <thead>
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col text-center">#</th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Supplier</span></th>
                                                                 <th class="nk-tb-col"><span class="sub-text">Expense / Qty</span></th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Date</span></th>
+                                                                <th class="nk-tb-col tb-col-md"><span class="sub-text">Purchase Amount</span></th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Amount</span></th>
+                                                                <th class="nk-tb-col tb-col-md"><span class="sub-text">Profit</span></th>
                                                                 <th class="nk-tb-col"><span class="sub-text">Status</span></th>
                                                                 <th class="nk-tb-col"><span class="sub-text">Payment</span></th>
                                                                 <th class="nk-tb-col nk-tb-col-tools text-right">
@@ -746,8 +762,19 @@
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <span><?=  date("F j, Y", strtotime($expense->expense_date)) ; ?></span>
                                                                 </td>
-                                                                <td class="nk-tb-col tb-col-md">
-                                                                    <span class="tb-amount"><?=  money($expense->amount, $user->parent->currency) ; ?></span>
+                                                                <td class="nk-tb-col tb-col-md tb-amount">
+                                                                    <?=  money($expense->purchase_amount, $user->parent->currency) ; ?> 
+                                                                </td>
+                                                                <td class="nk-tb-col tb-col-md tb-amount">
+                                                                    <?=  money($expense->amount, $user->parent->currency) ; ?>
+                                                                </td>
+                                                                <td class="nk-tb-col tb-col-md tb-amount">
+                                                                    <?php if ($expense->purchase_amount == 0) { ?>
+                                                                        <?=  money( 0, $user->parent->currency) ; ?>
+                                                                    <?php } else { ?>
+                                                                        <?=  money( ($expense->amount - $expense->purchase_amount), $user->parent->currency) ; ?>
+                                                                    <?php } ?>
+                                                                    
                                                                 </td>
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <?php if ($expense->status == "Delivered") { ?>
@@ -794,6 +821,15 @@
                                                             </tr>
                                                             <?php } ?>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td class="text-right nk-tb-col tb-col-md" colspan="4"><span class="fw-bold">Total:</span> <small>perpage</small> <br> 
+                                                                                                                        <span class="fw-bold">Total:</span> <small>all</small></td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 </div><!-- .card-inner -->
 
@@ -817,14 +853,15 @@
                                                         </div><!-- .nk-block-head -->
                                                     </div><!-- .nk-block -->
 
-                                                    <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                    <table class="nk-tb-list nk-tb-ulist mt" data-auto-responsive="false" style="width: 100%;"  id="datatable_init_project_invoices">
                                                         <thead>
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col text-center">#</th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Project</span></th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Items</span></th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Date / Due</span></th>
-                                                                <th class="nk-tb-col"><span class="sub-text">Total / Balance</span></th>
+                                                                <th class="nk-tb-col tb-col-md"><span class="sub-text">Total</span></th>
+                                                                <th class="nk-tb-col tb-col-md"><span class="sub-text">Balance</span></th>
                                                                 <th class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></th>
                                                                 <th class="nk-tb-col nk-tb-col-tools text-right">
                                                                 </th>
@@ -857,11 +894,13 @@
                                                                     <span><?=  date("M j, Y", strtotime($invoice->due_date)) ; ?></span>
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td class="nk-tb-col">
-                                                                    <span class="tb-amount"><?=  money($invoice->total, $user->parent->currency) ; ?></span>
-                                                                    <span><?=  money($invoice->balance, $user->parent->currency) ; ?></span>
+                                                                <td class="nk-tb-col tb-amount">
+                                                                    <?=  money($invoice->total, $user->parent->currency) ; ?>
                                                                 </td>
                                                                 <td class="nk-tb-col tb-col-md">
+                                                                    <?=  money($invoice->balance, $user->parent->currency) ; ?>
+                                                                </td>
+                                                                <td class="nk-tb-col nk-tb-col-tools">
                                                                     <?php if ($invoice->status == "Paid") { ?>
                                                                     <span class="badge badge-sm badge-dot has-bg badge-success d-mb-inline-flex">Paid</span>
                                                                     <?php } else if ($invoice->status == "Partial") { ?>
@@ -893,6 +932,7 @@
                                                                             </div>
                                                                         </li>
                                                                     </ul>
+                                                                   
                                                                 </td>
                                                             </tr><!-- .nk-tb-item  -->
                                                             <?php } ?>
@@ -902,6 +942,14 @@
                                                             </tr>
                                                             <?php } ?>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td class="text-right nk-tb-col tb-col-md" colspan="4"><span class="fw-bold">Total:</span> <small>perpage</small> <br> 
+                                                                                                                        <span class="fw-bold">Total:</span> <small>all</small></td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 </div><!-- .card-inner -->
                                                 <?php } else if (isset($_GET["view"]) && $_GET["view"] == "payments") { ?>
@@ -914,7 +962,7 @@
                                                         </div><!-- .nk-block-head -->
                                                     </div><!-- .nk-block -->
 
-                                                    <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                    <table class="nk-tb-list nk-tb-ulist mt" data-auto-responsive="false" style="width: 100%;" id="datatable_init_project_receipts">
                                                         <thead>
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col text-center">#</th>
@@ -946,10 +994,10 @@
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <span><?=  date("F j, Y", strtotime($payment->payment_date)) ; ?></span>
                                                                 </td>
-                                                                <td class="nk-tb-col">
-                                                                    <span class="tb-amount"><?=  money($payment->amount, $user->parent->currency) ; ?></span>
-                                                                    <span><?=  $payment->method ; ?></span>
+                                                                <td class="nk-tb-col tb-amount">
+                                                                    <?=  money($payment->amount, $user->parent->currency) ; ?>
                                                                 </td>
+                                                                <!-- <span><?=  $payment->method ; ?></span> -->
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <span class="badge badge-sm badge-dot has-bg badge-success d-mb-inline-flex">Paid</span>
                                                                 </td>
@@ -980,6 +1028,13 @@
                                                             </tr>
                                                             <?php } ?>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td class="text-right nk-tb-col tb-col-md" colspan="4"><span class="fw-bold">Total:</span> <small>perpage</small> <br> 
+                                                                                                                        <span class="fw-bold">Total:</span> <small>all</small></td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 </div><!-- .card-inner -->
 
@@ -994,7 +1049,7 @@
                                                         </div><!-- .nk-block-head -->
                                                     </div><!-- .nk-block -->
 
-                                                    <table class="datatable-init nk-tb-list nk-tb-ulist mt" data-auto-responsive="false">
+                                                    <table class="nk-tb-list nk-tb-ulist mt" data-auto-responsive="false" style="width: 100%;" id="datatable_init_project_payments">
                                                         <thead>
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col text-center">#</th>
@@ -1026,9 +1081,8 @@
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <span><?=  date("F j, Y", strtotime($payment->payment_date)) ; ?></span>
                                                                 </td>
-                                                                <td class="nk-tb-col">
-                                                                    <span class="tb-amount"><?=  money($payment->amount, $user->parent->currency) ; ?></span>
-                                                                    <span><?=  $payment->method ; ?></span>
+                                                                <td class="nk-tb-col tb-amount">
+                                                                    <?=  money($payment->amount, $user->parent->currency) ; ?>
                                                                 </td>
                                                                 <td class="nk-tb-col tb-col-md">
                                                                     <span class="badge badge-sm badge-dot has-bg badge-success d-mb-inline-flex">Paid</span>
@@ -1060,6 +1114,13 @@
                                                             </tr>
                                                             <?php } ?>
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td class="text-right nk-tb-col tb-col-md" colspan="4"><span class="fw-bold">Total:</span> <small>perpage</small> <br> 
+                                                                                                                        <span class="fw-bold">Total:</span> <small>all</small></td>
+                                                                <td class="nk-tb-col tb-col-md"> <span class="tb-amount"><?=  money(0, $user->parent->currency) ; ?></span> </td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 </div><!-- .card-inner -->
 
@@ -1516,6 +1577,17 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label class="form-label">Purchase Amount</label>
+                                    <div class="form-control-wrap">
+                                        <div class="form-text-hint">
+                                            <span class="overline-title"><?=  currency($user->parent->currency) ; ?></span>
+                                        </div>
+                                        <input type="number" class="form-control form-control-lg" placeholder="Purchase Amount" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="purchase_amount_from_inv" value="0.00" step="0.01"  >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     <label class="form-label">Amount</label>
                                     <div class="form-control-wrap">
                                         <div class="form-text-hint">
@@ -1611,6 +1683,17 @@
                                             <option value="Meters">Meters</option>
                                             <option value="Set">Set</option>
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label">Purchase Amount</label>
+                                    <div class="form-control-wrap">
+                                        <div class="form-text-hint">
+                                            <span class="overline-title"><?=  currency($user->parent->currency) ; ?></span>
+                                        </div>
+                                        <input type="number" class="form-control form-control-lg" placeholder="Purchase Amount" data-parsley-pattern="^[0-9]\d*(\.\d+)?$" name="purchase_amount_from_sup" value="0.00" step="0.01" min="0" >
                                     </div>
                                 </div>
                             </div>
@@ -2492,6 +2575,266 @@
             if(<?= $Isqt; ?> == true){
                 $("#createquote").modal("show");
             }
+
+
+            $datatable_init_project_quotes = $('#datatable_init_project_quotes').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+
+                console.log(data);
+
+                var total = 0;
+                console.log(data);
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                    //***************//
+                    var total= api
+                        .column( 4 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+
+                    var pageTotal = api
+                        .column(4, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                        $( api.column(4).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                }   
+            });
+
+            $datatable_init_project_quotes.destroy();
+
+            $datatable_init_project_expense = $('#datatable_init_project_expense').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                    //***************//
+                    var total = api
+                        .column( 4 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+                    var pageTotal = api
+                        .column(4, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $( api.column(4).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+                    //***************//
+                    var total = api
+                            .column( 5 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            },0);
+                    var pageTotal = api
+                            .column(5, { page: 'current' })
+                            .data()
+                            .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                    $( api.column(5).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+                    //***************//
+                    var total = api
+                        .column( 6 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+                    var pageTotal = api
+                            .column(6, { page: 'current' })
+                            .data()
+                            .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                            $( api.column(6).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+            }
+            });
+
+            $datatable_init_project_expense.destroy();
+
+            $datatable_init_project_tasks = $('#datatable_init_project_tasks').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+
+                console.log(data);
+
+                var total = 0;
+                console.log(data);
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                    //***************//
+                    var total= api
+                        .column( 5 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+
+                    var pageTotal = api
+                        .column(5, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                        $( api.column(5).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                }   
+            });
+
+            $datatable_init_project_tasks.destroy();
+
+            $datatable_init_project_invoices = $('#datatable_init_project_invoices').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+                var total = 0;
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                    //***************//
+                    var total= api
+                        .column( 4 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+
+                    var pageTotal = api
+                        .column(4, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                        $( api.column(4).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+                        //***************//
+                    var total= api
+                        .column( 5 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+
+                    var pageTotal = api
+                        .column(5, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                        $( api.column(5).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                }   
+            });
+
+            $datatable_init_project_invoices.destroy();
+            
+            $datatable_init_project_receipts = $('#datatable_init_project_receipts').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+                var total = 0;
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                    //***************//
+                    var total= api
+                        .column( 4 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+
+                    var pageTotal = api
+                        .column(4, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                        $( api.column(4).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                }   
+            });
+
+            $datatable_init_project_receipts.destroy();
+
+            $datatable_init_project_payments = $('#datatable_init_project_payments').DataTable({
+            paging:true,
+            ordering:true,
+            info: true,
+            "footerCallback": function(row, data){
+                var total = 0;
+                var api = this.api(), data;
+                
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+
+                    //***************//
+                    var total= api
+                        .column( 4 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+
+                    var pageTotal = api
+                        .column(4, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                        $( api.column(4).footer() ).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                }   
+            });
+
+            $datatable_init_project_payments.destroy();
         });
         
     </script>
@@ -2596,6 +2939,9 @@
             // $('#Ottotal').val(tt);
             // calculatetotal(items);
         });
+
+
+
     </script>
 </body>
 
