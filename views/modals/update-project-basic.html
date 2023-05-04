@@ -112,6 +112,31 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-sm-12 covered">
+                                <div class="form-group">
+                                    <label class="form-label">Select Insurance Company</label>
+                                    <div class="form-control-wrap ">
+                                        <div class="form-control-select">
+                                            <select class="form-control select2-dynamic" name="insurance">
+                                                <option value="0">Select Insurance</option>
+                                                @if(!empty($insurance))
+                                                @foreach($insurance as $insuranceco)
+                                                    @if($insuranceco->id == $project->insurance)
+                                                        <option value="{{ $insuranceco->id }}" selected>{{ $insuranceco->name }}</option>
+                                                    @else
+                                                        <option value="{{ $insuranceco->id }}">{{ $insuranceco->name }}</option>
+                                                    @endif
+                                                @endforeach
+                                                @else
+                                                    <option value="">No Insurance company added</option>
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="modal-footer bg-light">

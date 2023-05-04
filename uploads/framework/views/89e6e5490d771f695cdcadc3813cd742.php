@@ -1588,7 +1588,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="form-label">Amount</label>
+                                    <label class="form-label">Sale Amount</label>
                                     <div class="form-control-wrap">
                                         <div class="form-text-hint">
                                             <span class="overline-title"><?=  currency($user->parent->currency) ; ?></span>
@@ -1606,6 +1606,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row external-source gy-4">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -1699,7 +1700,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="form-label">Total Amount</label>
+                                    <label class="form-label">Sale Amount</label>
                                     <div class="form-control-wrap">
                                         <div class="form-text-hint">
                                             <span class="overline-title"><?=  currency($user->parent->currency) ; ?></span>
@@ -1777,7 +1778,17 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="form-label">Item Description</label>
+                                    <input type="text" class="form-control form-control-lg" name="item_description" id="item_description" placeholder="">
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="modal-footer bg-light">
                         <button class="btn btn-white btn-dim btn-outline-light" type="button" data-dismiss="modal"><em class="icon ni ni-cross-circle"></em><span>Cancel</span></button>
                         <button class="btn btn-primary" type="submit"><em class="icon ni ni-check-circle-cut"></em><span>Save Expense</span></button>
@@ -1877,7 +1888,8 @@
                                 <div class="col-sm-1">
                                 </div>
                             </div>
-                            <div class="row gy-4">
+
+                            <!-- <div class="row gy-4">
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label class="form-label">Item</label>
@@ -1888,8 +1900,6 @@
                                                     <option value="<?= $inventory->id; ?>"><?= $inventory->name; ?></option>
                                                     <?php } ?>
                                                 </select>
-                                                <!-- <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required=""> -->
-                                            <!-- <input type="text" class="form-control form-control-lg" placeholder="Item Description" name="item[]" required=""> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1957,7 +1967,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="item-totals border-top mt-2 pt-2">
                             <div class="row gy-4 d-flex justify-content-end">

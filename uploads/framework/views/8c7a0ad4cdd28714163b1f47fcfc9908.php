@@ -113,6 +113,31 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-sm-12 covered">
+                                <div class="form-group">
+                                    <label class="form-label">Select Insurance Company</label>
+                                    <div class="form-control-wrap ">
+                                        <div class="form-control-select">
+                                            <select class="form-control select2-dynamic" name="insurance">
+                                                <option value="0">Select Insurance</option>
+                                                <?php if (!empty($insurance)) { ?>
+                                                <?php foreach ($insurance as $insuranceco) { ?>
+                                                    <?php if ($insuranceco->id == $project->insurance) { ?>
+                                                        <option value="<?=  $insuranceco->id ; ?>" selected><?=  $insuranceco->name ; ?></option>
+                                                    <?php } else { ?>
+                                                        <option value="<?=  $insuranceco->id ; ?>"><?=  $insuranceco->name ; ?></option>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                                <?php } else { ?>
+                                                    <option value="">No Insurance company added</option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="modal-footer bg-light">

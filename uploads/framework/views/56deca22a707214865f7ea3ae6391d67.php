@@ -49,8 +49,8 @@
                                                 <div class="col-sm-12" style="display: flex; flex-direction: row-reverse;">
                                                     <div class="form-group">
                                                          <div class="custom-control custom-switch">
-                                                            <input type="checkbox" name="include_date" id="include_date" class="custom-control-input expense-paid" value="Yes">
-                                                            <label class="custom-control-label" for="include_date">Include Date</label>
+                                                            <input type="checkbox" name="filter_by_date" id="filter_by_date" class="custom-control-input expense-paid" value="Yes">
+                                                            <label class="custom-control-label" for="filter_by_date">Include Date</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -86,6 +86,7 @@
                                                         <th class="nk-tb-col nk-tb-col-tools text-right">
                                                         <th style="display: none;"></th>
                                                         <th style="display: none;"></th>
+                                                        <th style="display: block;"></th>
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -169,6 +170,15 @@
                                                     </td>
                                                     <td style="display: none;">
                                                         <?=  date("Y-m-d", strtotime($invoice->invoice_date)) ; ?>
+                                                    </td>
+                                                    <td class="nk-tb-col tb-col-md">
+                                                        <?php if ($invoice->status == "Paid") { ?>
+                                                            Paid
+                                                        <?php } else if ($invoice->status == "Partial") { ?>
+                                                            Partial
+                                                        <?php } else { ?>
+                                                            Unpaid
+                                                        <?php } ?>
                                                     </td>
                                                 </tr><!-- .nk-tb-item  -->
                                                 <?php } ?>
@@ -522,7 +532,8 @@
     }
 });
 
-$('#from_date, #to_date').on('change',function(){
+$('#from_date, #to_date, #status').on('change',function(){
+
     // DataTables initialisation
     var table = $('#datatable_init_invoice').DataTable();
     // Refilter the table
@@ -536,23 +547,55 @@ $.fn.dataTable.ext.search.push(
         var date = new Date(data[9]).getDate();
         var month = new Date(data[9]).getMonth() + 1;
         var year = new Date(data[9]).getFullYear();
+        var status = $('#status').val();
+        var data_status = data[10];
+
 
         if(month <= 9){
             month = '0'+month;
         }
 
+        if(date <= 9){
+            date = '0'+date;
+        }
+
         var full_date = year+'-'+month+'-'+date;
         
-        return false;
-        
-        if (full_date >= from_date && full_date <= to_date) 
-        {
+        if($('#filter_by_date').is(':checked')){
             
-            return true;
+            if (full_date >= from_date && full_date <= to_date) 
+            {
+                if(status == 'all'){
+                    return true
+                }
+                if(status == 'paid' && data_status == 'Paid'){
+                        return true
+                }
+                if(status == 'partial' && data_status == 'partial'){
+                        return true
+                }
+                if(status == 'unpaid' && data_status == 'Unpaid'){
+                        return true
+                }
+            }
+        }else{
+            if(status == 'all'){
+                return true
+            }
+            if(status == 'paid' && data_status == 'Paid'){
+                    return true
+            }
+            if(status == 'partial' && data_status == 'partial'){
+                        return true
+            }
+            if(status == 'unpaid' && data_status == 'Unpaid'){
+                    return true
+            }
+
         }
+        
         return false;
-    }
-);
+        });
 
         });
     </script>

@@ -5,6 +5,7 @@ use Simcify\Database;
 use Simcify\Asilify;
 use Simcify\Auth;
 use Simcify\File;
+use Simcify\Middleware\RedirectIfAuthenticated;
 
 class Projects {
 
@@ -468,10 +469,11 @@ class Projects {
             "start_date" => escape(input('start_date')),
             "end_date" => escape(input('end_date'))
         );
-
-        if (!empty(input("covered"))) {
+        
+        if(escape(input("insurance")) != 0){
             $data["insurance"] = escape(input("insurance"));
-        }else{
+        }
+        else{
             $data["insurance"] = "NULL";
         }
 

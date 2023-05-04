@@ -72,7 +72,8 @@ class Expenses {
                 "status" => escape(input('status')),
                 "quantity" => escape(input('quantity')),
                 "units" => escape(input('quantity_unit')),
-                "expense_date" => escape(input('expense_date'))
+                "expense_date" => escape(input('expense_date')),
+                "item_description" => escape(input('item_description'))
             );
 
             if (!empty(input("expected_delivery_date"))) {
@@ -168,7 +169,8 @@ class Expenses {
                 // "cost" => $inventory->unit_cost,
                 "quantity" => escape(input('consumed')),
                 "units" => $inventory->quantity_unit,
-                "expense_date" => escape(input('expensedate'))
+                "expense_date" => escape(input('expensedate')),
+                "item_description" => escape(input('item_description'))
             );
             
             Database::table('expenses')->insert($data);
@@ -227,7 +229,7 @@ class Expenses {
                     "project" => $_expense->project,
                     "invoice" => $_invoice->id,
                     "item" => $_expense->expense,
-                    "item_description" => '',
+                    "item_description" => $_expense->item_description,
                     "workType" => '',
                     "quantity" => $_expense->quantity,
                     "cost" => $_expense->amount,
