@@ -1,4 +1,4 @@
-<?php global $s_v_data, $user, $title, $invoices, $clients; ?>
+<?php global $s_v_data, $user, $title, $widgets, $projects, $tasks, $income; ?>
 
     <script src="<?=  asset('assets/js/bundle.js') ; ?>"></script>
     <script src="<?=  asset('assets/libs/jquery-ui/jquery-ui.min.js') ; ?>"></script>

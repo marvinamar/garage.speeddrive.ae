@@ -122,10 +122,18 @@ class Overview{
         $widgets["incomethisyear"] = Database::table('projectpayments')->where('company', $user->company)->where('YEAR(`payment_date`)', date("Y"))->sum("amount", "total")[0]->total;
 
         // profits
-        $expenses = Database::table('expenses')->where('company', $user->company)->where('YEAR(`expense_date`)', date("Y"))->sum("amount", "total")[0]->total;
-        $taskcost = Database::table('tasks')->where('company', $user->company)->where('YEAR(`created_at`)', date("Y"))->sum("cost", "total")[0]->total;
-        $invoiced = Database::table('invoices')->where('company', $user->company)->where('YEAR(`invoice_date`)', date("Y"))->sum("total", "total")[0]->total;
-        $widgets["profits"] = $invoiced - ($taskcost + $expenses);
+        // $expenses = Database::table('expenses')->where('company', $user->company)->where('YEAR(`expense_date`)', date("Y"))->sum("amount", "total")[0]->total;
+        // $taskcost = Database::table('tasks')->where('company', $user->company)->where('YEAR(`created_at`)', date("Y"))->sum("cost", "total")[0]->total;
+        // $invoiced = Database::table('invoices')->where('company', $user->company)->where('YEAR(`invoice_date`)', date("Y"))->sum("total", "total")[0]->total;
+        // $widgets["profits"] = $invoiced - ($taskcost + $expenses);
+
+        $amount = Database::table('expenses')->where('company', $user->company)->where('YEAR(`expense_date`)', date("Y"))->sum("amount", "total")[0]->total;
+        $purchase_amount = Database::table('expenses')->where('company', $user->company)->where('YEAR(`expense_date`)', date("Y"))->sum("purchase_amount", "total")[0]->total;
+        $widgets["profits"] = $amount- $purchase_amount;
+
+        $amount = Database::table('expenses')->where('company', $user->company)->where('MONTH(`expense_date`)', date("m"))->sum("amount", "total")[0]->total;
+        $purchase_amount = Database::table('expenses')->where('company', $user->company)->where('MONTH(`expense_date`)', date("m"))->sum("purchase_amount", "total")[0]->total;
+        $widgets["profitsthismonth"] = $amount- $purchase_amount;
 
         // total clients
         $widgets["totalclients"] = Database::table('clients')->where('company', $user->company)->count("id", "total")[0]->total;
