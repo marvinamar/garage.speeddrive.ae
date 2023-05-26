@@ -292,8 +292,10 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <td class="text-right nk-tb-col tb-col-md" colspan="4"><span
-                                                                class="fw-bold">Total:</span></td>
+                                                        <td class="text-right nk-tb-col tb-col-md" colspan="4">
+                                                            <span class="fw-bold">Total:</span> <small>perpage</small> <br> 
+                                                            <span class="fw-bold">Total:</span> <small>all</small></td>
+                                                        </td>
                                                         <td class="nk-tb-col tb-col-md"> <span class="tb-amount">{{
                                                                 money(0, $user->parent->currency) }}</span> </td>
                                                         <td class="nk-tb-col tb-col-md"> <span class="tb-amount">{{
@@ -948,6 +950,13 @@
                         return typeof i === 'string' ? i.replace(/[\AED,]/g, '') * 1 : typeof i === 'number' ? i : 0;
                     };
 
+                    var total= api
+                        .column( 8 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
+
                     var pageTotal = api
                         .column(8, { page: 'current' })
                         .data()
@@ -955,7 +964,14 @@
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    $(api.column(4).footer()).html('AED ' + pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                    $(api.column(4).footer()).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+                    var total= api
+                        .column( 9 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
 
                     var pageTotal = api
                         .column(9, { page: 'current' })
@@ -964,7 +980,14 @@
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    $(api.column(5).footer()).html('AED ' + pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                    $(api.column(5).footer()).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+                    var total= api
+                        .column( 10 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        },0);
 
                     var pageTotal = api
                         .column(10, { page: 'current' })
@@ -973,7 +996,7 @@
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    $(api.column(6).footer()).html('AED ' + pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                    $(api.column(6).footer()).html('AED '+ pageTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '</br>' + 'AED ' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
 
                 }
             });
