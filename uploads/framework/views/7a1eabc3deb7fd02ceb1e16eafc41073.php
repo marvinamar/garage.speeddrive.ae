@@ -246,11 +246,13 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="form-label">Shelf Number</label>
+                                    <input type="checkbox" name="isService" id="isService"> <label for="isService">isService</label>
                                     <div class="form-control-wrap">
-                                        <input type="text" class="form-control form-control-lg" placeholder="Shelf Number" name="item_code">
+                                        <input type="text" class="form-control form-control-lg" placeholder="Shelf Number" name="item_code" id="item_code">
                                     </div>
                                 </div>
                             </div>
@@ -322,6 +324,16 @@
 </html>
 
 <script>
+
+    $('#isService').on('click',function(){
+        if($('#isService').is(':checked')){
+            $('#item_code').val('Service Charge');
+            $('#item_code').attr('readonly', true);
+        }else{
+            $('#item_code').val('');
+            $('#item_code').attr('readonly', false);
+        }
+    });
 
     function profit()
     {   

@@ -131,9 +131,71 @@ class Overview{
         $purchase_amount = Database::table('expenses')->where('company', $user->company)->where('YEAR(`expense_date`)', date("Y"))->sum("purchase_amount", "total")[0]->total;
         $widgets["profits"] = $amount- $purchase_amount;
 
-        $amount = Database::table('expenses')->where('company', $user->company)->where('MONTH(`expense_date`)', date("m"))->sum("amount", "total")[0]->total;
-        $purchase_amount = Database::table('expenses')->where('company', $user->company)->where('MONTH(`expense_date`)', date("m"))->sum("purchase_amount", "total")[0]->total;
-        $widgets["profitsthismonth"] = $amount- $purchase_amount;
+        // $amount = Database::table('expenses')->where('company', $user->company)->where('MONTH(`expense_date`)', date("m"))->sum("amount", "total")[0]->total;
+        // $purchase_amount = Database::table('expenses')->where('company', $user->company)->where('MONTH(`expense_date`)', date("m"))->sum("purchase_amount", "total")[0]->total;
+        // $widgets["profitsthismonth_service"] = $amount- $purchase_amount;
+
+        $widgets["profitsthismonth_service"] = Database::table('projectpayments')
+        ->leftJoin('invoiceitems','invoiceitems.invoice','projectpayments.invoice')
+        ->leftJoin('inventory','inventory.id','invoiceitems.item')
+        ->where('inventory`.`shelf_number','Service Charge')
+        ->where('projectpayments`.`company', $user->company)->where('MONTH(`projectpayments`.`payment_date`)', date("m"))->sum("invoiceitems.total", "total")[0]->total;
+
+        $widgets["profit_service"] = Database::table('projectpayments')
+        ->leftJoin('invoiceitems','invoiceitems.invoice','projectpayments.invoice')
+        ->leftJoin('inventory','inventory.id','invoiceitems.item')
+        ->where('inventory`.`shelf_number','Service Charge')
+        ->where('projectpayments`.`company', $user->company)->where('YEAR(`projectpayments`.`payment_date`)', date("Y"))->sum("invoiceitems.total", "total")[0]->total;
+
+        //  $purchase_amount = Database::table('projectpayments')
+        // ->leftJoin('invoiceitems','invoiceitems.invoice','projectpayments.invoice')
+        // ->leftJoin('inventory','inventory.id','invoiceitems.item')
+        // ->where('inventory`.`shelf_number','!=','Service Charge')
+        // ->where('projectpayments`.`company', $user->company)->where('MONTH(`projectpayments`.`payment_date`)', date("m"))->sum("invoiceitems.total", "total")[0]->total;;
+
+        $purchase_amount = Database::table('invoiceitems')
+        ->leftJoin('invoices','invoices.id','invoiceitems.invoice')
+        ->leftJoin('inventory','inventory.id','invoiceitems.item')
+        ->leftJoin('expenses','expenses.expense','invoiceitems.item')
+        ->where('expenses`.`company', $user->company)
+        ->where('inventory`.`shelf_number','!=','Service Charge')
+        ->where('expenses`.`purchase_amount','>','0')
+        ->where('MONTH(`expenses`.`expense_date`)', date("m"))
+        ->sum("expenses.purchase_amount", "total")[0]->total;
+
+        $amount = Database::table('invoiceitems')
+        ->leftJoin('invoices','invoices.id','invoiceitems.invoice')
+        ->leftJoin('inventory','inventory.id','invoiceitems.item')
+        ->leftJoin('expenses','expenses.expense','invoiceitems.item')
+        ->where('expenses`.`company', $user->company)
+        ->where('inventory`.`shelf_number','!=','Service Charge')
+        ->where('expenses`.`purchase_amount','>','0')
+        ->where('MONTH(`expenses`.`expense_date`)', date("m"))
+        ->sum("expenses.amount", "total")[0]->total;
+
+        $widgets["profitsthismonth_partsandexpense"] = $amount - $purchase_amount;
+
+        $purchase_amount = Database::table('invoiceitems')
+        ->leftJoin('invoices','invoices.id','invoiceitems.invoice')
+        ->leftJoin('inventory','inventory.id','invoiceitems.item')
+        ->leftJoin('expenses','expenses.expense','invoiceitems.item')
+        ->where('expenses`.`company', $user->company)
+        ->where('inventory`.`shelf_number','!=','Service Charge')
+        ->where('expenses`.`purchase_amount','>','0')
+        ->where('YEAR(`expenses`.`expense_date`)', date("Y"))
+        ->sum("expenses.purchase_amount", "total")[0]->total;
+
+        $amount = Database::table('invoiceitems')
+        ->leftJoin('invoices','invoices.id','invoiceitems.invoice')
+        ->leftJoin('inventory','inventory.id','invoiceitems.item')
+        ->leftJoin('expenses','expenses.expense','invoiceitems.item')
+        ->where('expenses`.`company', $user->company)
+        ->where('inventory`.`shelf_number','!=','Service Charge')
+        ->where('expenses`.`purchase_amount','>','0')
+        ->where('YEAR(`expenses`.`expense_date`)', date("Y"))
+        ->sum("expenses.amount", "total")[0]->total;
+
+        $widgets["profits_partsandexpense"] = $amount - $purchase_amount;
 
         // total clients
         $widgets["totalclients"] = Database::table('clients')->where('company', $user->company)->count("id", "total")[0]->total;

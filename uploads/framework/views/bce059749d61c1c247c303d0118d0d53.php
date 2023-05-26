@@ -96,7 +96,7 @@
                                                         </div><!-- .nk-ecwg -->
                                                     </div><!-- .card -->
                                                 </div><!-- .col -->
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="card border-top border-success">
                                                         <div class="nk-ecwg nk-ecwg6">
                                                             <div class="card-inner">
@@ -148,9 +148,29 @@
                                                                 </div>
                                                                 <div class="data">
                                                                     <div class="data-group">
-                                                                        <div class="amount fw-bold"><?=  number_format($widgets["profitsthismonth"], 2) ; ?></div>
+                                                                        <div class="amount fw-bold"><?=  number_format($widgets["profitsthismonth_partsandexpense"], 2) ; ?></div>
                                                                     </div>
-                                                                    <div class="info"><span class="change text-success"><em class="icon ni ni-check-circle-cut"></em></span><span> Parts and Expense / Service</span></div>
+                                                                    <div class="info"><span class="change text-success"><em class="icon ni ni-check-circle-cut"></em></span><span> Parts and Expenses</span></div>
+                                                                </div>
+                                                            </div><!-- .card-inner -->
+                                                        </div><!-- .nk-ecwg -->
+                                                    </div><!-- .card -->
+                                                </div><!-- .col -->
+
+                                                <div class="col-md-6">
+                                                    <div class="card border-top border-success">
+                                                        <div class="nk-ecwg nk-ecwg6">
+                                                            <div class="card-inner">
+                                                                <div class="card-title-group">
+                                                                    <div class="card-title">
+                                                                        <h6 class="title">Profits <?=  date("M") ; ?> <sup class="text-muted"><?=  currency($user->parent->currency) ; ?></sup></h6>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="data">
+                                                                    <div class="data-group">
+                                                                        <div class="amount fw-bold"><?=  number_format($widgets["profitsthismonth_service"], 2) ; ?></div>
+                                                                    </div>
+                                                                    <div class="info"><span class="change text-success"><em class="icon ni ni-check-circle-cut"></em></span><span>Services</span></div>
                                                                 </div>
                                                             </div><!-- .card-inner -->
                                                         </div><!-- .nk-ecwg -->
@@ -248,7 +268,7 @@
                                             <div class="row g-gs">
 
                                                 <!-- stats row one -->
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="card border-top border-primary">
                                                         <div class="nk-ecwg nk-ecwg6">
                                                             <div class="card-inner">
@@ -278,14 +298,35 @@
                                                                 </div>
                                                                 <div class="data">
                                                                     <div class="data-group">
-                                                                        <div class="amount fw-bold"><?=  number_format($widgets["profits"], 2) ; ?></div>
+                                                                        <div class="amount fw-bold"><?=  number_format($widgets["profits_partsandexpense"], 2) ; ?></div>
                                                                     </div>
-                                                                    <div class="info"><span class="change text-success"><em class="icon ni ni-check-circle-cut"></em></span><span> Parts and Expense / Service</span></div>
+                                                                    <div class="info"><span class="change text-success"><em class="icon ni ni-check-circle-cut"></em></span><span>Parts and Expenses</span></div>
                                                                 </div>
                                                             </div><!-- .card-inner -->
                                                         </div><!-- .nk-ecwg -->
                                                     </div><!-- .card -->
                                                 </div><!-- .col -->
+
+                                                <div class="col-md-6">
+                                                    <div class="card border-top border-primary">
+                                                        <div class="nk-ecwg nk-ecwg6">
+                                                            <div class="card-inner">
+                                                                <div class="card-title-group">
+                                                                    <div class="card-title">
+                                                                        <h6 class="title">Profits <?=  date("Y") ; ?> <sup class="text-muted"><?=  currency($user->parent->currency) ; ?></sup></h6>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="data">
+                                                                    <div class="data-group">
+                                                                        <div class="amount fw-bold"><?=  number_format($widgets["profit_service"], 2) ; ?></div>
+                                                                    </div>
+                                                                    <div class="info"><span class="change text-success"><em class="icon ni ni-check-circle-cut"></em></span><span>Services</span></div>
+                                                                </div>
+                                                            </div><!-- .card-inner -->
+                                                        </div><!-- .nk-ecwg -->
+                                                    </div><!-- .card -->
+                                                </div><!-- .col -->
+
                                                 <div class="col-md-6">
                                                     <div class="card border-top border-primary">
                                                         <div class="nk-ecwg nk-ecwg6">
